@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRAQ-COMICS | Hub</title>
+    <title>BRAQ-COMICS | Official Hub</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -16,8 +16,9 @@
         }
         h1 {
             color: #f59e0b;
-            font-size: 28px;
+            font-size: 30px;
             margin-bottom: 5px;
+            letter-spacing: 1px;
         }
         p.subtitle {
             color: #94a3b8;
@@ -37,6 +38,9 @@
             margin-bottom: 15px;
             outline: none;
         }
+        .search-box:focus {
+            border-color: #f59e0b;
+        }
         .filters {
             display: flex;
             justify-content: center;
@@ -48,33 +52,54 @@
             background-color: #1e293b;
             color: #f59e0b;
             border: 1px solid #f59e0b;
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 6px;
             font-size: 14px;
             cursor: pointer;
             font-weight: bold;
+            transition: 0.2s;
         }
         .filter-btn:active, .filter-btn:hover {
             background-color: #f59e0b;
             color: #0f172a;
+        }
+        .card-container {
+            max-width: 400px;
+            margin: 0 auto;
         }
         .card {
             background-color: #1e293b;
             border: 1px solid #334155;
             border-radius: 12px;
             padding: 18px;
-            max-width: 400px;
-            margin: 15px auto;
+            margin-bottom: 20px;
             text-align: left;
+            overflow: hidden;
+        }
+        .card-img {
+            width: 100%;
+            height: 160px;
+            background-color: #0f172a;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 13px;
         }
         .card h3 {
             margin-top: 0;
+            margin-bottom: 8px;
             color: #f59e0b;
             font-size: 18px;
         }
         .card p {
             color: #cbd5e1;
             font-size: 14px;
+            margin-bottom: 15px;
         }
         .badge {
             display: inline-block;
@@ -90,12 +115,15 @@
             display: block;
             background-color: #f59e0b;
             color: #0f172a;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
             border-radius: 6px;
-            margin-top: 12px;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background-color: #e28e07;
         }
     </style>
 </head>
@@ -105,40 +133,79 @@
     <p class="subtitle">Comics, Games & Movies Hub</p>
 
     <!-- Search Bar -->
-    <input type="text" class="search-box" placeholder="Search comics, games, movies...">
+    <input type="text" id="searchInput" class="search-box" placeholder="Search comics, games, movies..." onkeyup="filterContent()">
 
     <!-- Filter Buttons -->
     <div class="filters">
-        <button class="filter-btn">All</button>
-        <button class="filter-btn">Comics</button>
-        <button class="filter-btn">Games</button>
-        <button class="filter-btn">Movies</button>
+        <button class="filter-btn" onclick="filterCategory('all')">All</button>
+        <button class="filter-btn" onclick="filterCategory('game')">Games</button>
+        <button class="filter-btn" onclick="filterCategory('comic')">Comics</button>
+        <button class="filter-btn" onclick="filterCategory('movie')">Movies</button>
     </div>
 
-    <!-- Item 1: Game -->
-    <div class="card">
-        <span class="badge">GAME (APK)</span>
-        <h3>Braq Runner 3D</h3>
-        <p>An action-packed mobile runner game built with awesome Spider-Verse inspired graphics.</p>
-        <a href="#" class="btn">Download APK</a>
+    <div class="card-container" id="contentList">
+        
+        <!-- Item 1: Game -->
+        <div class="card" data-category="game" data-text="braq runner 3d game apk">
+            <div class="card-img">Game Preview Banner</div>
+            <span class="badge">GAME (APK)</span>
+            <h3>Braq Runner 3D</h3>
+            <p>An action-packed mobile runner game built with awesome Spider-Verse inspired graphics.</p>
+            <!-- CHANGE '#' to your actual APK download link -->
+            <a href="#" class="btn">Download APK</a>
+        </div>
+
+        <!-- Item 2: Comic -->
+        <div class="card" data-category="comic" data-text="braq origins comic chapter pdf">
+            <div class="card-img">Comic Cover Art</div>
+            <span class="badge">COMIC CHAPTER</span>
+            <h3>Braq Origins #1</h3>
+            <p>Discover the legend and visual storytelling of our main hero.</p>
+            <!-- CHANGE '#' to your actual PDF/Comic link -->
+            <a href="#" class="btn">Read / Download PDF</a>
+        </div>
+
+        <!-- Item 3: Movie -->
+        <div class="card" data-category="movie" data-text="into the multiverse movie animation teaser mp4">
+            <div class="card-img">Movie Teaser Banner</div>
+            <span class="badge">MOVIE / ANIMATION</span>
+            <h3>Into the Multiverse (Teaser)</h3>
+            <p>Exclusive animated concept teaser trailer and shorts.</p>
+            <!-- CHANGE '#' to your actual Video link -->
+            <a href="#" class="btn">Watch / Download MP4</a>
+        </div>
+
     </div>
 
-    <!-- Item 2: Comic -->
-    <div class="card">
-        <span class="badge">COMIC CHAPTER</span>
-        <h3>Braq Origins #1</h3>
-        <p>Discover the legend and visual storytelling of our main hero.</p>
-        <a href="#" class="btn">Read / Download PDF</a>
-    </div>
+    <script>
+        function filterContent() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
 
-    <!-- Item 3: Movie -->
-    <div class="card">
-        <span class="badge">MOVIE / ANIMATION</span>
-        <h3>Into the Multiverse (Teaser)</h3>
-        <p>Exclusive animated concept teaser trailer and shorts.</p>
-        <a href="#" class="btn">Watch / Download MP4</a>
-    </div>
+            for (let i = 0; i < cards.length; i++) {
+                let text = cards[i].getAttribute('data-text');
+                if (text.includes(input)) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function filterCategory(category) {
+            let cards = document.getElementsByClassName('card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let cardCat = cards[i].getAttribute('data-category');
+                if (category === 'all' || cardCat === category) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 
 </body>
-    </html>
-                                                       
+        </html>
+            
