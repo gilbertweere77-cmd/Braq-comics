@@ -3,55 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRAQ-COMICS</title>
+    <title>BRAQ-COMICS | Hub</title>
     <style>
+        * { box-sizing: border-box; }
         body {
             background-color: #0f172a;
             color: #ffffff;
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 30px;
             margin: 0;
+            padding: 20px;
+            text-align: center;
         }
         h1 {
             color: #f59e0b;
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: 5px;
         }
-        p {
+        p.subtitle {
             color: #94a3b8;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 15px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: white;
             font-size: 16px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background-color: #1e293b;
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .filter-btn:active, .filter-btn:hover {
+            background-color: #f59e0b;
+            color: #0f172a;
         }
         .card {
             background-color: #1e293b;
             border: 1px solid #334155;
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px;
             max-width: 400px;
-            margin: 20px auto;
+            margin: 15px auto;
+            text-align: left;
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #f59e0b;
+            font-size: 18px;
+        }
+        .card p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            background: #334155;
+            color: #f59e0b;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
         .btn {
             display: block;
             background-color: #f59e0b;
             color: #0f172a;
-            padding: 12px;
+            padding: 10px;
+            text-align: center;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 8px;
-            margin-top: 15px;
+            border-radius: 6px;
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
 
     <h1>BRAQ-COMICS</h1>
-    <p>Comic and games application</p>
+    <p class="subtitle">Comics, Games & Movies Hub</p>
 
+    <!-- Search Bar -->
+    <input type="text" class="search-box" placeholder="Search comics, games, movies...">
+
+    <!-- Filter Buttons -->
+    <div class="filters">
+        <button class="filter-btn">All</button>
+        <button class="filter-btn">Comics</button>
+        <button class="filter-btn">Games</button>
+        <button class="filter-btn">Movies</button>
+    </div>
+
+    <!-- Item 1: Game -->
     <div class="card">
-        <h3>My First Game / Movie</h3>
-        <p>Download APK & MP4 files here</p>
-        <a href="#" class="btn">Download Now</a>
+        <span class="badge">GAME (APK)</span>
+        <h3>Braq Runner 3D</h3>
+        <p>An action-packed mobile runner game built with awesome Spider-Verse inspired graphics.</p>
+        <a href="#" class="btn">Download APK</a>
+    </div>
+
+    <!-- Item 2: Comic -->
+    <div class="card">
+        <span class="badge">COMIC CHAPTER</span>
+        <h3>Braq Origins #1</h3>
+        <p>Discover the legend and visual storytelling of our main hero.</p>
+        <a href="#" class="btn">Read / Download PDF</a>
+    </div>
+
+    <!-- Item 3: Movie -->
+    <div class="card">
+        <span class="badge">MOVIE / ANIMATION</span>
+        <h3>Into the Multiverse (Teaser)</h3>
+        <p>Exclusive animated concept teaser trailer and shorts.</p>
+        <a href="#" class="btn">Watch / Download MP4</a>
     </div>
 
 </body>
-</html>
+    </html>
+                                                       
