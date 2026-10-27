@@ -20,7 +20,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 15px 20px;
-            background-color: #0f172a;
+            background-color: #0b0f19;
             border-bottom: 1px solid #1e293b;
             position: sticky;
             top: 0;
@@ -28,7 +28,7 @@
         }
         .logo-box {
             background-color: #f59e0b;
-            color: #0f172a;
+            color: #0b0f19;
             width: 38px;
             height: 38px;
             border-radius: 10px;
@@ -43,6 +43,43 @@
             font-weight: bold;
             color: #f59e0b;
             letter-spacing: 1px;
+        }
+
+        /* Hero Slideshow Header */
+        .hero-banner {
+            width: 100%;
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: background-image 1s ease-in-out;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(15,23,42,0.3), #0f172a);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content h2 {
+            color: #f59e0b;
+            margin: 0 0 5px 0;
+            font-size: 22px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .hero-content p {
+            color: #e2e8f0;
+            margin: 0;
+            font-size: 13px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
 
         /* Content Sections */
@@ -123,7 +160,7 @@
             margin-top: 10px;
         }
 
-        /* Modal Popups for Sign In / Register */
+        /* Modal Popups */
         .modal {
             display: none;
             position: fixed;
@@ -213,26 +250,37 @@
     </div>
 
     <!-- 1. HOME VIEW -->
-    <div id="home-view" class="section-view active">
-        <div class="card" style="border-color: #f59e0b;">
-            <span class="badge">WELCOME</span>
-            <h3>BRAQ Entertainment Hub</h3>
-            <p>Your ultimate mobile application for games, movies, comics, music, and live sports streaming.</p>
-            
-            <!-- Real Working Auth Buttons -->
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button class="btn" style="margin-top:0;" onclick="openModal('signin-modal')">Sign In</button>
-                <button class="btn btn-outline" style="margin-top:0;" onclick="openModal('register-modal')">Register</button>
+    <div id="home-view" class="section-view active" style="padding: 0; max-width: 100%;">
+        
+        <!-- Changing Background Hero Slideshow -->
+        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800');">
+            <div class="hero-overlay"></div>
+            <div class="hero-content" style="max-width: 400px; margin: 0 auto; width: 100%; padding: 0 20px;">
+                <span class="badge">FEATURED UNIVERSE</span>
+                <h2>BRAQ Entertainment Hub</h2>
+                <p>Games, Movies, Comics, Music & Live Sports in your pocket.</p>
             </div>
         </div>
 
-        <!-- Real Working WhatsApp Help Card -->
-        <div class="card">
-            <span class="badge">SUPPORT & HELP</span>
-            <h3>Need Assistance?</h3>
-            <p>Chat directly with our support team on WhatsApp for any issues, requests, or questions.</p>
-            <!-- Replace 256700000000 with your actual WhatsApp phone number -->
-            <a href="https://wa.me/256700000000?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat on WhatsApp</a>
+        <div style="padding: 20px; max-width: 400px; margin: 0 auto;">
+            <!-- Auth Card -->
+            <div class="card" style="border-color: #f59e0b;">
+                <span class="badge">ACCOUNT</span>
+                <h3>Welcome Back</h3>
+                <p>Sign in or register to sync your favorites and download items.</p>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn" style="margin-top:0;" onclick="openModal('signin-modal')">Sign In</button>
+                    <button class="btn btn-outline" style="margin-top:0;" onclick="openModal('register-modal')">Register</button>
+                </div>
+            </div>
+
+            <!-- WhatsApp Support Card with your exact number -->
+            <div class="card">
+                <span class="badge">SUPPORT & HELP</span>
+                <h3>Need Assistance?</h3>
+                <p>Chat directly with our support team on WhatsApp for any issues, requests, or questions.</p>
+                <a href="https://wa.me/256705190026?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat on WhatsApp (+256 705 190026)</a>
+            </div>
         </div>
     </div>
 
@@ -350,8 +398,24 @@
             document.getElementById('signin-modal').style.display = 'none';
             document.getElementById('register-modal').style.display = 'none';
         }
+
+        // Background Poster Slideshow (Changes every 30 seconds)
+        const posters = [
+            "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800",
+            "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
+            "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800"
+        ];
+        let currentPosterIndex = 0;
+
+        function changeHeroBackground() {
+            currentPosterIndex = (currentPosterIndex + 1) % posters.length;
+            document.getElementById('heroBanner').style.backgroundImage = `url('${posters[currentPosterIndex]}')`;
+        }
+
+        // Set interval to 30 seconds (30,000 milliseconds)
+        setInterval(changeHeroBackground, 30000);
     </script>
 
 </body>
-        </html>
-                    
+    </html>
+            
