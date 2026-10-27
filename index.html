@@ -15,7 +15,7 @@
             padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        /* Full Screen Authentication Gate */
+        /* Full Screen Direct Authentication Gate */
         #auth-gate {
             position: fixed;
             top: 0;
@@ -47,8 +47,19 @@
         }
         .gate-box p {
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 20px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
         }
 
         /* Top Header */
@@ -287,56 +298,6 @@
             font-weight: bold;
         }
 
-        /* Modal Popups */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            padding: 25px;
-            border-radius: 14px;
-            width: 100%;
-            max-width: 350px;
-            text-align: left;
-            position: relative;
-        }
-        .modal-content h3 {
-            color: #f59e0b;
-            margin-top: 0;
-        }
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
         /* Bottom App Navigation Bar */
         .bottom-nav {
             position: fixed;
@@ -369,36 +330,18 @@
 </head>
 <body>
 
-    <!-- MANDATORY LOGIN GATE -->
+    <!-- DIRECT LOGIN / REGISTER GATE (No popups, straight to work) -->
     <div id="auth-gate">
         <div class="gate-box">
             <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Please register an account or sign in to access the hub.</p>
-            <button class="btn" onclick="openModal('signin-modal')">Sign In</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="openModal('register-modal')">Register New Account</button>
-        </div>
-    </div>
-
-    <!-- Sign In Modal -->
-    <div id="signin-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('signin-modal')">&times;</button>
-            <h3>Sign In to BRAQ</h3>
-            <input type="text" id="signinUsername" placeholder="Username" class="form-input" />
-            <input type="password" id="signinPin" placeholder="4-Digit Password" maxlength="4" class="form-input" />
-            <button class="btn" onclick="processSignIn()">Login</button>
-        </div>
-    </div>
-
-    <!-- Register Modal -->
-    <div id="register-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('register-modal')">&times;</button>
-            <h3>Create Account</h3>
-            <input type="text" id="regUsername" placeholder="Choose Username" class="form-input" />
-            <input type="password" id="regPin" placeholder="Create 4-Digit Password" maxlength="4" class="form-input" />
-            <button class="btn" onclick="processRegister()">Register & Enter</button>
+            <p>Enter your username and 4-digit password to register or sign in.</p>
+            
+            <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" />
+            <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
+            
+            <button class="btn" onclick="handleRegister()">Register New Account</button>
+            <button class="btn btn-outline" onclick="handleSignIn()">Sign In</button>
         </div>
     </div>
 
@@ -532,49 +475,98 @@
                 unlockApp(currentUser);
             }
             loadMessages();
-            setInterval(loadMessages, 2000);
+            setInterval(loadMessages, 2000); // Live polling sync for all users
         };
 
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
+        function handleRegister() {
+            let username = document.getElementById('usernameInput').value.trim();
+            let password = document.getElementById('passwordInput').value.trim();
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function processRegister() {
-            let username = document.getElementById('regUsername').value.trim();
-            let pin = document.getElementById('regPin').value.trim();
-
-            if (!username || pin.length !== 4) {
+            if (!username || password.length !== 4) {
                 alert('Please enter a username and a 4-digit password.');
                 return;
             }
 
-            let existingPin = localStorage.getItem('braq_user_pin_' + username);
-            if (existingPin) {
-                alert('Username already exists! Please click Sign In instead.');
+            let existing = localStorage.getItem('braq_pwd_' + username);
+            if (existing) {
+                alert('Username already exists! Please click "Sign In" instead.');
                 return;
             }
 
-            localStorage.setItem('braq_user_pin_' + username, pin);
+            localStorage.setItem('braq_pwd_' + username, password);
             localStorage.setItem('braq_logged_user', username);
             alert('Account registered successfully!');
-            closeModal('register-modal');
             unlockApp(username);
         }
 
-        function processSignIn() {
-            let username = document.getElementById('signinUsername').value.trim();
-            let pin = document.getElementById('signinPin').value.trim();
+        function handleSignIn() {
+            let username = document.getElementById('usernameInput').value.trim();
+            let password = document.getElementById('passwordInput').value.trim();
 
-            if (!username || pin.length !== 4) {
+            if (!username || password.length !== 4) {
                 alert('Please enter your username and 4-digit password.');
                 return;
             }
 
-            let storedPin = localStorage.getItem('braq_user_pin_' + username);
-            if (storedPin) {
-                if (storedPin === pin) {
-                    localStorage.setItem('braq_logged_user', usernam
+            let storedPwd = localStorage.getItem('braq_pwd_' + username);
+            if (storedPwd) {
+                if (storedPwd === password) {
+                    localStorage.setItem('braq_logged_user', username);
+                    unlockApp(username);
+                } else {
+                    alert('Incorrect 4-digit password!');
+                }
+            } else {
+                alert('Account not found! Please click "Register New Account" first.');
+            }
+        }
+
+        function unlockApp(username) {
+            document.getElementById('auth-gate').style.display = 'none';
+            document.getElementById('topNav').style.display = 'flex';
+            document.getElementById('bottomNav').style.display = 'flex';
+            document.getElementById('sessionUserGreeting').innerText = "Welcome, " + username + "!";
+            switchTab('home-view', document.querySelector('.nav-btn'));
+        }
+
+        function logoutApp() {
+            localStorage.removeItem('braq_logged_user');
+            location.reload();
+        }
+
+        function switchTab(viewId, element) {
+            let views = document.getElementsByClassName('section-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].classList.remove('active');
+            }
+            document.getElementById(viewId).classList.add('active');
+
+            let buttons = document.getElementsByClassName('nav-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (element) element.classList.add('active');
+        }
+
+        // Multi-User Live Chat & Blocking Logic
+        let attachedImageSrc = null;
+
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function handleChatImage(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    attachedImageSrc = e.target.result;
+                    alert('Image attached! Click Send.');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function sendChatMessage() {
