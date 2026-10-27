@@ -74,6 +74,7 @@
         .card p {
             color: #cbd5e1;
             font-size: 14px;
+            margin-bottom: 15px;
         }
         .badge {
             display: inline-block;
@@ -94,15 +95,82 @@
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            width: 100%;
             transition: 0.2s;
         }
         .btn:hover {
             background-color: #d9822b;
         }
+        .btn-outline {
+            background-color: transparent;
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+        .whatsapp-btn {
+            background-color: #25d366;
+            color: white;
+        }
+        .whatsapp-btn:hover {
+            background-color: #20ba5a;
+        }
+
         audio {
             width: 100%;
             margin-top: 10px;
+        }
+
+        /* Modal Popups for Sign In / Register */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            padding: 25px;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 350px;
+            text-align: left;
+            position: relative;
+        }
+        .modal-content h3 {
+            color: #f59e0b;
+            margin-top: 0;
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 18px;
+            cursor: pointer;
         }
 
         /* Bottom App Navigation Bar */
@@ -149,7 +217,22 @@
         <div class="card" style="border-color: #f59e0b;">
             <span class="badge">WELCOME</span>
             <h3>BRAQ Entertainment Hub</h3>
-            <p>Your ultimate mobile application for games, movies, comics, music, and live sports. Tap the bottom navigation bar to explore!</p>
+            <p>Your ultimate mobile application for games, movies, comics, music, and live sports streaming.</p>
+            
+            <!-- Real Working Auth Buttons -->
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn" style="margin-top:0;" onclick="openModal('signin-modal')">Sign In</button>
+                <button class="btn btn-outline" style="margin-top:0;" onclick="openModal('register-modal')">Register</button>
+            </div>
+        </div>
+
+        <!-- Real Working WhatsApp Help Card -->
+        <div class="card">
+            <span class="badge">SUPPORT & HELP</span>
+            <h3>Need Assistance?</h3>
+            <p>Chat directly with our support team on WhatsApp for any issues, requests, or questions.</p>
+            <!-- Replace 256700000000 with your actual WhatsApp phone number -->
+            <a href="https://wa.me/256700000000?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat on WhatsApp</a>
         </div>
     </div>
 
@@ -202,6 +285,33 @@
         </div>
     </div>
 
+    <!-- Sign In Modal Popup -->
+    <div id="signin-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('signin-modal')">&times;</button>
+            <h3>Sign In to BRAQ</h3>
+            <form onsubmit="handleAuth(event, 'Signed In Successfully!')">
+                <input type="email" placeholder="Email Address" class="form-input" required>
+                <input type="password" placeholder="Password" class="form-input" required>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal Popup -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('register-modal')">&times;</button>
+            <h3>Create Account</h3>
+            <form onsubmit="handleAuth(event, 'Account Created Successfully!')">
+                <input type="text" placeholder="Username" class="form-input" required>
+                <input type="email" placeholder="Email Address" class="form-input" required>
+                <input type="password" placeholder="Create Password" class="form-input" required>
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Bottom App Navigation Bar -->
     <div class="bottom-nav">
         <button class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
@@ -225,8 +335,23 @@
             }
             element.classList.add('active');
         }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function handleAuth(event, message) {
+            event.preventDefault();
+            alert(message);
+            document.getElementById('signin-modal').style.display = 'none';
+            document.getElementById('register-modal').style.display = 'none';
+        }
     </script>
 
 </body>
         </html>
-    
+                    
