@@ -306,7 +306,7 @@
             <div class="card" style="border-color: #f59e0b;">
                 <span class="badge">SYSTEM READY</span>
                 <h3>Welcome to BRAQ!</h3>
-                <p>Chat with fellow fans in the community lounge, stream matches, and explore media.</p>
+                <p>Stream movies, watch live broadcasts, chat in the community lounge, and explore media.</p>
             </div>
 
             <!-- WhatsApp Support Card -->
@@ -321,13 +321,26 @@
 
     <!-- 2. MOVIES & COMICS VIEW -->
     <div id="movies-view" class="section-view">
+        <!-- Featured Full Movie Player -->
+        <div class="card" style="border-color: #f59e0b;">
+            <span class="badge">FEATURED FULL MOVIE</span>
+            <h3>Braq Multiverse - Feature Film</h3>
+            <p>Stream our full-length featured animation movie right here.</p>
+            <div style="position: relative; width: 100%; height: 200px; background: #000; border-radius: 8px; overflow: hidden; margin-top: 10px;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Movie Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Movie 2 -->
         <div class="card">
             <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800" alt="Movie Poster" class="card-img">
-            <span class="badge">MOVIE / ANIMATION</span>
+            <span class="badge">SHORT ANIMATION</span>
             <h3>Into the Multiverse (Teaser)</h3>
             <p>Exclusive animated concept teaser trailer and shorts.</p>
             <a href="#" class="btn">Watch / Download MP4</a>
         </div>
+
+        <!-- Comic Chapter -->
         <div class="card">
             <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800" alt="Comic Art" class="card-img">
             <span class="badge">COMIC CHAPTER</span>
@@ -350,12 +363,24 @@
 
     <!-- 4. MUSIC VIEW -->
     <div id="music-view" class="section-view">
+        <!-- Song 1 -->
         <div class="card">
-            <span class="badge">MUSIC / SOUNDTRACK</span>
-            <h3>Braq Theme (Official Soundtrack)</h3>
-            <p>Immersive high-energy background soundtrack for your universe.</p>
+            <span class="badge">SOUNDTRACK 1</span>
+            <h3>Braq Theme (Official Anthem)</h3>
+            <p>Immersive high-energy background soundtrack.</p>
             <audio controls>
                 <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                Your browser does not support audio.
+            </audio>
+        </div>
+
+        <!-- Song 2 -->
+        <div class="card">
+            <span class="badge">SOUNDTRACK 2</span>
+            <h3>Multiverse Journey</h3>
+            <p>Cinematic ambient sound design.</p>
+            <audio controls>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="audio/mpeg">
                 Your browser does not support audio.
             </audio>
         </div>
@@ -363,12 +388,34 @@
 
     <!-- 5. LIVE TV & SPORTS VIEW -->
     <div id="livetv-view" class="section-view">
+        <!-- Your Live YouTube Channel Slot -->
         <div class="card" style="border-color: #f59e0b;">
-            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800" alt="Live Sports" class="card-img">
-            <span class="badge">LIVE SPORTS</span>
-            <h3>Live Football Match Stream</h3>
-            <p>Stream live football fixtures, sports channels, and entertainment broadcasts.</p>
-            <a href="#" class="btn">Watch Live Stream</a>
+            <span class="badge">YOUR LIVE CHANNEL</span>
+            <h3>BRAQ-COMICS Live Stream</h3>
+            <p>Watch our official YouTube live broadcast right here.</p>
+            <div style="position: relative; width: 100%; height: 200px; background: #000; border-radius: 8px; overflow: hidden; margin-top: 10px;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID" title="YouTube Live Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Free Live Stream 1: NASA TV -->
+        <div class="card">
+            <span class="badge">FREE LIVE TV</span>
+            <h3>NASA Public Space Feed</h3>
+            <p>Live space exploration, rocket launches, and Earth views 24/7.</p>
+            <div style="position: relative; width: 100%; height: 200px; background: #000; border-radius: 8px; overflow: hidden; margin-top: 10px;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="NASA Live" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Free Live Stream 2: News & Sports -->
+        <div class="card">
+            <span class="badge">FREE SPORTS / NEWS</span>
+            <h3>Global News & Sports Live</h3>
+            <p>Free 24/7 news coverage, highlights, and sports bulletins.</p>
+            <div style="position: relative; width: 100%; height: 200px; background: #000; border-radius: 8px; overflow: hidden; margin-top: 10px;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jfKfPfyJRdk" title="Live Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
@@ -405,7 +452,6 @@
     </div>
 
     <script>
-        // Check / Prompt for Username on Load
         window.onload = function() {
             let myName = localStorage.getItem('braq_username');
             if (!myName) {
@@ -418,7 +464,7 @@
             document.getElementById('userDisplayName').innerText = "👤 " + localStorage.getItem('braq_username');
 
             loadMessages();
-            setInterval(loadMessages, 1500); // Super fast live sync polling like WhatsApp
+            setInterval(loadMessages, 1500);
         };
 
         function changeName() {
@@ -446,7 +492,6 @@
             if (element) element.classList.add('active');
         }
 
-        // Multi-User Live Chat & Media Sharing Logic
         let attachedImageSrc = null;
 
         function handleChatKey(event) {
@@ -487,70 +532,4 @@
             localStorage.setItem('braq_chat_messages', JSON.stringify(messages));
 
             input.value = '';
-            attachedImageSrc = null;
-            loadMessages();
-        }
-
-        function loadMessages() {
-            let chatBox = document.getElementById('chatMessages');
-            if (!chatBox) return;
-
-            let messages = JSON.parse(localStorage.getItem('braq_chat_messages') || '[]');
-            let myName = localStorage.getItem('braq_username') || "";
-
-            let html = '';
-            if (messages.length === 0) {
-                html = `<div class="chat-msg" style="text-align: center;"><span class="sender">System</span>No messages yet. Say hello to everyone!</div>`;
-            } else {
-                messages.forEach((msg) => {
-                    let isMine = (msg.sender === myName);
-                    let msgClass = isMine ? "chat-msg my-msg" : "chat-msg";
-
-                    html += `<div class="${msgClass}">
-                        <span class="sender">${escapeHtml(msg.sender)}</span>`;
-
-                    if (msg.text) {
-                        html += `<div>${escapeHtml(msg.text)}</div>`;
-                    }
-                    if (msg.image) {
-                        html += `<img src="${msg.image}" alt="shared media">`;
-                    }
-                    html += `</div>`;
-                });
-            }
-
-            // Only update DOM if messages changed to keep scrolling smooth
-            if (chatBox.innerHTML !== html) {
-                chatBox.innerHTML = html;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        // Cinematic Movie Poster Slideshow URLs
-        const moviePosters = [
-            "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
-            "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
-            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800",
-            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800"
-        ];
-        let posterIndex = 0;
-
-        function rotatePosters() {
-            posterIndex = (posterIndex + 1) % moviePosters.length;
-            let banner = document.getElementById('heroBanner');
-            if (banner) {
-                banner.style.backgroundImage = `url('${moviePosters[posterIndex]}')`;
-            }
-        }
-
-        setInterval(rotatePosters, 30000);
-    </script>
-
-</body>
-        </html>
-    
+     
