@@ -15,7 +15,7 @@
             padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        /* Full Screen Authentication Gate */
+        /* Full Screen Authentication Gate with PIN */
         #auth-gate {
             position: fixed;
             top: 0;
@@ -49,6 +49,17 @@
             color: #94a3b8;
             font-size: 14px;
             margin-bottom: 20px;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
         }
 
         /* Top Header */
@@ -187,11 +198,6 @@
         .btn:hover {
             background-color: #d9822b;
         }
-        .btn-outline {
-            background-color: transparent;
-            color: #f59e0b;
-            border: 1px solid #f59e0b;
-        }
         .whatsapp-btn {
             background-color: #25d366;
             color: white;
@@ -232,12 +238,27 @@
             max-width: 85%;
             word-break: break-word;
             border: 1px solid #334155;
+            position: relative;
+        }
+        .chat-msg .sender-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3px;
         }
         .chat-msg .sender {
             color: #f59e0b;
             font-weight: bold;
-            margin-bottom: 3px;
             font-size: 11px;
+        }
+        .block-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 10px;
+            cursor: pointer;
+            padding: 0;
+            font-weight: bold;
         }
         .chat-msg img {
             max-width: 100%;
@@ -304,14 +325,15 @@
 </head>
 <body>
 
-    <!-- MANDATORY LOGIN GATE (Direct One-Tap Access) -->
+    <!-- MANDATORY LOGIN / REGISTER GATE WITH 2-DIGIT PIN -->
     <div id="auth-gate">
         <div class="gate-box">
             <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Please enter to access the entertainment hub.</p>
-            <input type="text" id="usernameInput" placeholder="Enter your username..." style="width: 100%; padding: 12px; margin-bottom: 15px; background-color: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 14px; outline: none;" />
-            <button class="btn" onclick="loginApp()">Sign In / Register & Enter</button>
+            <p>Enter your username and personal 2-digit PIN to join or register.</p>
+            <input type="text" id="authUsername" placeholder="Username (e.g. Gilbert)" class="auth-input" />
+            <input type="password" id="authPin" placeholder="2-Digit PIN (e.g. 12)" maxlength="2" class="auth-input" />
+            <button class="btn" onclick="authenticateUser()">Sign In / Register & Enter</button>
         </div>
     </div>
 
@@ -410,15 +432,12 @@
         <div class="card" style="margin-bottom: 10px; padding: 12px;">
             <span class="badge">COMMUNITY CHAT</span>
             <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
-            <p style="margin: 0; font-size: 12px;">Chat with fellow fans, share media, and discuss movies & games!</p>
+            <p style="margin: 0; font-size: 12px;">Chat with fellow fans across devices and share media!</p>
         </div>
         
         <div class="chat-container">
             <div class="chat-messages" id="chatMessages">
-                <div class="chat-msg">
-                    <div class="sender">System Admin</div>
-                    Welcome to the BRAQ Hub Chat! Drop your thoughts or images here.
-                </div>
+                <!-- Messages populated dynamically -->
             </div>
             <div class="chat-input-area">
                 <label class="file-upload-label" title="Attach Image">📎
@@ -441,28 +460,47 @@
     </div>
 
     <script>
-        // Check if already logged in previously
+        // Check session on load
         window.onload = function() {
             let currentUser = localStorage.getItem('braq_logged_user');
             if (currentUser) {
                 unlockApp(currentUser);
             }
+            loadMessages();
+            // Poll for multi-user chat updates every 2 seconds
+            setInterval(loadMessages, 2000);
         };
 
-        function loginApp() {
-            let username = document.getElementById('usernameInput').value.trim();
-            if (!username) {
-                username = "Viewer";
+        function authenticateUser() {
+            let username = document.getElementById('authUsername').value.trim();
+            let pin = document.getElementById('authPin').value.trim();
+
+            if (!username || pin.length !== 2) {
+                alert('Please enter a username and a valid 2-digit PIN (e.g. 12).');
+                return;
             }
-            localStorage.setItem('braq_logged_user', username);
-            unlockApp(username);
+
+            let storedPin = localStorage.getItem('braq_user_pin_' + username);
+            if (storedPin) {
+                if (storedPin === pin) {
+                    localStorage.setItem('braq_logged_user', username);
+                    unlockApp(username);
+                } else {
+                    alert('Incorrect 2-digit PIN for this username!');
+                }
+            } else {
+                // Register new user with PIN
+                localStorage.setItem('braq_user_pin_' + username, pin);
+                localStorage.setItem('braq_logged_user', username);
+                alert('Account registered successfully!');
+                unlockApp(username);
+            }
         }
 
         function unlockApp(username) {
             document.getElementById('auth-gate').style.display = 'none';
             document.getElementById('topNav').style.display = 'flex';
             document.getElementById('bottomNav').style.display = 'flex';
-            
             document.getElementById('sessionUserGreeting').innerText = "Welcome, " + username + "!";
             switchTab('home-view', document.querySelector('.nav-btn'));
         }
@@ -486,7 +524,7 @@
             if (element) element.classList.add('active');
         }
 
-        // Chat Room Logic
+        // Multi-User Chat & Blocking Logic
         let attachedImageSrc = null;
 
         function handleChatKey(event) {
@@ -501,7 +539,7 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     attachedImageSrc = e.target.result;
-                    alert('Image attached successfully! Now click Send.');
+                    alert('Image attached! Click Send.');
                 };
                 reader.readAsDataURL(file);
             }
@@ -513,49 +551,23 @@
             if (!text && !attachedImageSrc) return;
 
             let username = localStorage.getItem('braq_logged_user') || 'Member';
-            let chatBox = document.getElementById('chatMessages');
-
-            let msgDiv = document.createElement('div');
-            msgDiv.className = 'chat-msg';
             
-            let html = `<div class="sender">${username}</div>`;
-            if (text) {
-                html += `<div>${escapeHtml(text)}</div>`;
-            }
-            if (attachedImageSrc) {
-                html += `<img src="${attachedImageSrc}" alt="media">`;
-                attachedImageSrc = null;
-            }
+            let messageObj = {
+                sender: username,
+                text: text,
+                image: attachedImageSrc,
+                time: Date.now()
+            };
 
-            msgDiv.innerHTML = html;
-            chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            // Retrieve existing messages
+            let messages = JSON.parse(localStorage.getItem('braq_chat_messages') || '[]');
+            messages.push(messageObj);
+            localStorage.setItem('braq_chat_messages', JSON.stringify(messages));
+
             input.value = '';
+            attachedImageSrc = null;
+            loadMessages();
         }
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        // Cinematic Movie Poster Slideshow URLs
-        const moviePosters = [
-            "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
-            "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
-            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800",
-            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800"
-        ];
-        let posterIndex = 0;
-
-        function rotatePosters() {
-            posterIndex = (posterIndex + 1) % moviePosters.length;
-            let banner = document.getElementById('heroBanner');
-            if (banner) {
-                banner.style.backgroundImage = `url('${moviePosters[posterIndex]}')`;
-            }
-        }
-
-        setInterval(rotatePosters, 30000);
-    </script>
-
-</body>
-</html>
+        function loadMessages() {
+            let chatB
