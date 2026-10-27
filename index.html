@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 40px;
+            padding-bottom: 50px;
         }
 
         /* Top Header */
@@ -73,7 +73,7 @@
             outline: none;
         }
 
-        /* Hero Slideshow Header */
+        /* Hero Banner */
         .hero-banner {
             width: 100%;
             height: 180px;
@@ -120,7 +120,7 @@
             display: block;
         }
 
-        /* Cards & Posters */
+        /* Cards & Media */
         .card {
             background-color: #1e293b;
             border: 1px solid #334155;
@@ -162,20 +162,16 @@
             display: block;
             background-color: #f59e0b;
             color: #0b0f19;
-            padding: 14px;
+            padding: 12px;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 10px;
-            margin-top: 10px;
+            border-radius: 8px;
+            margin-top: 8px;
             cursor: pointer;
             border: none;
-            font-size: 15px;
+            font-size: 14px;
             width: 100%;
-            box-shadow: 0 4px 10px rgba(245,158,11,0.3);
-        }
-        .btn:active {
-            transform: scale(0.98);
         }
         .whatsapp-btn {
             background-color: #25d366;
@@ -187,7 +183,7 @@
             margin-top: 8px;
         }
 
-        /* Hub Navigation Grid */
+        /* Hub Grid */
         .hub-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -199,7 +195,7 @@
             background-color: #0f172a;
             border: 2px solid #f59e0b;
             border-radius: 12px;
-            padding: 22px 10px;
+            padding: 20px 10px;
             text-align: center;
             cursor: pointer;
             color: white;
@@ -212,14 +208,14 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             -webkit-tap-highlight-color: transparent;
         }
-        .hub-tile span { font-size: 28px; }
+        .hub-tile span { font-size: 26px; }
         .hub-tile:active { background-color: #1e3a8a; }
 
         .back-btn {
             background-color: #1e293b;
             color: #f59e0b;
             border: 1px solid #f59e0b;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             font-weight: bold;
             margin-bottom: 15px;
@@ -229,12 +225,12 @@
             font-size: 14px;
         }
 
-        /* Chat Room Styling */
+        /* Chat Room */
         .chat-container {
             background-color: #1e293b;
             border: 1px solid #334155;
             border-radius: 12px;
-            height: 380px;
+            height: 350px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -324,31 +320,22 @@
             <div class="hero-content">
                 <span class="badge">FEATURED UNIVERSE</span>
                 <h2>BRAQ Entertainment Hub</h2>
-                <p>Movies, Ugandan Music, Games & Live TV Channels.</p>
+                <p>Movies, Local & International Music, APK Games, Live TV & VIP Perks.</p>
             </div>
         </div>
 
         <div class="card" style="border-color: #f59e0b;">
-            <span class="badge">QUICK LAUNCH</span>
-            <h3>Explore BRAQ Hub</h3>
+            <span class="badge">QUICK LAUNCH HUB</span>
+            <h3>Explore Categories</h3>
             <p>Tap any section below to jump straight in:</p>
             
             <div class="hub-grid">
-                <div class="hub-tile" id="tile-movies">
-                    <span>🎬</span> Movies
-                </div>
-                <div class="hub-tile" id="tile-games">
-                    <span>🕹️</span> Games
-                </div>
-                <div class="hub-tile" id="tile-music">
-                    <span>🎵</span> Music
-                </div>
-                <div class="hub-tile" id="tile-livetv">
-                    <span>⚽</span> Live TV
-                </div>
-                <div class="hub-tile" id="tile-chat" style="grid-column: span 2;">
-                    <span>💬</span> Community Chat Lounge
-                </div>
+                <div class="hub-tile" id="tile-movies"><span>🎬</span> Movies & Anime</div>
+                <div class="hub-tile" id="tile-games"><span>🕹️</span> APK Games</div>
+                <div class="hub-tile" id="tile-music"><span>🎵</span> Music Library</div>
+                <div class="hub-tile" id="tile-livetv"><span>⚽</span> Live TV Streams</div>
+                <div class="hub-tile" id="tile-vip" style="grid-column: span 1;"><span>💳</span> VIP Pay</div>
+                <div class="hub-tile" id="tile-chat" style="grid-column: span 1;"><span>💬</span> Chat Lounge</div>
             </div>
         </div>
 
@@ -364,7 +351,7 @@
     <div id="movies-view" class="section-view">
         <button type="button" class="back-btn" id="back-movies">⬅ Back to Home</button>
         <div class="search-container" style="margin: 0 0 15px 0; border-radius: 8px;">
-            <input type="text" id="movieSearch" class="search-input" placeholder="🔍 Search movies & animations..." />
+            <input type="text" id="movieSearch" class="search-input" placeholder="🔍 Search movies, anime & mythology..." />
         </div>
 
         <div id="movieList">
@@ -387,18 +374,26 @@
 
             <div class="card movie-item" data-title="legend of kintu buganda mythology">
                 <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800" alt="Movie" class="card-img">
-                <span class="badge">MYTHOLOGY EPISODE</span>
+                <span class="badge">MYTHOLOGY SPECIAL</span>
                 <h3>Legend of Kintu & Walumbe</h3>
                 <p>Epic traditional Buganda folklore animation special.</p>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Episode</a>
             </div>
 
-            <div class="card movie-item" data-title="cyberpunk lagos action short sci-fi">
+            <div class="card movie-item" data-title="cyberpunk lagos action sci-fi thriller">
                 <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800" alt="Movie" class="card-img">
-                <span class="badge">SCI-FI ACTION</span>
+                <span class="badge">INTERNATIONAL SCI-FI</span>
                 <h3>Cyber City Chronicles</h3>
                 <p>High-octane futuristic African cyberpunk thriller.</p>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Movie</a>
+            </div>
+
+            <div class="card movie-item" data-title="spider verse action animation movie">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800" alt="Movie" class="card-img">
+                <span class="badge">ACTION ANIMATION</span>
+                <h3>Spider-Verse Style Showcase</h3>
+                <p>Dynamic multi-dimensional superhero animation concept.</p>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Now</a>
             </div>
         </div>
     </div>
@@ -430,13 +425,21 @@
             <p>Test your knowledge of traditional folklore, proverbs, and history.</p>
             <a href="#" class="btn">Download APK (15MB)</a>
         </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800" alt="Game" class="card-img">
+            <span class="badge">MULTIPLAYER APK</span>
+            <h3>Afrobeat Rhythm Hero</h3>
+            <p>Tap along to East African beats and international club anthems.</p>
+            <a href="#" class="btn">Download APK (52MB)</a>
+        </div>
     </div>
 
     <!-- 4. MUSIC VIEW -->
     <div id="music-view" class="section-view">
         <button type="button" class="back-btn" id="back-music">⬅ Back to Home</button>
         <div class="search-container" style="margin: 0 0 15px 0; border-radius: 8px;">
-            <input type="text" id="musicSearch" class="search-input" placeholder="🔍 Search Ugandan music & soundtracks..." />
+            <input type="text" id="musicSearch" class="search-input" placeholder="🔍 Search local & international music..." />
         </div>
 
         <div id="musicList">
@@ -462,6 +465,15 @@
                 <span class="badge">TRADITIONAL FUSION</span>
                 <h3>Pearl of Africa Beat</h3>
                 <p>Traditional drums merged with modern electronic bass.</p>
+                <audio controls>
+                    <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="card music-item" data-title="global electronic dance club mix international">
+                <span class="badge">INTERNATIONAL HITS</span>
+                <h3>Global Electronic Club Mix</h3>
+                <p>High-tempo international electronic dance rhythm.</p>
                 <audio controls>
                     <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
                 </audio>
@@ -498,41 +510,16 @@
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="Bukedde Live" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
-    </div>
 
-    <!-- 6. COMMUNITY CHAT VIEW -->
-    <div id="chat-view" class="section-view">
-        <button type="button" class="back-btn" id="back-chat">⬅ Back to Home</button>
-        
-        <div class="card" style="margin-bottom: 10px; padding: 12px;">
-            <span class="badge">WHATSAPP STYLE GROUP CHAT</span>
-            <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
-            <p style="margin: 0; font-size: 12px;">Messages sync instantly across all devices using your registered name!</p>
-        </div>
-        
-        <div class="chat-container">
-            <div class="chat-messages" id="chatMessages"></div>
-            <div class="chat-input-area">
-                <label class="file-upload-label" title="Attach Image">📎
-                    <input type="file" id="chatFile" accept="image/*" style="display: none;">
-                </label>
-                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." />
-                <button type="button" class="btn" id="sendChatBtn" style="width: auto; margin-top: 0; padding: 10px 14px;">Send</button>
+        <div class="card">
+            <span class="badge">INTERNATIONAL FEED</span>
+            <h3>NASA Live & Space Feed</h3>
+            <p>Global science and international space broadcasting.</p>
+            <div style="position: relative; width: 100%; height: 180px; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="NASA Live" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Setup User Name on Load
-            let myName = localStorage.getItem('braq_username');
-            if (!myName) {
-                myName = prompt("Enter your name to join the BRAQ Community Chat:", "Gilbert");
-                if (!myName || myName.trim() === "") {
-                    myName = "User_" + Math.floor(Math.random() * 900 + 100);
-                }
-                localStorage.setItem('braq_username', myName.trim());
-            }
-            document.getElementById('setNameBtn').innerText = "👤 " + localStorage.getItem('braq_username');
-
-         
+    <!-- 6. VIP PAYMENT VIEW -->
+    <div id
