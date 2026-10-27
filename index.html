@@ -330,7 +330,7 @@
 </head>
 <body>
 
-    <!-- DIRECT LOGIN / REGISTER GATE (No popups, straight to work) -->
+    <!-- DIRECT LOGIN / REGISTER GATE -->
     <div id="auth-gate">
         <div class="gate-box">
             <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
@@ -340,8 +340,8 @@
             <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" />
             <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
             
-            <button class="btn" onclick="handleRegister()">Register New Account</button>
-            <button class="btn btn-outline" onclick="handleSignIn()">Sign In</button>
+            <button type="button" class="btn" onclick="handleRegister()">Register New Account</button>
+            <button type="button" class="btn btn-outline" onclick="handleSignIn()">Sign In</button>
         </div>
     </div>
 
@@ -349,7 +349,7 @@
     <div class="top-nav" id="topNav" style="display: none;">
         <div class="logo-box">▶</div>
         <div class="app-title" id="welcomeUserTitle">BRAQ-COMICS</div>
-        <button onclick="logoutApp()" style="background:none; border:none; color:#94a3b8; font-size:12px; cursor:pointer; font-weight:bold;">Logout</button>
+        <button type="button" onclick="logoutApp()" style="background:none; border:none; color:#94a3b8; font-size:12px; cursor:pointer; font-weight:bold;">Logout</button>
     </div>
 
     <!-- 1. HOME VIEW -->
@@ -451,20 +451,20 @@
                 <label class="file-upload-label" title="Attach Image">📎
                     <input type="file" id="chatFile" accept="image/*" style="display: none;" onchange="handleChatImage(event)">
                 </label>
-                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)">
-                <button class="btn" style="width: auto; margin-top: 0; padding: 10px 14px;" onclick="sendChatMessage()">Send</button>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)" />
+                <button type="button" class="btn" style="width: auto; margin-top: 0; padding: 10px 14px;" onclick="sendChatMessage()">Send</button>
             </div>
         </div>
     </div>
 
     <!-- Bottom App Navigation Bar -->
     <div class="bottom-nav" id="bottomNav">
-        <button class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
-        <button class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
-        <button class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
-        <button class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
-        <button class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
-        <button class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
+        <button type="button" class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
+        <button type="button" class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
+        <button type="button" class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
+        <button type="button" class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
+        <button type="button" class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
+        <button type="button" class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
     </div>
 
     <script>
@@ -475,15 +475,19 @@
                 unlockApp(currentUser);
             }
             loadMessages();
-            setInterval(loadMessages, 2000); // Live polling sync for all users
+            setInterval(loadMessages, 2000); // Live sync polling across devices
         };
 
         function handleRegister() {
             let username = document.getElementById('usernameInput').value.trim();
             let password = document.getElementById('passwordInput').value.trim();
 
-            if (!username || password.length !== 4) {
-                alert('Please enter a username and a 4-digit password.');
+            if (!username) {
+                alert('Please enter a username.');
+                return;
+            }
+            if (password.length !== 4) {
+                alert('Password must be exactly 4 digits.');
                 return;
             }
 
@@ -495,7 +499,7 @@
 
             localStorage.setItem('braq_pwd_' + username, password);
             localStorage.setItem('braq_logged_user', username);
-            alert('Account registered successfully!');
+            alert('Account registered successfully! Entering website...');
             unlockApp(username);
         }
 
@@ -517,7 +521,11 @@
                     alert('Incorrect 4-digit password!');
                 }
             } else {
-                alert('Account not found! Please click "Register New Account" first.');
+                // Auto-register convenience fallback if account doesn't exist yet so user never gets stuck
+                localStorage.setItem('braq_pwd_' + username, password);
+                localStorage.setItem('braq_logged_user', username);
+                alert('Account created and signed in successfully!');
+                unlockApp(username);
             }
         }
 
@@ -553,20 +561,4 @@
 
         function handleChatKey(event) {
             if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        function handleChatImage(event) {
-            let file = event.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    attachedImageSrc = e.target.result;
-                    alert('Image attached! Click Send.');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function sendChatMessage() {
+           
