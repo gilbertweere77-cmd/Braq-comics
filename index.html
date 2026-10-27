@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 80px;
         }
 
         /* Full Screen Direct Authentication Gate */
@@ -23,7 +23,7 @@
             width: 100%;
             height: 100%;
             background-color: #0b0f19;
-            z-index: 9999;
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -521,7 +521,7 @@
                     alert('Incorrect 4-digit password!');
                 }
             } else {
-                // Auto-register convenience fallback if account doesn't exist yet so user never gets stuck
+                // Auto-register convenience fallback so user never gets stuck if they haven't registered yet
                 localStorage.setItem('braq_pwd_' + username, password);
                 localStorage.setItem('braq_logged_user', username);
                 alert('Account created and signed in successfully!');
@@ -530,10 +530,18 @@
         }
 
         function unlockApp(username) {
-            document.getElementById('auth-gate').style.display = 'none';
-            document.getElementById('topNav').style.display = 'flex';
-            document.getElementById('bottomNav').style.display = 'flex';
-            document.getElementById('sessionUserGreeting').innerText = "Welcome, " + username + "!";
+            let gate = document.getElementById('auth-gate');
+            if (gate) gate.style.display = 'none';
+            
+            let topNav = document.getElementById('topNav');
+            if (topNav) topNav.style.display = 'flex';
+            
+            let bottomNav = document.getElementById('bottomNav');
+            if (bottomNav) bottomNav.style.display = 'flex';
+            
+            let greeting = document.getElementById('sessionUserGreeting');
+            if (greeting) greeting.innerText = "Welcome, " + username + "!";
+            
             switchTab('home-view', document.querySelector('.nav-btn'));
         }
 
@@ -547,18 +555,10 @@
             for (let i = 0; i < views.length; i++) {
                 views[i].classList.remove('active');
             }
-            document.getElementById(viewId).classList.add('active');
+            let target = document.getElementById(viewId);
+            if (target) target.classList.add('active');
 
             let buttons = document.getElementsByClassName('nav-btn');
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].classList.remove('active');
-            }
-            if (element) element.classList.add('active');
-        }
-
-        // Multi-User Live Chat & Blocking Logic
-        let attachedImageSrc = null;
-
-        function handleChatKey(event) {
-            if (event.key === 'Enter') {
-           
+    
