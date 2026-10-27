@@ -15,7 +15,7 @@
             padding-bottom: 80px;
         }
 
-        /* Full Screen Direct Authentication Gate */
+        /* Full Screen Authentication Gate */
         #auth-gate {
             position: fixed;
             top: 0;
@@ -30,36 +30,42 @@
             align-items: center;
             padding: 20px;
             text-align: center;
+            overflow-y: auto;
         }
         .gate-box {
             background-color: #1e293b;
             border: 1px solid #334155;
-            padding: 30px 20px;
+            padding: 25px 20px;
             border-radius: 16px;
             width: 100%;
             max-width: 360px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin: auto;
         }
         .gate-box h2 {
             color: #f59e0b;
             margin-top: 0;
-            font-size: 24px;
+            font-size: 22px;
         }
         .gate-box p {
             color: #94a3b8;
             font-size: 13px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .form-input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             background-color: #0f172a;
             border: 1px solid #334155;
             border-radius: 8px;
             color: white;
             font-size: 14px;
             outline: none;
+        }
+        .divider {
+            margin: 20px 0;
+            border-bottom: 1px solid #334155;
         }
 
         /* Top Header */
@@ -183,15 +189,15 @@
             display: block;
             background-color: #f59e0b;
             color: #0b0f19;
-            padding: 14px;
+            padding: 12px;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             cursor: pointer;
             border: none;
-            font-size: 15px;
+            font-size: 14px;
             width: 100%;
             transition: 0.2s;
         }
@@ -330,19 +336,29 @@
 </head>
 <body>
 
-    <!-- BULLETPROOF AUTH GATE USING CLICKABLE LINKS -->
+    <!-- AUTH GATE WITH SEPARATE REGISTER AND SIGN IN FORMS -->
     <div id="auth-gate">
         <div class="gate-box">
-            <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
+            <div class="logo-box" style="margin: 0 auto 10px auto; width: 45px; height: 45px; font-size: 24px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Enter your username and 4-digit password, then tap below to enter.</p>
             
-            <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" />
-            <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
-            
-            <!-- Using <a> tags styled as buttons so mobile browsers never block them -->
-            <a href="javascript:void(0);" class="btn" onclick="handleAuthAction('register')">Register New Account</a>
-            <a href="javascript:void(0);" class="btn btn-outline" onclick="handleAuthAction('signin')">Sign In</a>
+            <!-- REGISTER FORM -->
+            <div style="text-align: left;">
+                <p style="margin-bottom: 5px; color: #f59e0b; font-weight: bold;">New Here? Register Account:</p>
+                <input type="text" id="regUser" placeholder="Choose Username..." class="form-input" />
+                <input type="text" id="regPass" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
+                <button type="button" class="btn" onclick="executeRegister()">Complete Registration</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- SIGN IN FORM -->
+            <div style="text-align: left;">
+                <p style="margin-bottom: 5px; color: #f59e0b; font-weight: bold;">Already Registered? Sign In:</p>
+                <input type="text" id="signUser" placeholder="Enter Username..." class="form-input" />
+                <input type="text" id="signPass" placeholder="4-Digit Password..." maxlength="4" class="form-input" />
+                <button type="button" class="btn btn-outline" onclick="executeSignIn()">Sign In to Hub</button>
+            </div>
         </div>
     </div>
 
@@ -479,12 +495,12 @@
             setInterval(loadMessages, 2000); // Live sync polling across devices
         };
 
-        function handleAuthAction(actionType) {
-            let username = document.getElementById('usernameInput').value.trim();
-            let password = document.getElementById('passwordInput').value.trim();
+        function executeRegister() {
+            let username = document.getElementById('regUser').value.trim();
+            let password = document.getElementById('regPass').value.trim();
 
             if (!username) {
-                alert('Please enter a username.');
+                alert('Please choose a username.');
                 return;
             }
             if (password.length !== 4) {
@@ -492,32 +508,38 @@
                 return;
             }
 
-            if (actionType === 'register') {
-                let existing = localStorage.getItem('braq_pwd_' + username);
-                if (existing) {
-                    alert('Username already exists! Please click Sign In instead.');
-                    return;
-                }
-                localStorage.setItem('braq_pwd_' + username, password);
-                localStorage.setItem('braq_logged_user', username);
-                alert('Account registered successfully!');
-                unlockApp(username);
-            } else {
-                let storedPwd = localStorage.getItem('braq_pwd_' + username);
-                if (storedPwd) {
-                    if (storedPwd === password) {
-                        localStorage.setItem('braq_logged_user', username);
-                        unlockApp(username);
-                    } else {
-                        alert('Incorrect 4-digit password!');
-                    }
-                } else {
-                    // Auto-register convenience fallback so you never get stuck
-                    localStorage.setItem('braq_pwd_' + username, password);
+            let existing = localStorage.getItem('braq_pwd_' + username);
+            if (existing) {
+                alert('Username already exists! Please use the Sign In section below.');
+                return;
+            }
+
+            // Save credentials permanently
+            localStorage.setItem('braq_pwd_' + username, password);
+            localStorage.setItem('braq_logged_user', username);
+            alert('Registration successful! Entering website...');
+            unlockApp(username);
+        }
+
+        function executeSignIn() {
+            let username = document.getElementById('signUser').value.trim();
+            let password = document.getElementById('signPass').value.trim();
+
+            if (!username || password.length !== 4) {
+                alert('Please enter your registered username and 4-digit password.');
+                return;
+            }
+
+            let storedPwd = localStorage.getItem('braq_pwd_' + username);
+            if (storedPwd) {
+                if (storedPwd === password) {
                     localStorage.setItem('braq_logged_user', username);
-                    alert('Account created & signed in successfully!');
                     unlockApp(username);
+                } else {
+                    alert('Incorrect 4-digit password! Access denied.');
                 }
+            } else {
+                alert('Account not found! Please register first using the top section.');
             }
         }
 
@@ -539,22 +561,4 @@
 
         function logoutApp() {
             localStorage.removeItem('braq_logged_user');
-            location.reload();
-        }
-
-        function switchTab(viewId, element) {
-            let views = document.getElementsByClassName('section-view');
-            for (let i = 0; i < views.length; i++) {
-                views[i].classList.remove('active');
-            }
-            let target = document.getElementById(viewId);
-            if (target) target.classList.add('active');
-
-            let buttons = document.getElementsByClassName('nav-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            if (element) element.classList.add('active');
-        }
-
-        // Multi-User Live C
+            loc
