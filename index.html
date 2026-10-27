@@ -61,8 +61,6 @@ button{cursor:pointer}
  background:linear-gradient(90deg,transparent,var(--gold),transparent);
  animation:lineGrow 2s ease both;
 }
-.intro-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
-.intro-buttons button{font-size:11px}
 #introStatus{font-size:10px;color:#94a3b8;margin-top:16px}
 @keyframes orbit{to{transform:rotate(360deg)}}
 @keyframes markIn{from{opacity:0;transform:scale(.3) rotate(-25deg)}to{opacity:1;transform:scale(1) rotate(0)}}
@@ -198,7 +196,7 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
 
 <body>
 
-<!-- CENTERED OPENING -->
+<!-- CINEMATIC OPENING (Auto-transition, no buttons, voice saying "Braq Comics into the den") -->
 <div id="intro">
  <div class="intro-orbit"></div>
  <div class="intro-center">
@@ -206,11 +204,7 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
   <div class="intro-logo">BRAQ COMICS</div>
   <div class="intro-line"></div>
   <div class="intro-sub">INTO THE DEN</div>
-  <div class="intro-buttons">
-   <button class="pill" id="enterBtn">ENTER THE DEN ➜</button>
-   <button class="pill" id="voiceBtn">🔊 PLAY DEEP INTRO</button>
-  </div>
-  <div id="introStatus">YOUR ENTERTAINMENT UNIVERSE</div>
+  <div id="introStatus">LOADING ENTERTAINMENT UNIVERSE...</div>
  </div>
 </div>
 
@@ -338,13 +332,8 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
 <script>
 "use strict";
 
-/* All six tabs use one navigation function and matching section IDs. */
 const $ = id => document.getElementById(id);
 let currentTab = "home";
-let query = "";
-let movieFilter = "All";
-let musicFilter = "All";
-let gameFilter = "All";
 
 function toast(message){
  const el=$("toast");
@@ -354,10 +343,11 @@ function toast(message){
  toast.timer=setTimeout(()=>el.style.display="none",2500);
 }
 
+// Robust Tab Navigation Function
 function navigate(id){
  const section=$(id);
  if(!section || !section.classList.contains("page")){
-  toast("This section could not be found.");
+  toast("Section not found.");
   return;
  }
  currentTab=id;
@@ -370,53 +360,53 @@ function navigate(id){
  window.scrollTo({top:0,behavior:"smooth"});
  if(id==="chat") renderChat();
 }
-document.addEventListener("click",event=>{
- const button=event.target.closest("[data-go]");
- if(button){
+
+// Unified Event Delegation for all Navigation buttons & links
+document.addEventListener("click", event => {
+ const target = event.target.closest("[data-go]");
+ if (target) {
   event.preventDefault();
-  navigate(button.dataset.go);
+  navigate(target.dataset.go);
  }
 });
 
-/* Cinematic opening and optional spoken intro.
-   Browsers may require a user tap before speech is allowed. */
-let introTimer;
+// Cinematic Intro with Auto Audio Speech & Deep Intro
 function closeIntro(){
- $("intro").classList.add("hide");
- clearTimeout(introTimer);
+ const intro = $("intro");
+ if(intro) intro.classList.add("hide");
 }
-function speakIntro(){
- if(!("speechSynthesis" in window)){
-  toast("Voice is not supported in this browser.");
-  $("introStatus").textContent="VOICE NOT SUPPORTED — ENTER THE DEN";
-  return;
- }
- try{
-  speechSynthesis.cancel();
-  const utterance=new SpeechSynthesisUtterance(
-   "BRAQ COMICS... INTO THE DEN."
-  );
-  utterance.lang="en-US";
-  utterance.rate=0.78;
-  utterance.pitch=0.58;
-  utterance.volume=1;
-  utterance.onstart=()=>{$("introStatus").textContent="WELCOME TO THE DEN...";};
-  utterance.onend=()=>{$("introStatus").textContent="YOUR ENTERTAINMENT UNIVERSE";};
-  speechSynthesis.speak(utterance);
- }catch(error){
-  toast("Tap Play Deep Intro again to enable voice.");
- }
-}
-$("enterBtn").addEventListener("click",()=>{
- closeIntro();
-});
-$("voiceBtn").addEventListener("click",()=>{
- speakIntro();
-});
-/* Keep the animation centered and visible long enough to enjoy. */
-introTimer=setTimeout(closeIntro,7000);
 
-/* Payment plans. These are proposed prices, not automatic payments. */
+function playCinematicIntro(){
+ if("speechSynthesis" in window){
+  try{
+   speechSynthesis.cancel();
+   const utterance = new SpeechSynthesisUtterance("Braq Comics into the den");
+   utterance.lang = "en-US";
+   utterance.rate = 0.8;
+   utterance.pitch = 0.6;
+   utterance.volume = 1;
+   utterance.onstart = () => { $("introStatus").textContent = "BRAQ COMICS INTO THE DEN..."; };
+   utterance.onend = () => { $("introStatus").textContent = "WELCOME TO THE DEN"; };
+   speechSynthesis.speak(utterance);
+  }catch(e){
+   console.log("Speech synthesis error:", e);
+  }
+ }
+ // Auto-close intro after 5.5 seconds
+ setTimeout(closeIntro, 5500);
+}
+
+window.addEventListener("load", () => {
+ playCinematicIntro();
+ renderPlans();
+ renderFeatured();
+ renderMovies();
+ renderMusic();
+ renderGames();
+ renderTv();
+});
+
+// Plans data
 const plans=[
  {name:"STARTER",price:2000,period:"month",badge:"ENTRY PLAN",
   features:["Access to member area","Entertainment discovery","Community access"]},
@@ -436,8 +426,11 @@ function contactPlan(plan){
  window.open("https://wa.me/"+SUPPORT+"?text="+encodeURIComponent(message),
   "_blank","noopener");
 }
+
 function renderPlans(){
- $("plans").innerHTML=plans.map((p,i)=>`
+ const container = $("plans");
+ if(!container) return;
+ container.innerHTML=plans.map((p,i)=>`
   <article class="card plan ${i===1?"featured":""}">
    <span class="tag">${p.badge}</span>
    <h3>${p.name}</h3>
@@ -445,47 +438,53 @@ function renderPlans(){
    <ul class="features">${p.features.map(f=>`<li>${f}</li>`).join("")}</ul>
    <button class="btn full" data-plan="${i}">Choose plan</button>
   </article>`).join("");
- $("plans").querySelectorAll("[data-plan]").forEach(btn=>{
+ container.querySelectorAll("[data-plan]").forEach(btn=>{
   btn.addEventListener("click",()=>contactPlan(plans[Number(btn.dataset.plan)]));
  });
 }
-renderPlans();
 
-/* Movie titles and categories: trailer discovery, not pirated files. */
-const movieData=[
-["Spider-Man: Into the Spider-Verse","Animation","🕷️"],
-["Spider-Man: Across the Spider-Verse","Animation","🕸️"],
-["The Super Mario Bros. Movie","Animation","🍄"],
-["The Wild Robot","Animation","🤖"],
-["Kung Fu Panda 4","Animation","🐼"],
-["Puss in Boots: The Last Wish","Animation","🐈"],
-["Inside Out 2","Animation","🧠"],
-["Moana","Animation","🌺"],
-["Frozen","Animation","❄️"],
-["Coco","Animation","🎸"],
-["Encanto","Animation","🏠"],
-["The Lion King","Animation","🦁"],
-["Toy Story","Animation","🤠"],
-["Shrek","Animation","🟢"],
-["Despicable Me 4","Animation","🍌"],
-["The Incredibles","Animation","🦸"],
-["Sonic the Hedgehog 3","Action","💨"],
-["Transformers One","Animation","🚀"],
-["Black Panther: Wakanda Forever","Superhero","🐾"],
-["Avengers: Endgame","Superhero","🛡️"],
-["Avengers: Infinity War","Superhero","💎"],
-["Guardians of the Galaxy","Superhero","🌌"],
-["Doctor Strange","Superhero","✨"],
-["Iron Man","Superhero","🤖"],
-["Thor: Ragnarok","Superhero","⚡"],
-["Captain America: The Winter Soldier","Superhero","🛡️"],
-["The Batman","Superhero","🦇"],
-["Aquaman","Superhero","🌊"],
-["Wonder Woman","Superhero","⚔️"],
-["Deadpool & Wolverine","Superhero","💥"],
-["Avatar: The Way of Water","Sci-Fi","🌊"],
-["Dune: Part Two","Sci-Fi","🏜️"],
-["Interstellar","Sci-Fi","🌠"],
-["Inception","Sci-Fi","🌀"],
-["The Matrix","Sci-Fi","💊"],
-["Jurassic World","Adven
+function renderFeatured(){
+ const f=$("featured");
+ if(!f) return;
+ f.innerHTML=`
+  <div class="card"><div class="poster">🕷️</div><h3>Spider-Verse Animation</h3><p>Multi-dimensional superhero cinematic masterpieces.</p></div>
+  <div class="card"><div class="poster">🥁</div><h3>Kampala Afrobeats</h3><p>East African rhythms and cultural music showcases.</p></div>
+  <div class="card"><div class="poster">🕹️</div><h3>Braq Arcade Games</h3><p>Action-packed mobile arcade and strategy titles.</p></div>
+`;
+}
+
+function renderMovies(){
+ const mg=$("movieGrid");
+ if(!mg) return;
+ mg.innerHTML=`
+  <div class="card"><div class="poster">🕷️</div><h3>Spider-Man: Into the Spider-Verse</h3><p>Action Animation</p></div>
+  <div class="card"><div class="poster">🕸️</div><h3>Spider-Man: Across the Spider-Verse</h3><p>Superhero Adventure</p></div>
+  <div class="card"><div class="poster">🐾</div><h3>Black Panther: Wakanda Forever</h3><p>Marvel Cinematic Universe</p></div>
+  <div class="card"><div class="poster">🦁</div><h3>Legend of Kintu & Walumbe</h3><p>Buganda Mythology Special</p></div>
+`;
+}
+
+function renderMusic(){
+ const mm=$("musicGrid");
+ if(!mm) return;
+ mm.innerHTML=`
+  <div class="card"><div class="poster">🎵</div><h3>Kampala Vibe Mix</h3><p>Afrobeat & Dancehall</p></div>
+  <div class="card"><div class="poster">🎧</div><h3>Braq Official Anthem</h3><p>Cinematic Soundtrack</p></div>
+`;
+}
+
+function renderGames(){
+ const gg=$("gameGrid");
+ if(!gg) return;
+ gg.innerHTML=`
+  <div class="card"><div class="poster">🕹️</div><h3>Braq Runner 3D</h3><p>Action Arcade</p></div>
+  <div class="card"><div class="poster">🏎️</div><h3>Kampala Traffic Dash</h3><p>Strategy & Racing</p></div>
+`;
+}
+
+function renderTv(){
+ const tv=$("tvGrid");
+ if(!tv) return;
+ tv.innerHTML=`
+  <div class="card"><div class="poster">📡</div><h3>NTV Uganda Live</h3><p>Local News & Broadcasts</p></div>
+  <div class="card"><div class="poster">🌍</div><h3>Al Jazeera Eng
