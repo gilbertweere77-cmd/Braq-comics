@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 130px; /* Extra space so content never hides */
+            padding-bottom: 90px;
         }
 
         /* Top Header */
@@ -48,7 +48,7 @@
             background-color: #f59e0b;
             color: #0b0f19;
             border: none;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
@@ -255,36 +255,33 @@
             font-weight: bold;
         }
 
-        /* Bottom App Navigation Bar - Raised Safely Above Phone Navigation */
+        /* Bottom App Navigation Bar - Standard Fixed Bottom Layout */
         .bottom-nav {
             position: fixed;
-            bottom: 20px;
-            left: 10px;
-            right: 10px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background-color: #0b0f19;
-            border: 2px solid #f59e0b;
-            border-radius: 14px;
+            border-top: 1px solid #1e293b;
             display: flex;
             justify-content: space-around;
-            padding: 10px 5px;
+            padding: 10px 0;
             z-index: 99999;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.8);
         }
         .nav-btn {
             background: none;
             border: none;
-            color: #94a3b8;
+            color: #64748b;
             text-decoration: none;
             font-size: 11px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             cursor: pointer;
             font-weight: bold;
-            padding: 4px;
         }
-        .nav-btn span { font-size: 18px; }
+        .nav-btn span { font-size: 16px; }
         .nav-btn.active { color: #f59e0b; }
     </style>
 </head>
@@ -306,7 +303,7 @@
             <div class="hero-content" style="max-width: 400px; margin: 0 auto; width: 100%; padding: 0 15px;">
                 <span class="badge">FEATURED UNIVERSE</span>
                 <h2>BRAQ Entertainment Hub</h2>
-                <p>Movies, Ugandan Music, Games & Live TV Channels.</p>
+                <p>Movies, Ugandan Music, Games & Working Live TV Channels.</p>
             </div>
         </div>
 
@@ -314,7 +311,7 @@
             <div class="card" style="border-color: #f59e0b;">
                 <span class="badge">SYSTEM READY</span>
                 <h3>Welcome to BRAQ!</h3>
-                <p>Tap the floating navigation bar at the bottom to explore movies, games, music, live TV, and the chat lounge.</p>
+                <p>Tap the tabs below to switch between Home, Movies, Games, Music, Live TV, and Chat.</p>
             </div>
 
             <div class="card">
@@ -373,14 +370,6 @@
                 <p>Multiverse action showdown concept.</p>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Movie</a>
             </div>
-
-            <div class="card movie-item" data-title="african superhero legends comic animation">
-                <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800" alt="Movie" class="card-img">
-                <span class="badge">ANIMATED SERIES</span>
-                <h3>African Superhero Legends</h3>
-                <p>Epic tales of ancient warriors and guardians.</p>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Series</a>
-            </div>
         </div>
     </div>
 
@@ -416,14 +405,6 @@
             <h3>African Street Warriors</h3>
             <p>Arcade fighting game featuring legendary martial artists.</p>
             <a href="#" class="btn">Download APK (52MB)</a>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800" alt="Game" class="card-img">
-            <span class="badge">RACING APK</span>
-            <h3>Pearl of Africa Speedway</h3>
-            <p>High-speed street racing across East African tracks.</p>
-            <a href="#" class="btn">Download APK (60MB)</a>
         </div>
     </div>
 
@@ -461,30 +442,12 @@
                 </audio>
             </div>
 
-            <div class="card music-item" data-title="multiverse journey ambient chill">
-                <span class="badge">AMBIENT / CHILL</span>
-                <h3>Multiverse Journey</h3>
-                <p>Deep atmospheric sound design.</p>
-                <audio controls>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="audio/mpeg">
-                </audio>
-            </div>
-
             <div class="card music-item" data-title="uganda dancehall party riddim">
                 <span class="badge">UGANDA DANCEHALL</span>
                 <h3>Kampala Party Riddim</h3>
                 <p>High energy dancehall club banger beat.</p>
                 <audio controls>
                     <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
-                </audio>
-            </div>
-
-            <div class="card music-item" data-title="east african acoustic guitar chill">
-                <span class="badge">ACOUSTIC VIBES</span>
-                <h3>Nile River Sunset (Acoustic)</h3>
-                <p>Relaxing acoustic guitar melodies.</p>
-                <audio controls>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="audio/mpeg">
                 </audio>
             </div>
         </div>
@@ -514,4 +477,40 @@
             <h3>Bukedde & UBC Live Bulletin</h3>
             <p>Local news, talk shows, and cultural programs.</p>
             <div style="position: relative; width: 100%; height: 180px; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px;">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="Bukedde Live" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="badge">KIDS & FAMILY TV</span>
+            <h3>Global Kids & Cartoon Live</h3>
+            <p>Safe 24/7 cartoons, animations, and family entertainment.</p>
+            <div style="position: relative; width: 100%; height: 180px; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px;">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jfKfPfyJRdk" title="Kids Live" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. COMMUNITY CHAT VIEW -->
+    <div id="chat-view" class="section-view">
+        <div class="card" style="margin-bottom: 10px; padding: 12px;">
+            <span class="badge">WHATSAPP STYLE GROUP CHAT</span>
+            <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
+            <p style="margin: 0; font-size: 12px;">Messages sync instantly across all devices using your registered name!</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-area">
+                <label class="file-upload-label" title="Attach Image">📎
+                    <input type="file" id="chatFile" accept="image/*" style="display: none;" onchange="handleChatImage(event)">
+                </label>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)" />
+                <button type="button" class="btn" style="width: auto; margin-top: 0; padding: 10px 14px;" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom App Navigation Bar -->
+    <div class="bottom-nav">
+        <button type="button" class="nav-btn active" onclick="switchTab('home-view', 
