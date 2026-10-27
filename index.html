@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 30px;
+            padding-bottom: 100px; /* Space so bottom nav never covers content */
         }
 
         /* Top Header */
@@ -255,31 +255,36 @@
             font-weight: bold;
         }
 
-        /* Bottom App Navigation Bar - Static & 100% Clickable */
+        /* Bottom App Navigation Bar - Guaranteed Clickable Fixed Layout */
         .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
             background-color: #0b0f19;
             border-top: 2px solid #f59e0b;
             display: flex;
             justify-content: space-around;
-            padding: 14px 0;
-            margin-top: 25px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+            padding: 10px 0;
+            z-index: 999999;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.8);
         }
         .nav-btn {
             background: none;
             border: none;
             color: #94a3b8;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 11px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
             font-weight: bold;
+            padding: 5px 10px;
+            -webkit-tap-highlight-color: transparent;
         }
-        .nav-btn span { font-size: 20px; }
+        .nav-btn span { font-size: 18px; }
         .nav-btn.active { color: #f59e0b; }
     </style>
 </head>
@@ -295,45 +300,33 @@
     </div>
 
     <!-- 1. HOME VIEW -->
-    <div id="home-view" class="section-view active" style="padding: 0; max-width: 100%;">
-        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800');">
+    <div id="home-view" class="section-view active">
+        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800'); border-radius: 10px; margin-bottom: 15px;">
             <div class="hero-overlay"></div>
-            <div class="hero-content" style="max-width: 400px; margin: 0 auto; width: 100%; padding: 0 15px;">
+            <div class="hero-content">
                 <span class="badge">FEATURED UNIVERSE</span>
                 <h2>BRAQ Entertainment Hub</h2>
-                <p>Movies, Ugandan Music, Games & Working Live TV Channels.</p>
+                <p>Movies, Ugandan Music, Games & Live TV Channels.</p>
             </div>
         </div>
 
-        <div style="padding: 15px; max-width: 400px; margin: 0 auto;">
-            <div class="card" style="border-color: #f59e0b;">
-                <span class="badge">SYSTEM READY</span>
-                <h3>Welcome to BRAQ!</h3>
-                <p>Use the navigation bar at the bottom of the page to switch between Home, Movies, Games, Music, Live TV, and Chat.</p>
-            </div>
+        <div class="card" style="border-color: #f59e0b;">
+            <span class="badge">SYSTEM READY</span>
+            <h3>Welcome to BRAQ!</h3>
+            <p>Tap the bottom navigation bar to switch between Home, Movies, Games, Music, Live TV, and Chat instantly.</p>
+        </div>
 
-            <div class="card">
-                <span class="badge">SUPPORT & HELP</span>
-                <h3>Need Assistance?</h3>
-                <p>Chat directly with our support team on WhatsApp.</p>
-                <a href="https://wa.me/256705190026?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat with Support</a>
-            </div>
-
-            <!-- Bottom Navigation Bar Pinned Right Here for Easy Access -->
-            <div class="bottom-nav">
-                <button type="button" class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
-                <button type="button" class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
-                <button type="button" class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
-                <button type="button" class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
-                <button type="button" class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
-                <button type="button" class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
-            </div>
+        <div class="card">
+            <span class="badge">SUPPORT & HELP</span>
+            <h3>Need Assistance?</h3>
+            <p>Chat directly with our support team on WhatsApp.</p>
+            <a href="https://wa.me/256705190026?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat with Support</a>
         </div>
     </div>
 
     <!-- 2. MOVIES & COMICS VIEW -->
     <div id="movies-view" class="section-view">
-        <div class="search-container" style="margin: -15px -15px 15px -15px; border-radius: 0;">
+        <div class="search-container" style="margin: -15px -15px 15px -15px;">
             <input type="text" id="movieSearch" class="search-input" placeholder="🔍 Search movies & animations..." onkeyup="filterMovies()" />
         </div>
 
@@ -371,15 +364,6 @@
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Movie</a>
             </div>
         </div>
-
-        <div class="bottom-nav">
-            <button type="button" class="nav-btn" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
-            <button type="button" class="nav-btn active" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
-            <button type="button" class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
-            <button type="button" class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
-            <button type="button" class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
-            <button type="button" class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
-        </div>
     </div>
 
     <!-- 3. GAMES VIEW -->
@@ -407,20 +391,11 @@
             <p>Test your knowledge of traditional folklore, proverbs, and history.</p>
             <a href="#" class="btn">Download APK (15MB)</a>
         </div>
-
-        <div class="bottom-nav">
-            <button type="button" class="nav-btn" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
-            <button type="button" class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
-            <button type="button" class="nav-btn active" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
-            <button type="button" class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
-            <button type="button" class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
-            <button type="button" class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
-        </div>
     </div>
 
     <!-- 4. MUSIC VIEW -->
     <div id="music-view" class="section-view">
-        <div class="search-container" style="margin: -15px -15px 15px -15px; border-radius: 0;">
+        <div class="search-container" style="margin: -15px -15px 15px -15px;">
             <input type="text" id="musicSearch" class="search-input" placeholder="🔍 Search Ugandan music & soundtracks..." onkeyup="filterMusic()" />
         </div>
 
@@ -452,15 +427,6 @@
                 </audio>
             </div>
         </div>
-
-        <div class="bottom-nav">
-            <button type="button" class="nav-btn" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
-            <button type="button" class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
-            <button type="button" class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
-            <button type="button" class="nav-btn active" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
-            <button type="button" class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
-            <button type="button" class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
-        </div>
     </div>
 
     <!-- 5. LIVE TV & SPORTS VIEW -->
@@ -487,4 +453,62 @@
             <h3>Bukedde & UBC Live Bulletin</h3>
             <p>Local news, talk shows, and cultural programs.</p>
             <div style="position: relative; width: 100%; height: 180px; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px;">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="Bukedde Live" frameborder="0" a
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="Bukedde Live" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. COMMUNITY CHAT VIEW -->
+    <div id="chat-view" class="section-view">
+        <div class="card" style="margin-bottom: 10px; padding: 12px;">
+            <span class="badge">WHATSAPP STYLE GROUP CHAT</span>
+            <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
+            <p style="margin: 0; font-size: 12px;">Messages sync instantly across all devices using your registered name!</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-area">
+                <label class="file-upload-label" title="Attach Image">📎
+                    <input type="file" id="chatFile" accept="image/*" style="display: none;" onchange="handleChatImage(event)">
+                </label>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)" />
+                <button type="button" class="btn" style="width: auto; margin-top: 0; padding: 10px 14px;" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixed Bottom App Navigation Bar - Guaranteed 100% Clickable -->
+    <div class="bottom-nav">
+        <button type="button" class="nav-btn active" id="nav-home" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
+        <button type="button" class="nav-btn" id="nav-movies" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
+        <button type="button" class="nav-btn" id="nav-games" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
+        <button type="button" class="nav-btn" id="nav-music" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
+        <button type="button" class="nav-btn" id="nav-livetv" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
+        <button type="button" class="nav-btn" id="nav-chat" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            let myName = localStorage.getItem('braq_username');
+            if (!myName) {
+                myName = prompt("Enter your name to join the BRAQ Community Chat:", "Gilbert");
+                if (!myName || myName.trim() === "") {
+                    myName = "User_" + Math.floor(Math.random() * 900 + 100);
+                }
+                localStorage.setItem('braq_username', myName.trim());
+            }
+            document.getElementById('setNameBtn').innerText = "👤 " + localStorage.getItem('braq_username');
+
+            loadMessages();
+            setInterval(loadMessages, 1500);
+        };
+
+        function changeName() {
+            let currentName = localStorage.getItem('braq_username') || "";
+            let newName = prompt("Enter your chat display name:", currentName);
+            if (newName && newName.trim() !== "") {
+                localStorage.setItem('braq_username', newName.trim());
+                document.getElementById('setNameBtn').innerText = "👤 " + newName.trim();
+                alert("Name updated successfully!");
+                loa
