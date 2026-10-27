@@ -14,6 +14,43 @@
             padding: 0;
             padding-bottom: 80px; /* Space for bottom nav */
         }
+
+        /* Full Screen Authentication Gate (Forces login first) */
+        #auth-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0b0f19;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .gate-box {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            padding: 30px 20px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .gate-box h2 {
+            color: #f59e0b;
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .gate-box p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
         /* Top Header */
         .top-nav {
             display: flex;
@@ -63,7 +100,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgba(15,23,42,0.3), #0f172a);
+            background: linear-gradient(to bottom, rgba(15,23,42,0.2), #0f172a);
         }
         .hero-content {
             position: relative;
@@ -126,7 +163,7 @@
         .btn {
             display: block;
             background-color: #f59e0b;
-            color: #0f172a;
+            color: #0b0f19;
             padding: 12px;
             text-align: center;
             text-decoration: none;
@@ -160,7 +197,7 @@
             margin-top: 10px;
         }
 
-        /* Modal Popups */
+        /* Modal Popups for Sign In / Register */
         .modal {
             display: none;
             position: fixed;
@@ -210,7 +247,7 @@
             cursor: pointer;
         }
 
-        /* Bottom App Navigation Bar */
+        /* Bottom App Navigation Bar (Hidden until logged in) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -218,7 +255,7 @@
             width: 100%;
             background-color: #0b0f19;
             border-top: 1px solid #1e293b;
-            display: flex;
+            display: none;
             justify-content: space-around;
             padding: 10px 0;
             z-index: 1000;
@@ -242,18 +279,29 @@
 </head>
 <body>
 
+    <!-- MANDATORY LOGIN GATE -->
+    <div id="auth-gate">
+        <div class="gate-box">
+            <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
+            <h2>BRAQ-COMICS</h2>
+            <p>Please sign in or register to access the entertainment hub.</p>
+            <button class="btn" onclick="openModal('signin-modal')">Sign In</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="openModal('register-modal')">Register New Account</button>
+        </div>
+    </div>
+
     <!-- Top Navigation Header -->
-    <div class="top-nav">
+    <div class="top-nav" id="topNav" style="display: none;">
         <div class="logo-box">▶</div>
         <div class="app-title">BRAQ-COMICS</div>
-        <div style="width: 38px;"></div>
+        <button onclick="logoutApp()" style="background:none; border:none; color:#94a3b8; font-size:12px; cursor:pointer; font-weight:bold;">Logout</button>
     </div>
 
     <!-- 1. HOME VIEW -->
-    <div id="home-view" class="section-view active" style="padding: 0; max-width: 100%;">
+    <div id="home-view" class="section-view" style="padding: 0; max-width: 100%;">
         
-        <!-- Changing Background Hero Slideshow -->
-        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800');">
+        <!-- Rotating Cinematic Poster Background -->
+        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800');">
             <div class="hero-overlay"></div>
             <div class="hero-content" style="max-width: 400px; margin: 0 auto; width: 100%; padding: 0 20px;">
                 <span class="badge">FEATURED UNIVERSE</span>
@@ -263,23 +311,18 @@
         </div>
 
         <div style="padding: 20px; max-width: 400px; margin: 0 auto;">
-            <!-- Auth Card -->
             <div class="card" style="border-color: #f59e0b;">
-                <span class="badge">ACCOUNT</span>
-                <h3>Welcome Back</h3>
-                <p>Sign in or register to sync your favorites and download items.</p>
-                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                    <button class="btn" style="margin-top:0;" onclick="openModal('signin-modal')">Sign In</button>
-                    <button class="btn btn-outline" style="margin-top:0;" onclick="openModal('register-modal')">Register</button>
-                </div>
+                <span class="badge">SESSION ACTIVE</span>
+                <h3>Welcome, Member!</h3>
+                <p>You have full access to all movies, games, soundtracks, and live sports streaming.</p>
             </div>
 
-            <!-- WhatsApp Support Card with your exact number -->
+            <!-- WhatsApp Support Card (Phone number hidden from display text) -->
             <div class="card">
                 <span class="badge">SUPPORT & HELP</span>
                 <h3>Need Assistance?</h3>
                 <p>Chat directly with our support team on WhatsApp for any issues, requests, or questions.</p>
-                <a href="https://wa.me/256705190026?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat on WhatsApp (+256 705 190026)</a>
+                <a href="https://wa.me/256705190026?text=Hello%20BRAQ%20Support,%20I%20need%20help%20with%20the%20app" target="_blank" class="btn whatsapp-btn">💬 Chat with Support</a>
             </div>
         </div>
     </div>
@@ -338,7 +381,7 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('signin-modal')">&times;</button>
             <h3>Sign In to BRAQ</h3>
-            <form onsubmit="handleAuth(event, 'Signed In Successfully!')">
+            <form onsubmit="loginSuccess(event)">
                 <input type="email" placeholder="Email Address" class="form-input" required>
                 <input type="password" placeholder="Password" class="form-input" required>
                 <button type="submit" class="btn">Login</button>
@@ -351,17 +394,17 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('register-modal')">&times;</button>
             <h3>Create Account</h3>
-            <form onsubmit="handleAuth(event, 'Account Created Successfully!')">
+            <form onsubmit="loginSuccess(event)">
                 <input type="text" placeholder="Username" class="form-input" required>
                 <input type="email" placeholder="Email Address" class="form-input" required>
                 <input type="password" placeholder="Create Password" class="form-input" required>
-                <button type="submit" class="btn">Register</button>
+                <button type="submit" class="btn">Register & Enter</button>
             </form>
         </div>
     </div>
 
     <!-- Bottom App Navigation Bar -->
-    <div class="bottom-nav">
+    <div class="bottom-nav" id="bottomNav">
         <button class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
         <button class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
         <button class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
@@ -370,6 +413,26 @@
     </div>
 
     <script>
+        function loginSuccess(event) {
+            event.preventDefault();
+            document.getElementById('auth-gate').style.display = 'none';
+            document.getElementById('topNav').style.display = 'flex';
+            document.getElementById('bottomNav').style.display = 'flex';
+            document.getElementById('signin-modal').style.display = 'none';
+            document.getElementById('register-modal').style.display = 'none';
+            switchTab('home-view', document.querySelector('.nav-btn'));
+        }
+
+        function logoutApp() {
+            document.getElementById('auth-gate').style.display = 'flex';
+            document.getElementById('topNav').style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'none';
+            let views = document.getElementsByClassName('section-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].classList.remove('active');
+            }
+        }
+
         function switchTab(viewId, element) {
             let views = document.getElementsByClassName('section-view');
             for (let i = 0; i < views.length; i++) {
@@ -381,7 +444,7 @@
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].classList.remove('active');
             }
-            element.classList.add('active');
+            if (element) element.classList.add('active');
         }
 
         function openModal(modalId) {
@@ -392,30 +455,26 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        function handleAuth(event, message) {
-            event.preventDefault();
-            alert(message);
-            document.getElementById('signin-modal').style.display = 'none';
-            document.getElementById('register-modal').style.display = 'none';
-        }
-
-        // Background Poster Slideshow (Changes every 30 seconds)
-        const posters = [
-            "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800",
-            "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
-            "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800"
+        // Cinematic Movie Poster Slideshow URLs (Changes every 30 seconds automatically)
+        const moviePosters = [
+            "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
+            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800",
+            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800",
+            "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800"
         ];
-        let currentPosterIndex = 0;
+        let posterIndex = 0;
 
-        function changeHeroBackground() {
-            currentPosterIndex = (currentPosterIndex + 1) % posters.length;
-            document.getElementById('heroBanner').style.backgroundImage = `url('${posters[currentPosterIndex]}')`;
+        function rotatePosters() {
+            posterIndex = (posterIndex + 1) % moviePosters.length;
+            let banner = document.getElementById('heroBanner');
+            if (banner) {
+                banner.style.backgroundImage = `url('${moviePosters[posterIndex]}')`;
+            }
         }
 
-        // Set interval to 30 seconds (30,000 milliseconds)
-        setInterval(changeHeroBackground, 30000);
+        setInterval(rotatePosters, 30000);
     </script>
 
 </body>
     </html>
-            
+    
