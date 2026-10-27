@@ -1,459 +1,491 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090d18">
-<meta name="description" content="BRAQ COMICS — movies, music, games, trailers and live entertainment.">
-<title>BRAQ COMICS | Ultimate Entertainment Hub</title>
+<meta name="theme-color" content="#080b14">
+<title>BRAQ COMICS — Into the Den</title>
 
 <style>
-:root {
-  --bg:#090d18;
-  --panel:#121a2b;
-  --panel2:#1b263b;
-  --gold:#ffb21c;
-  --text:#f8fafc;
-  --muted:#a7b4c9;
-  --border:#29364d;
-  --green:#20c879;
+:root{
+ --bg:#080b14;--panel:#121a2b;--panel2:#202b41;
+ --gold:#ffb21c;--white:#f8fafc;--muted:#aab6ca;
+ --border:#2c3a51;--green:#20c879;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  padding-bottom:82px;overflow-x:hidden;
+ margin:0;background:var(--bg);color:var(--white);
+ font-family:Arial,Helvetica,sans-serif;padding-bottom:85px;
 }
 button,input{font:inherit}
 button,a{-webkit-tap-highlight-color:transparent}
-a{color:inherit}
+a{color:inherit;text-decoration:none}
 button{cursor:pointer}
+
+/* CINEMATIC INTRO */
+#intro{
+ position:fixed;inset:0;z-index:10000;
+ display:flex;align-items:center;justify-content:center;
+ text-align:center;overflow:hidden;
+ background:radial-gradient(ellipse at center,#26334d 0%,#101522 45%,#03050a 100%);
+ transition:opacity .8s ease,visibility .8s ease;
+}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-orbit{
+ position:absolute;width:min(75vw,340px);aspect-ratio:1;
+ border:1px solid #ffb21c55;border-radius:50%;
+ box-shadow:0 0 40px #ffb21c13,inset 0 0 40px #ffb21c0b;
+ animation:orbit 12s linear infinite;
+}
+.intro-orbit:before,.intro-orbit:after{
+ content:"";position:absolute;inset:12%;border:1px solid #ffb21c30;
+ border-radius:50%;transform:rotateX(65deg) rotateY(25deg);
+}
+.intro-orbit:after{transform:rotateX(65deg) rotateY(-45deg)}
+.intro-center{position:relative;z-index:2;padding:24px;width:100%}
+.intro-mark{font-size:clamp(36px,10vw,65px);margin-bottom:12px;
+ filter:drop-shadow(0 0 18px #ffb21c66);animation:markIn 1.2s ease both}
+.intro-logo{
+ color:var(--gold);font-weight:1000;letter-spacing:3px;
+ font-size:clamp(27px,8vw,48px);
+ text-shadow:0 0 20px #ffb21c66;
+ animation:logoIn 1.3s ease both;
+}
+.intro-sub{
+ letter-spacing:6px;font-size:12px;color:#e2e8f0;
+ margin-top:16px;animation:fadeUp 1.7s ease both;
+}
+.intro-line{
+ height:2px;width:min(220px,65%);margin:22px auto;
+ background:linear-gradient(90deg,transparent,var(--gold),transparent);
+ animation:lineGrow 2s ease both;
+}
+.intro-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+.intro-buttons button{font-size:11px}
+#introStatus{font-size:10px;color:#94a3b8;margin-top:16px}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes markIn{from{opacity:0;transform:scale(.3) rotate(-25deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes logoIn{from{opacity:0;letter-spacing:15px;filter:blur(7px)}to{opacity:1;letter-spacing:3px;filter:blur(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes lineGrow{from{width:0}to{width:min(220px,65%)}}
+@keyframes glow{50%{text-shadow:0 0 28px #ffb21caa}}
+@keyframes float{50%{transform:translateY(-5px)}}
+
+/* HEADER AND SEARCH */
 header{
-  position:sticky;top:0;z-index:1000;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:10px;padding:13px 16px;
-  background:rgba(9,13,24,.95);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
+ position:sticky;top:0;z-index:1000;
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:13px 15px;background:#080b14f5;
+ backdrop-filter:blur(14px);border-bottom:1px solid var(--border)
 }
 .brand{display:flex;align-items:center;gap:9px;min-width:0}
 .brand-icon{font-size:27px}
-.brand h1{font-size:17px;color:var(--gold);margin:0;letter-spacing:1px}
-.brand small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
-.pill{
-  background:var(--gold);color:#111827;border:0;border-radius:25px;
-  padding:9px 12px;font-weight:800;font-size:12px;white-space:nowrap;
-}
-.search-wrap{
-  padding:12px 15px;background:var(--bg);
-  position:relative;z-index:10;
-}
+.brand h1{margin:0;color:var(--gold);font-size:17px;letter-spacing:1px}
+.brand small{display:block;font-size:9px;color:var(--muted);margin-top:4px}
+.pill{border:0;border-radius:24px;background:var(--gold);color:#161616;
+ padding:10px 13px;font-size:11px;font-weight:900;white-space:nowrap}
+.search-wrap{padding:12px 15px;background:var(--bg)}
 .search{
-  width:100%;padding:13px 15px;background:var(--panel);
-  border:1px solid var(--border);border-radius:12px;
-  color:white;outline:none;
+ width:100%;background:var(--panel);border:1px solid var(--border);
+ color:white;border-radius:11px;padding:13px;outline:none
 }
 .search:focus{border-color:var(--gold)}
 main{max-width:1100px;margin:auto}
-.tab-section{display:none;padding:12px 15px 25px}
-.tab-section.active{display:block;animation:enter .3s ease}
-@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glow{0%,100%{text-shadow:0 0 10px #ffb21c33}50%{text-shadow:0 0 25px #ffb21c99}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes shine{from{background-position:0%}to{background-position:200%}}
-h2.section-title{font-size:22px;margin:15px 0 7px}
-h2.section-title span{color:var(--gold)}
-.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.page{display:none;padding:12px 15px 25px;animation:pageIn .25s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* GENERAL UI */
+h2{font-size:21px;margin:18px 0 8px}
+h2 span{color:var(--gold)}
+.muted{font-size:12px;color:var(--muted);line-height:1.7}
 .hero{
-  position:relative;overflow:hidden;min-height:280px;
-  display:flex;align-items:flex-end;padding:24px;
-  border:1px solid #57421d;border-radius:20px;
-  background:
-    radial-gradient(ellipse at 80% 20%,#a855f755,transparent 35%),
-    radial-gradient(ellipse at 20% 10%,#ffb21c44,transparent 40%),
-    linear-gradient(135deg,#202b47,#101522 60%,#351d40);
+ min-height:290px;display:flex;align-items:flex-end;position:relative;
+ overflow:hidden;padding:23px;border-radius:19px;
+ border:1px solid #78551c;
+ background:
+ radial-gradient(ellipse at 85% 20%,#9b5cf155,transparent 34%),
+ radial-gradient(ellipse at 18% 10%,#ffb21c4a,transparent 38%),
+ linear-gradient(140deg,#283550,#111522 65%,#351b3b);
 }
 .hero:after{
-  content:"";position:absolute;width:200px;height:200px;
-  right:-40px;top:15px;border-radius:50%;
-  border:1px solid #ffb21c55;
-  box-shadow:0 0 0 20px #ffb21c0a,0 0 0 40px #ffb21c08;
-  pointer-events:none;
+ content:"";position:absolute;width:190px;height:190px;
+ right:-35px;top:18px;border-radius:50%;border:1px solid #ffb21c66;
+ box-shadow:0 0 0 20px #ffb21c0c,0 0 0 40px #ffb21c08;
 }
 .hero-content{position:relative;z-index:1;max-width:600px}
-.hero-label{color:var(--gold);font-weight:800;font-size:11px;letter-spacing:3px}
-.hero h2{font-size:clamp(30px,7vw,53px);line-height:1.02;margin:13px 0;animation:glow 3s infinite}
-.hero p{font-size:13px;color:#d5dceb;line-height:1.7}
-.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.eyebrow{font-size:10px;color:var(--gold);font-weight:bold;letter-spacing:3px}
+.hero h2{font-size:clamp(32px,8vw,53px);line-height:1.04;margin:13px 0;animation:glow 3s infinite}
+.hero p{font-size:13px;color:#d9e1ef;line-height:1.7}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  padding:12px 15px;border:0;border-radius:10px;
-  background:var(--gold);color:#171717;font-weight:800;
-  text-decoration:none;font-size:12px;transition:.2s;
+ display:inline-flex;align-items:center;justify-content:center;gap:6px;
+ border:0;border-radius:9px;padding:12px 14px;
+ background:var(--gold);color:#171717;font-weight:900;font-size:12px;
+ text-align:center;cursor:pointer;transition:transform .2s,filter .2s
 }
 .btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
 .btn.secondary{background:var(--panel2);color:white;border:1px solid var(--border)}
-.btn.green{background:var(--green);color:#06180e}
-.btn.small{padding:9px 11px}
-.btn.full{width:100%;margin-top:10px}
-.grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;margin-top:14px;
-}
+.btn.green{background:var(--green);color:#062015}
+.btn.full{width:100%;margin-top:9px}
+.btn.small{padding:9px 10px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:13px}
 @media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .card{
-  min-width:0;background:var(--panel);border:1px solid var(--border);
-  border-radius:15px;padding:12px;overflow:hidden;
-  transition:transform .22s,border-color .22s;
+ min-width:0;overflow:hidden;background:var(--panel);
+ border:1px solid var(--border);border-radius:14px;padding:11px;
+ transition:transform .2s,border-color .2s
 }
-.card:hover{transform:translateY(-3px);border-color:#9b762e}
+.card:hover{transform:translateY(-3px);border-color:#a77c2e}
 .poster{
-  aspect-ratio:16/10;border-radius:10px;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;padding:12px;
-  background:linear-gradient(135deg,#243754,#4a2452,#151c2c);
-  font-size:35px;position:relative;
+ aspect-ratio:16/10;border-radius:9px;display:flex;align-items:center;
+ justify-content:center;text-align:center;font-size:36px;
+ background:radial-gradient(circle at 25% 20%,#735126,#26334c 45%,#191427);
+ margin-bottom:10px
 }
-.poster:after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(120deg,transparent 20%,#ffffff0b 50%,transparent 80%);
-  background-size:200% 100%;animation:shine 7s linear infinite;
-}
-.poster span{position:relative;z-index:1}
-.card h3{font-size:14px;margin:11px 0 5px;line-height:1.4}
-.card p{font-size:12px;color:var(--muted);line-height:1.6;margin:5px 0 10px}
-.tag{
-  display:inline-block;background:#3b2d13;color:var(--gold);
-  border-radius:5px;padding:4px 7px;font-size:9px;font-weight:800;
-}
+.card h3{font-size:14px;line-height:1.45;margin:8px 0}
+.card p{font-size:11px;color:var(--muted);line-height:1.6;margin:6px 0 10px}
+.tag{display:inline-block;padding:4px 7px;border-radius:5px;
+ background:#403016;color:var(--gold);font-size:9px;font-weight:bold}
 .card .btn{width:100%;margin-top:6px}
-.card .btn+.btn{margin-top:7px}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.section-head h2{font-size:21px}
-.chip-row{display:flex;gap:8px;overflow-x:auto;padding:12px 0}
-.chip{
-  white-space:nowrap;background:var(--panel);color:var(--muted);
-  border:1px solid var(--border);border-radius:22px;padding:9px 13px;font-size:11px;
-}
-.chip.active{color:#151515;background:var(--gold);border-color:var(--gold)}
-.plan-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:13px}
-@media(min-width:500px){.plan-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.plan{border-color:#4b3c21}
-.plan.featured{border-color:var(--gold);box-shadow:0 0 20px #ffb21c13}
-.price{font-size:27px;color:var(--gold);font-weight:900;margin:10px 0}
-.price small{font-size:11px;color:var(--muted)}
-.feature-list{font-size:12px;color:#cbd5e1;line-height:2.1;padding-left:18px}
-.preview{position:relative;aspect-ratio:16/9;background:#000;border-radius:11px;overflow:hidden;margin-top:10px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:12px 0}
+.chip{flex-shrink:0;background:var(--panel);border:1px solid var(--border);
+ border-radius:22px;color:var(--muted);padding:9px 12px;font-size:10px}
+.chip.active{background:var(--gold);color:#161616;border-color:var(--gold)}
+.plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+@media(min-width:700px){.plan-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.plan{border-color:#594526}
+.plan.featured{border-color:var(--gold);box-shadow:0 0 22px #ffb21c12}
+.price{color:var(--gold);font-size:25px;font-weight:1000;margin:12px 0 6px}
+.price small{font-size:10px;color:var(--muted)}
+.features{padding-left:16px;font-size:11px;color:#d1d9e8;line-height:2}
+.preview{aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#000;margin-top:10px}
 .preview iframe{width:100%;height:100%;border:0}
+.notice{margin-top:13px;background:var(--panel);border:1px solid var(--border);
+ border-radius:10px;padding:12px;color:var(--muted);font-size:11px;line-height:1.8}
 .nav{
-  position:fixed;bottom:0;left:0;width:100%;z-index:2000;
-  display:flex;justify-content:space-around;align-items:center;
-  padding:9px 2px calc(9px + env(safe-area-inset-bottom));
-  background:rgba(9,13,24,.97);border-top:1px solid #6b4c18;
-  box-shadow:0 -5px 25px #0008;
+ position:fixed;z-index:3000;bottom:0;left:0;width:100%;
+ display:flex;align-items:center;justify-content:space-around;
+ background:#080b14f8;border-top:2px solid #745018;
+ padding:8px 2px calc(8px + env(safe-area-inset-bottom));
+ box-shadow:0 -5px 25px #0009
 }
 .nav button{
-  background:none;border:0;color:var(--muted);
-  min-width:0;flex:1;display:flex;align-items:center;
-  flex-direction:column;gap:4px;font-size:10px;font-weight:700;
-  padding:4px 0;
+ flex:1;min-width:0;border:0;background:none;color:var(--muted);
+ display:flex;flex-direction:column;align-items:center;gap:4px;
+ padding:4px 0;font-size:9px;font-weight:bold
 }
 .nav button span{font-size:20px}
 .nav button.active{color:var(--gold)}
 .nav button.active span{animation:float 2s infinite}
-.empty{padding:25px;text-align:center;color:var(--muted);grid-column:1/-1}
-.chat-box{
-  height:350px;display:flex;flex-direction:column;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;margin-top:14px;
-}
-.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
-.message{background:#253249;border-radius:10px;padding:10px;max-width:85%;font-size:13px;align-self:flex-start;overflow-wrap:anywhere}
-.message.mine{align-self:flex-end;background:#533e19}
-.message b{display:block;color:var(--gold);font-size:10px;margin-bottom:4px}
+.chat-box{height:340px;display:flex;flex-direction:column;overflow:hidden;
+ border:1px solid var(--border);border-radius:13px;background:var(--panel);margin-top:12px}
+.chat-messages{flex:1;overflow-y:auto;padding:11px;display:flex;flex-direction:column;gap:8px}
+.msg{align-self:flex-start;max-width:88%;background:#26344a;padding:10px;border-radius:9px;font-size:12px;overflow-wrap:anywhere}
+.msg.mine{align-self:flex-end;background:#503c1c}
+.msg b{display:block;color:var(--gold);font-size:10px;margin-bottom:4px}
 .chat-form{display:flex;gap:6px;padding:9px;border-top:1px solid var(--border)}
-.chat-form input{min-width:0;flex:1;background:#0b1220;border:1px solid var(--border);color:white;border-radius:8px;padding:11px}
-footer{padding:25px 15px;text-align:center;color:var(--muted);font-size:11px;border-top:1px solid var(--border);line-height:1.8}
-.notice{padding:12px;border:1px solid var(--border);background:var(--panel);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.7;margin-top:12px}
-#toast{
-  position:fixed;left:50%;bottom:95px;transform:translateX(-50%);
-  background:#26354a;color:white;padding:12px 18px;border-radius:10px;
-  z-index:5000;display:none;font-size:12px;max-width:90%;text-align:center;
-}
+.chat-form input{min-width:0;flex:1;background:#080d18;border:1px solid var(--border);border-radius:8px;padding:11px;color:white}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:25px}
+footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:10px;line-height:1.9}
+#toast{position:fixed;z-index:5000;bottom:96px;left:50%;transform:translateX(-50%);
+ display:none;background:#26344a;color:white;padding:12px 17px;border-radius:9px;
+ font-size:12px;max-width:90%;text-align:center}
 </style>
 </head>
+
 <body>
 
-<header>
-  <div class="brand">
-    <span class="brand-icon">🎬</span>
-    <div>
-      <h1>BRAQ COMICS</h1>
-      <small>INTO THE DEN • ENTERTAINMENT HUB</small>
-    </div>
+<!-- CENTERED OPENING -->
+<div id="intro">
+ <div class="intro-orbit"></div>
+ <div class="intro-center">
+  <div class="intro-mark">🎬</div>
+  <div class="intro-logo">BRAQ COMICS</div>
+  <div class="intro-line"></div>
+  <div class="intro-sub">INTO THE DEN</div>
+  <div class="intro-buttons">
+   <button class="pill" id="enterBtn">ENTER THE DEN ➜</button>
+   <button class="pill" id="voiceBtn">🔊 PLAY DEEP INTRO</button>
   </div>
-  <button class="pill" id="nameBtn">👤 Set name</button>
+  <div id="introStatus">YOUR ENTERTAINMENT UNIVERSE</div>
+ </div>
+</div>
+
+<header>
+ <div class="brand">
+  <span class="brand-icon">🎬</span>
+  <div>
+   <h1>BRAQ COMICS</h1>
+   <small>INTO THE DEN • ENTERTAINMENT HUB</small>
+  </div>
+ </div>
+ <button class="pill" id="nameBtn">👤 Set name</button>
 </header>
 
 <div class="search-wrap">
-  <input id="search" class="search" type="search"
-    placeholder="🔍 Search movies, music, games & channels...">
+ <input class="search" id="search" type="search"
+  placeholder="🔍 Search movies, music, games or channels...">
 </div>
 
 <main>
 <!-- HOME -->
-<section class="tab-section active" id="home">
-  <div class="hero">
-    <div class="hero-content">
-      <div class="hero-label">WELCOME TO YOUR UNIVERSE</div>
-      <h2>YOUR WORLD.<br>YOUR ENTERTAINMENT.</h2>
-      <p>Discover movie trailers, music, browser games and live news from one place. Built for the BRAQ community.</p>
-      <div class="actions">
-        <button class="btn" data-go="movies">🎬 Explore movies</button>
-        <button class="btn secondary" data-go="games">🎮 Play games</button>
-      </div>
-    </div>
+<section class="page active" id="home">
+ <div class="hero">
+  <div class="hero-content">
+   <div class="eyebrow">WELCOME TO THE DEN</div>
+   <h2>YOUR WORLD.<br>YOUR ENTERTAINMENT.</h2>
+   <p>Explore movie trailers, music, browser games, news and the BRAQ community in one place.</p>
+   <div class="actions">
+    <button class="btn" data-go="movies">🎬 Explore movies</button>
+    <button class="btn secondary" data-go="games">🎮 Enter gaming arena</button>
+   </div>
   </div>
+ </div>
 
-  <h2 class="section-title"><span>💎</span> Membership plans</h2>
-  <p class="muted">Choose a plan to contact BRAQ support. Confirm the price and benefits before paying.</p>
-  <div id="homePlans" class="plan-grid"></div>
+ <h2><span>💎</span> BRAQ Membership Plans</h2>
+ <p class="muted">Choose a membership and contact support to confirm the price, benefits and payment instructions.</p>
+ <div id="plans" class="plan-grid"></div>
 
-  <h2 class="section-title"><span>🔥</span> Featured entertainment</h2>
-  <div class="grid" id="featuredGrid"></div>
+ <h2><span>🔥</span> Featured entertainment</h2>
+ <div id="featured" class="grid"></div>
 
-  <h2 class="section-title"><span>▶</span> Trailer spotlight</h2>
-  <div class="card">
-    <span class="tag">OFFICIAL TRAILER SEARCH</span>
-    <h3>Explore superhero and animation trailers</h3>
-    <div class="preview">
-      <iframe loading="lazy"
-        src="https://www.youtube-nocookie.com/embed/bo6tW0h6T6I"
-        title="Movie trailer preview"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
-    </div>
-    <a class="btn full" target="_blank" rel="noopener"
-       href="https://www.youtube.com/results?search_query=official+superhero+animation+movie+trailers">
-       Find official trailers ↗
-    </a>
-  </div>
-  <p class="muted">Some video embeds may be unavailable because of the original uploader's settings. Use the official trailer search if a preview does not play.</p>
+ <h2><span>▶</span> Superhero trailer discovery</h2>
+ <div class="card">
+  <span class="tag">TRAILER HUB</span>
+  <h3>Superheroes, animation and action</h3>
+  <p>Search for official trailers from movie studios and verified channels.</p>
+  <a class="btn full" target="_blank" rel="noopener"
+   href="https://www.youtube.com/results?search_query=official+superhero+animation+movie+trailers">
+   ▶ Discover official trailers
+  </a>
+ </div>
 </section>
 
 <!-- MOVIES -->
-<section class="tab-section" id="movies">
-  <div class="section-head">
-    <h2 class="section-title"><span>🎬</span> Movie Universe</h2>
-  </div>
-  <p class="muted">Popular films, official trailers and legal viewing options.</p>
-  <div class="chip-row" id="movieFilters"></div>
-  <div class="grid" id="movieGrid"></div>
+<section class="page" id="movies">
+ <h2><span>🎬</span> Movie Universe</h2>
+ <p class="muted">Movie titles, official trailers and legal viewing options. Availability depends on your region.</p>
+ <div id="movieChips" class="chips"></div>
+ <div id="movieGrid" class="grid"></div>
 </section>
 
 <!-- MUSIC -->
-<section class="tab-section" id="music">
-  <h2 class="section-title"><span>🎵</span> Music Lounge</h2>
-  <p class="muted">Discover Afrobeats, Ugandan music, soundtracks and more.</p>
-  <div class="chip-row" id="musicFilters"></div>
-  <div class="grid" id="musicGrid"></div>
-  <div class="card" style="margin-top:15px">
-    <span class="tag">MUSIC STREAMING</span>
-    <h3>Listen to your favourite artists</h3>
-    <p>Open a music platform to listen to its available catalogue.</p>
-    <a class="btn" target="_blank" rel="noopener" href="https://music.youtube.com">YouTube Music ↗</a>
-    <a class="btn secondary" target="_blank" rel="noopener" href="https://open.spotify.com">Spotify ↗</a>
-    <a class="btn secondary" target="_blank" rel="noopener" href="https://audiomack.com">Audiomack ↗</a>
-  </div>
+<section class="page" id="music">
+ <h2><span>🎵</span> Music Lounge</h2>
+ <p class="muted">Ugandan music, Afrobeats, gospel, soundtracks, mixes and more.</p>
+ <div id="musicChips" class="chips"></div>
+ <div id="musicGrid" class="grid"></div>
+ <div class="card" style="margin-top:14px">
+  <h3>Music streaming services</h3>
+  <a class="btn full" target="_blank" rel="noopener" href="https://music.youtube.com">YouTube Music ↗</a>
+  <a class="btn secondary full" target="_blank" rel="noopener" href="https://audiomack.com">Audiomack ↗</a>
+  <a class="btn secondary full" target="_blank" rel="noopener" href="https://open.spotify.com">Spotify ↗</a>
+ </div>
 </section>
 
 <!-- GAMES -->
-<section class="tab-section" id="games">
-  <h2 class="section-title"><span>🎮</span> Gaming Arena</h2>
-  <p class="muted">Browse 100 game discovery entries. Game availability, browser play and download options depend on the original publisher.</p>
-  <div class="chip-row" id="gameFilters"></div>
-  <div class="grid" id="gameGrid"></div>
-  <div class="notice">Safety tip: use official stores and publishers for APKs. Do not install unknown files or grant unnecessary permissions.</div>
+<section class="page" id="games">
+ <h2><span>🎮</span> Gaming Arena</h2>
+ <p class="muted">100 game discovery entries. Open the relevant game portal to check availability.</p>
+ <div id="gameChips" class="chips"></div>
+ <div id="gameGrid" class="grid"></div>
+ <div class="notice">Use trusted publishers and official app stores for downloads. Some games require installation or may not work on every phone.</div>
 </section>
 
-<!-- LIVE TV -->
-<section class="tab-section" id="tv">
-  <h2 class="section-title"><span>📡</span> Live TV & Channels</h2>
-  <p class="muted">Official broadcasters, news streams, radio and sports coverage.</p>
-  <div class="grid" id="tvGrid"></div>
-  <div class="notice">These are official websites or channel discovery links, not a guarantee that every channel broadcasts free live video in every country.</div>
+<!-- TV -->
+<section class="page" id="tv">
+ <h2><span>📡</span> Live TV & Channels</h2>
+ <p class="muted">News, broadcasters, sports, radio, science and entertainment.</p>
+ <div id="tvGrid" class="grid"></div>
+ <div class="notice">These are broadcaster and discovery links, not guaranteed direct video streams. Some services require a subscription or regional access.</div>
 </section>
 
 <!-- CHAT -->
-<section class="tab-section" id="chat">
-  <h2 class="section-title"><span>💬</span> Community Lounge</h2>
-  <p class="muted">Choose a display name and leave a message in this browser demo.</p>
-  <div class="notice">
-    Demo mode: messages are stored on this device only. They are NOT shared with other visitors. Real accounts and synchronized chat require a configured backend.
-  </div>
-  <div class="chat-box">
-    <div id="chatMessages" class="chat-messages"></div>
-    <form id="chatForm" class="chat-form">
-      <input id="chatInput" maxlength="500" autocomplete="off" placeholder="Write a message..." required>
-      <button class="pill" type="submit">Send</button>
-    </form>
-  </div>
-  <button class="btn secondary full" id="clearChat">Clear local messages</button>
+<section class="page" id="chat">
+ <h2><span>💬</span> Community Lounge</h2>
+ <p class="muted">Choose a display name and send messages in this local demo.</p>
+ <div class="notice">Important: messages here are saved only in this browser. For real multi-user chat and secure logins, connect Firebase or another backend.</div>
+ <div class="chat-box">
+  <div id="chatMessages" class="chat-messages"></div>
+  <form id="chatForm" class="chat-form">
+   <input id="chatInput" maxlength="500" placeholder="Type a message..." required>
+   <button class="pill" type="submit">Send</button>
+  </form>
+ </div>
+ <button class="btn secondary full" id="clearChat">Clear local messages</button>
 </section>
 </main>
 
 <footer>
-  <strong style="color:var(--gold)">BRAQ COMICS</strong><br>
-  Into the Den • Movies • Music • Gaming • Community<br>
-  All trademarks and media belong to their respective owners.<br>
-  Use official services and respect creators' rights.
+ <strong style="color:var(--gold)">BRAQ COMICS</strong><br>
+ INTO THE DEN • MOVIES • MUSIC • GAMES • COMMUNITY<br>
+ Media and trademarks belong to their respective owners.
 </footer>
 
 <nav class="nav" aria-label="Main navigation">
-  <button class="active" data-go="home"><span>🏠</span>Home</button>
-  <button data-go="movies"><span>🎬</span>Movies</button>
-  <button data-go="music"><span>🎵</span>Music</button>
-  <button data-go="games"><span>🎮</span>Games</button>
-  <button data-go="tv"><span>📡</span>Live TV</button>
-  <button data-go="chat"><span>💬</span>Chat</button>
+ <button class="active" data-go="home"><span>🏠</span>Home</button>
+ <button data-go="movies"><span>🎬</span>Movies</button>
+ <button data-go="music"><span>🎵</span>Music</button>
+ <button data-go="games"><span>🎮</span>Games</button>
+ <button data-go="tv"><span>📡</span>Live TV</button>
+ <button data-go="chat"><span>💬</span>Chat</button>
 </nav>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
 
-/* BRAQ COMICS — all catalogue and navigation code is in this file. */
+/* All six tabs use one navigation function and matching section IDs. */
+const $ = id => document.getElementById(id);
+let currentTab = "home";
+let query = "";
+let movieFilter = "All";
+let musicFilter = "All";
+let gameFilter = "All";
 
-const SUPPORT_NUMBER = "256705190026";
+function toast(message){
+ const el=$("toast");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>el.style.display="none",2500);
+}
 
-const plans = [
-  {name:"FREE",price:"UGX 0",description:"Explore the hub",features:["Browse entertainment","Discover games","Official media links"],featured:false},
-  {name:"VIP MONTHLY",price:"UGX 5,000",description:"Proposed monthly membership",features:["VIP member badge","Community perks","Future premium features"],featured:true},
-  {name:"VIP PREMIUM",price:"UGX 10,000",description:"Proposed premium membership",features:["Premium member badge","Priority support","Future premium features"],featured:false}
+function navigate(id){
+ const section=$(id);
+ if(!section || !section.classList.contains("page")){
+  toast("This section could not be found.");
+  return;
+ }
+ currentTab=id;
+ document.querySelectorAll(".page").forEach(el=>{
+  el.classList.toggle("active",el.id===id);
+ });
+ document.querySelectorAll(".nav [data-go]").forEach(btn=>{
+  btn.classList.toggle("active",btn.dataset.go===id);
+ });
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="chat") renderChat();
+}
+document.addEventListener("click",event=>{
+ const button=event.target.closest("[data-go]");
+ if(button){
+  event.preventDefault();
+  navigate(button.dataset.go);
+ }
+});
+
+/* Cinematic opening and optional spoken intro.
+   Browsers may require a user tap before speech is allowed. */
+let introTimer;
+function closeIntro(){
+ $("intro").classList.add("hide");
+ clearTimeout(introTimer);
+}
+function speakIntro(){
+ if(!("speechSynthesis" in window)){
+  toast("Voice is not supported in this browser.");
+  $("introStatus").textContent="VOICE NOT SUPPORTED — ENTER THE DEN";
+  return;
+ }
+ try{
+  speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(
+   "BRAQ COMICS... INTO THE DEN."
+  );
+  utterance.lang="en-US";
+  utterance.rate=0.78;
+  utterance.pitch=0.58;
+  utterance.volume=1;
+  utterance.onstart=()=>{$("introStatus").textContent="WELCOME TO THE DEN...";};
+  utterance.onend=()=>{$("introStatus").textContent="YOUR ENTERTAINMENT UNIVERSE";};
+  speechSynthesis.speak(utterance);
+ }catch(error){
+  toast("Tap Play Deep Intro again to enable voice.");
+ }
+}
+$("enterBtn").addEventListener("click",()=>{
+ closeIntro();
+});
+$("voiceBtn").addEventListener("click",()=>{
+ speakIntro();
+});
+/* Keep the animation centered and visible long enough to enjoy. */
+introTimer=setTimeout(closeIntro,7000);
+
+/* Payment plans. These are proposed prices, not automatic payments. */
+const plans=[
+ {name:"STARTER",price:2000,period:"month",badge:"ENTRY PLAN",
+  features:["Access to member area","Entertainment discovery","Community access"]},
+ {name:"STANDARD",price:5000,period:"month",badge:"POPULAR",
+  features:["All Starter benefits","Member badge","Priority support"]},
+ {name:"GOLD VIP",price:7000,period:"month",badge:"GOLD MEMBER",
+  features:["All Standard benefits","VIP community perks","Premium member badge"]},
+ {name:"ELITE VIP",price:10000,period:"month",badge:"TOP MEMBERSHIP",
+  features:["All Gold benefits","Elite member status","Priority member assistance"]}
 ];
+const SUPPORT="256705190026";
 
-/* Titles link to official trailer searches, not unauthorized film copies. */
-const movies = [
- ["Spider-Man: Into the Spider-Verse","Animation","🕷️"],
- ["Spider-Man: Across the Spider-Verse","Animation","🕸️"],
- ["The Super Mario Bros. Movie","Animation","🍄"],
- ["The Wild Robot","Animation","🤖"],
- ["Puss in Boots: The Last Wish","Animation","🐈"],
- ["Kung Fu Panda 4","Animation","🐼"],
- ["How to Train Your Dragon","Fantasy","🐉"],
- ["Transformers One","Animation","🚀"],
- ["Sonic the Hedgehog 3","Action","💨"],
- ["Black Panther: Wakanda Forever","Superhero","🐾"],
- ["Avengers: Endgame","Superhero","🛡️"],
- ["Guardians of the Galaxy","Superhero","🌌"],
- ["Doctor Strange","Superhero","✨"],
- ["The Batman","Action","🦇"],
- ["Aquaman","Superhero","🌊"],
- ["Wonder Woman","Superhero","⚔️"],
- ["Iron Man","Superhero","🤖"],
- ["Thor: Ragnarok","Superhero","⚡"],
- ["Captain America: The Winter Soldier","Superhero","🛡️"],
- ["Deadpool & Wolverine","Superhero","💥"],
- ["Avatar: The Way of Water","Fantasy","🌊"],
- ["Dune: Part Two","Sci-Fi","🏜️"],
- ["Interstellar","Sci-Fi","🌠"],
- ["Inception","Sci-Fi","🌀"],
- ["The Matrix","Sci-Fi","💊"],
- ["Jurassic World","Adventure","🦖"],
- ["Mission: Impossible","Action","🎯"],
- ["Fast X","Action","🏎️"],
- ["Top Gun: Maverick","Action","✈️"],
- ["John Wick","Action","🥋"],
- ["The Equalizer","Action","🎯"],
- ["Jumanji: Welcome to the Jungle","Adventure","🌴"],
- ["Godzilla x Kong: The New Empire","Action","🦍"],
- ["Kingdom of the Planet of the Apes","Sci-Fi","🐒"],
- ["The Lord of the Rings","Fantasy","💍"],
- ["Harry Potter and the Philosopher's Stone","Fantasy","🪄"],
- ["Fantastic Beasts","Fantasy","🦉"],
- ["The Hunger Games","Adventure","🏹"],
- ["The Maze Runner","Sci-Fi","🏃"],
- ["The Chronicles of Narnia","Fantasy","🦁"],
- ["Coco","Animation","🎸"],
- ["Encanto","Animation","🏠"],
- ["Moana","Animation","🌺"],
- ["Frozen","Animation","❄️"],
- ["Inside Out 2","Animation","🧠"],
- ["Despicable Me 4","Animation","🍌"],
- ["The Incredibles","Superhero","🦸"],
- ["Ratatouille","Animation","🐀"],
- ["Finding Nemo","Animation","🐠"],
- ["Toy Story","Animation","🤠"],
- ["The Lion King","Animation","🦁"],
- ["Mufasa: The Lion King","Animation","👑"],
- ["Shrek","Animation","🟢"],
- ["Megamind","Animation","🧠"],
- ["Madagascar","Animation","🦓"],
- ["The Bad Guys","Animation","🦊"],
- ["Teenage Mutant Ninja Turtles","Animation","🐢"],
- ["The Lego Movie","Animation","🧱"],
- ["The Mitchells vs. the Machines","Animation","🤖"],
- ["A Quiet Place","Horror","🤫"],
- ["Five Nights at Freddy's","Horror","🐻"]
-].map(x=>({title:x[0],category:x[1],icon:x[2]}));
+function contactPlan(plan){
+ const message="Hello BRAQ COMICS Support. I am interested in the "+
+  plan.name+" plan at UGX "+plan.price.toLocaleString("en-UG")+
+  " per month. Please confirm the benefits, price and official payment instructions.";
+ window.open("https://wa.me/"+SUPPORT+"?text="+encodeURIComponent(message),
+  "_blank","noopener");
+}
+function renderPlans(){
+ $("plans").innerHTML=plans.map((p,i)=>`
+  <article class="card plan ${i===1?"featured":""}">
+   <span class="tag">${p.badge}</span>
+   <h3>${p.name}</h3>
+   <div class="price">UGX ${p.price.toLocaleString("en-UG")}<small>/month</small></div>
+   <ul class="features">${p.features.map(f=>`<li>${f}</li>`).join("")}</ul>
+   <button class="btn full" data-plan="${i}">Choose plan</button>
+  </article>`).join("");
+ $("plans").querySelectorAll("[data-plan]").forEach(btn=>{
+  btn.addEventListener("click",()=>contactPlan(plans[Number(btn.dataset.plan)]));
+ });
+}
+renderPlans();
 
-const music = [
- ["Ugandan Afrobeats","Ugandan","🇺🇬"],
- ["East African Hits","East Africa","🌍"],
- ["African Gospel","Gospel","🙏"],
- ["Ugandan Gospel","Gospel","🎤"],
- ["Dancehall Mix","Dancehall","🔥"],
- ["Afrobeats Party","Afrobeats","💃"],
- ["Amapiano Mix","Amapiano","🎹"],
- ["African Hip-Hop","Hip-Hop","🎧"],
- ["Ugandan Hip-Hop","Ugandan","🎙️"],
- ["Bongo Flava","East Africa","🌴"],
- ["Reggae Classics","Reggae","🌿"],
- ["R&B Love Songs","R&B","❤️"],
- ["Romantic Acoustic","Acoustic","🎸"],
- ["African Jazz","Jazz","🎷"],
- ["Piano Instrumentals","Instrumental","🎹"],
- ["Epic Movie Soundtracks","Soundtracks","🎬"],
- ["Superhero Music","Soundtracks","🦸"],
- ["Anime Soundtracks","Soundtracks","⚡"],
- ["Gaming Music","Gaming","🎮"],
- ["Relaxing Music","Chill","🌙"],
- ["Workout Music","Fitness","💪"],
- ["Old School Hip-Hop","Hip-Hop","📻"],
- ["Classic African Music","African Classics","🥁"],
- ["Luganda Music","Ugandan","🇺🇬"],
- ["Kadongo Kamu","Ugandan","🎸"],
- ["Afro-gospel Praise","Gospel","🙌"],
- ["African Dance Hits","Afrobeats","💃"],
- ["Electronic Dance Music","EDM","🔊"],
- ["Chill Lo-fi Beats","Chill","🌧️"],
- ["Piano and Strings","Instrumental","🎻"]
-].map(x=>({title:x[0],category:x[1],icon:x[2]}));
-
-const games = [
- "Subway Surfers","Temple Run 2","Hill Climb Racing","Angry Birds",
- "Cut the Rope","Fruit Ninja","Candy Crush Saga","Plants vs. Zombies",
- "Crossy Road","Jetpack Joyride","Geometry Dash","Stickman Hook",
- "Drive Mad","Level Devil","Retro Bowl","Smash Karts",
- "Moto X3M","Drift Boss","Vex 7","Fireboy and Watergirl",
- "8 Ball Pool","Chess","Checkers","Sudoku",
- "Solitaire","Mahjong","Minesweeper","Word Search",
- "2048","Tetris","Pac-Man","Snake",
- "Space Invaders","Breakout","Flappy Bird style games","Tower Defense",
- "Bloons Tower Defense","Car Racing","Formula Racing","Bike Racing",
- "Motorcycle Stunts","Monster Truck","Parking Master","Drifting Challenge",
- "Football Penalty","Soccer Skills","Basketball Stars","Basketball Legends",
- "Volleyball Challenge","Table Tennis","Bowling","Golf",
- "Pool Club","Cricket Games","Baseball Games","American Football",
- "Wrestling Games","Boxing Games","Karate Fighting","Ninja Adventure",
- "Stickman Fighter","Shadow Fight","Beat Em Up","Zombie Survival",
- "Zombie Shooter","Tower Defense Strategy","Kingdom Building","City Builder",
- "Farm Simulator","Cooking Fever","Papa's Pizzeria","Restaurant Simulator",
- "Dress Up Games","Fashion Designer","Makeup Artist","Pet Care",
- "Horse Riding","Dinosaur Run","Wildlife Simulator","Ocean Adventure",
- "Fishing Games","Treasure Hunt","Escape Room","Mystery Detective",
- "Hidden Objects","Point and Click Adventure","Platformer Adventure","Dungeon Crawler",
- "Roguelike Adventure","RPG Quest","Turn Based Strategy","Card Batt
+/* Movie titles and categories: trailer discovery, not pirated files. */
+const movieData=[
+["Spider-Man: Into the Spider-Verse","Animation","🕷️"],
+["Spider-Man: Across the Spider-Verse","Animation","🕸️"],
+["The Super Mario Bros. Movie","Animation","🍄"],
+["The Wild Robot","Animation","🤖"],
+["Kung Fu Panda 4","Animation","🐼"],
+["Puss in Boots: The Last Wish","Animation","🐈"],
+["Inside Out 2","Animation","🧠"],
+["Moana","Animation","🌺"],
+["Frozen","Animation","❄️"],
+["Coco","Animation","🎸"],
+["Encanto","Animation","🏠"],
+["The Lion King","Animation","🦁"],
+["Toy Story","Animation","🤠"],
+["Shrek","Animation","🟢"],
+["Despicable Me 4","Animation","🍌"],
+["The Incredibles","Animation","🦸"],
+["Sonic the Hedgehog 3","Action","💨"],
+["Transformers One","Animation","🚀"],
+["Black Panther: Wakanda Forever","Superhero","🐾"],
+["Avengers: Endgame","Superhero","🛡️"],
+["Avengers: Infinity War","Superhero","💎"],
+["Guardians of the Galaxy","Superhero","🌌"],
+["Doctor Strange","Superhero","✨"],
+["Iron Man","Superhero","🤖"],
+["Thor: Ragnarok","Superhero","⚡"],
+["Captain America: The Winter Soldier","Superhero","🛡️"],
+["The Batman","Superhero","🦇"],
+["Aquaman","Superhero","🌊"],
+["Wonder Woman","Superhero","⚔️"],
+["Deadpool & Wolverine","Superhero","💥"],
+["Avatar: The Way of Water","Sci-Fi","🌊"],
+["Dune: Part Two","Sci-Fi","🏜️"],
+["Interstellar","Sci-Fi","🌠"],
+["Inception","Sci-Fi","🌀"],
+["The Matrix","Sci-Fi","💊"],
+["Jurassic World","Adven
