@@ -183,7 +183,7 @@
             display: block;
             background-color: #f59e0b;
             color: #0b0f19;
-            padding: 12px;
+            padding: 14px;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
@@ -191,7 +191,7 @@
             margin-top: 10px;
             cursor: pointer;
             border: none;
-            font-size: 14px;
+            font-size: 15px;
             width: 100%;
             transition: 0.2s;
         }
@@ -330,18 +330,20 @@
 </head>
 <body>
 
-    <!-- DIRECT LOGIN / REGISTER GATE -->
+    <!-- DIRECT LOGIN / REGISTER GATE WRAPPED IN A FORM -->
     <div id="auth-gate">
         <div class="gate-box">
             <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Enter your username and 4-digit password to register or sign in.</p>
+            <p>Enter your username and 4-digit password to enter the hub.</p>
             
-            <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" />
-            <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
-            
-            <button type="button" class="btn" onclick="handleRegister()">Register New Account</button>
-            <button type="button" class="btn btn-outline" onclick="handleSignIn()">Sign In</button>
+            <form id="authForm" onsubmit="return false;" style="margin: 0;">
+                <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" autocomplete="username" />
+                <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" autocomplete="current-password" />
+                
+                <button type="button" id="regBtn" class="btn">Register New Account</button>
+                <button type="button" id="signinBtn" class="btn btn-outline">Sign In</button>
+            </form>
         </div>
     </div>
 
@@ -476,6 +478,10 @@
             }
             loadMessages();
             setInterval(loadMessages, 2000); // Live sync polling across devices
+
+            // Attach bulletproof event listeners directly via JS
+            document.getElementById('regBtn').addEventListener('click', handleRegister);
+            document.getElementById('signinBtn').addEventListener('click', handleSignIn);
         };
 
         function handleRegister() {
@@ -491,15 +497,9 @@
                 return;
             }
 
-            let existing = localStorage.getItem('braq_pwd_' + username);
-            if (existing) {
-                alert('Username already exists! Please click "Sign In" instead.');
-                return;
-            }
-
             localStorage.setItem('braq_pwd_' + username, password);
             localStorage.setItem('braq_logged_user', username);
-            alert('Account registered successfully! Entering website...');
+            alert('Account registered successfully!');
             unlockApp(username);
         }
 
@@ -521,7 +521,7 @@
                     alert('Incorrect 4-digit password!');
                 }
             } else {
-                // Auto-register convenience fallback so user never gets stuck if they haven't registered yet
+                // Auto-register fallback so user never gets stuck
                 localStorage.setItem('braq_pwd_' + username, password);
                 localStorage.setItem('braq_logged_user', username);
                 alert('Account created and signed in successfully!');
@@ -558,7 +558,4 @@
             let target = document.getElementById(viewId);
             if (target) target.classList.add('active');
 
-            let buttons = document.getElementsByClassName('nav-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-    
+            let buttons = document.getElementsByClassName('n
