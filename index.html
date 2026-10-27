@@ -15,57 +15,6 @@
             padding-bottom: 80px;
         }
 
-        /* Full Screen Secure Authentication Gate */
-        #auth-gate {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0b0f19;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-        }
-        .gate-box {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            padding: 30px 20px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 360px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-        .gate-box h2 {
-            color: #f59e0b;
-            margin-top: 0;
-            font-size: 24px;
-        }
-        .gate-box p {
-            color: #94a3b8;
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
-        .auth-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-        .divider {
-            margin: 15px 0;
-            border-bottom: 1px solid #334155;
-        }
-
         /* Top Header */
         .top-nav {
             display: flex;
@@ -192,7 +141,7 @@
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            margin-top: 8px;
+            margin-top: 10px;
             cursor: pointer;
             border: none;
             font-size: 14px;
@@ -201,11 +150,6 @@
         }
         .btn:hover {
             background-color: #d9822b;
-        }
-        .btn-outline {
-            background-color: transparent;
-            color: #f59e0b;
-            border: 1px solid #f59e0b;
         }
         .whatsapp-btn {
             background-color: #25d366;
@@ -310,7 +254,7 @@
             width: 100%;
             background-color: #0b0f19;
             border-top: 1px solid #1e293b;
-            display: none;
+            display: flex;
             justify-content: space-around;
             padding: 10px 0;
             z-index: 1000;
@@ -334,41 +278,15 @@
 </head>
 <body>
 
-    <!-- AUTH GATE WITH NATIVE HTML FORMS -->
-    <div id="auth-gate">
-        <div class="gate-box">
-            <div class="logo-box" style="margin: 0 auto 10px auto; width: 45px; height: 45px; font-size: 24px;">▶</div>
-            <h2>BRAQ-COMICS</h2>
-            
-            <!-- REGISTER FORM -->
-            <form onsubmit="registerUser(event)" style="text-align: left;">
-                <p style="margin: 0 0 5px 0; color: #f59e0b; font-weight: bold; font-size: 12px;">New User? Register:</p>
-                <input type="text" id="regUser" placeholder="Username" class="auth-input" required />
-                <input type="password" id="regPass" placeholder="4-Digit Password" maxlength="4" class="auth-input" required />
-                <button type="submit" class="btn">Register Account</button>
-            </form>
-
-            <div class="divider"></div>
-
-            <!-- SIGN IN FORM -->
-            <form onsubmit="signInUser(event)" style="text-align: left;">
-                <p style="margin: 0 0 5px 0; color: #f59e0b; font-weight: bold; font-size: 12px;">Registered? Sign In:</p>
-                <input type="text" id="signUser" placeholder="Username" class="auth-input" required />
-                <input type="password" id="signPass" placeholder="4-Digit Password" maxlength="4" class="auth-input" required />
-                <button type="submit" class="btn btn-outline">Sign In to Hub</button>
-            </form>
-        </div>
-    </div>
-
     <!-- Top Navigation Header -->
-    <div class="top-nav" id="topNav" style="display: none;">
+    <div class="top-nav">
         <div class="logo-box">▶</div>
-        <div class="app-title" id="welcomeUserTitle">BRAQ-COMICS</div>
-        <button type="button" onclick="logoutApp()" style="background:none; border:none; color:#94a3b8; font-size:12px; cursor:pointer; font-weight:bold;">Logout</button>
+        <div class="app-title">BRAQ-COMICS</div>
+        <span style="color: #94a3b8; font-size: 12px;">Online Hub</span>
     </div>
 
     <!-- 1. HOME VIEW -->
-    <div id="home-view" class="section-view" style="padding: 0; max-width: 100%;">
+    <div id="home-view" class="section-view active" style="padding: 0; max-width: 100%;">
         
         <!-- Rotating Cinematic Poster Background -->
         <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800');">
@@ -382,9 +300,9 @@
 
         <div style="padding: 20px; max-width: 400px; margin: 0 auto;">
             <div class="card" style="border-color: #f59e0b;">
-                <span class="badge">SESSION ACTIVE</span>
-                <h3 id="sessionUserGreeting">Welcome, Member!</h3>
-                <p>You have secure access to all movies, games, community chat, soundtracks, and live sports streaming.</p>
+                <span class="badge">SYSTEM READY</span>
+                <h3>Welcome to BRAQ!</h3>
+                <p>You have instant access to all movies, games, community chat, soundtracks, and live sports streaming.</p>
             </div>
 
             <!-- WhatsApp Support Card -->
@@ -473,7 +391,7 @@
     </div>
 
     <!-- Bottom App Navigation Bar -->
-    <div class="bottom-nav" id="bottomNav">
+    <div class="bottom-nav">
         <button type="button" class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
         <button type="button" class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
         <button type="button" class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
@@ -483,68 +401,10 @@
     </div>
 
     <script>
-        // Check session on load
         window.onload = function() {
-            let activeUser = localStorage.getItem('braq_active_user');
-            if (activeUser) {
-                unlockApp(activeUser);
-            }
             loadMessages();
             setInterval(loadMessages, 2000);
         };
-
-        function registerUser(event) {
-            event.preventDefault();
-            let username = document.getElementById('regUser').value.trim();
-            let password = document.getElementById('regPass').value.trim();
-
-            if (!username || password.length !== 4) {
-                alert('Please enter a username and 4-digit password.');
-                return;
-            }
-
-            localStorage.setItem('braq_pass_' + username, password);
-            localStorage.setItem('braq_active_user', username);
-            alert('Account registered successfully!');
-            unlockApp(username);
-        }
-
-        function signInUser(event) {
-            event.preventDefault();
-            let username = document.getElementById('signUser').value.trim();
-            let password = document.getElementById('signPass').value.trim();
-
-            if (!username || password.length !== 4) {
-                alert('Please enter your username and 4-digit password.');
-                return;
-            }
-
-            let storedPwd = localStorage.getItem('braq_pass_' + username);
-            if (!storedPwd) {
-                alert('Account not found! Please register first.');
-                return;
-            }
-
-            if (storedPwd === password) {
-                localStorage.setItem('braq_active_user', username);
-                unlockApp(username);
-            } else {
-                alert('Incorrect 4-digit password!');
-            }
-        }
-
-        function unlockApp(username) {
-            document.getElementById('auth-gate').style.display = 'none';
-            document.getElementById('topNav').style.display = 'flex';
-            document.getElementById('bottomNav').style.display = 'flex';
-            document.getElementById('sessionUserGreeting').innerText = "Welcome, " + username + "!";
-            switchTab('home-view', document.querySelector('.nav-btn'));
-        }
-
-        function logoutApp() {
-            localStorage.removeItem('braq_active_user');
-            location.reload();
-        }
 
         function switchTab(viewId, element) {
             let views = document.getElementsByClassName('section-view');
@@ -561,4 +421,107 @@
             if (element) element.classList.add('active');
         }
 
-        // Multi-User Live Chat & Block
+        // Multi-User Live Chat & Blocking Logic
+        let attachedImageSrc = null;
+
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function handleChatImage(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    attachedImageSrc = e.target.result;
+                    alert('Image attached! Click Send.');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function sendChatMessage() {
+            let input = document.getElementById('chatInput');
+            let text = input.value.trim();
+            if (!text && !attachedImageSrc) return;
+
+            let username = "Member_" + Math.floor(Math.random() * 900 + 100);
+            
+            let messageObj = {
+                sender: username,
+                text: text,
+                image: attachedImageSrc,
+                time: Date.now()
+            };
+
+            let messages = JSON.parse(localStorage.getItem('braq_chat_messages') || '[]');
+            messages.push(messageObj);
+            localStorage.setItem('braq_chat_messages', JSON.stringify(messages));
+
+            input.value = '';
+            attachedImageSrc = null;
+            loadMessages();
+        }
+
+        function loadMessages() {
+            let chatBox = document.getElementById('chatMessages');
+            if (!chatBox) return;
+
+            let messages = JSON.parse(localStorage.getItem('braq_chat_messages') || '[]');
+
+            let html = '';
+            if (messages.length === 0) {
+                html = `<div class="chat-msg"><div class="sender">System</div>No messages yet. Start the conversation!</div>`;
+            } else {
+                messages.forEach((msg) => {
+                    html += `<div class="chat-msg">
+                        <div class="sender-row">
+                            <span class="sender">${escapeHtml(msg.sender)}</span>
+                        </div>`;
+
+                    if (msg.text) {
+                        html += `<div>${escapeHtml(msg.text)}</div>`;
+                    }
+                    if (msg.image) {
+                        html += `<img src="${msg.image}" alt="media">`;
+                    }
+                    html += `</div>`;
+                });
+            }
+
+            if (chatBox.innerHTML !== html) {
+                chatBox.innerHTML = html;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Cinematic Movie Poster Slideshow URLs
+        const moviePosters = [
+            "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
+            "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
+            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800",
+            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800"
+        ];
+        let posterIndex = 0;
+
+        function rotatePosters() {
+            posterIndex = (posterIndex + 1) % moviePosters.length;
+            let banner = document.getElementById('heroBanner');
+            if (banner) {
+                banner.style.backgroundImage = `url('${moviePosters[posterIndex]}')`;
+            }
+        }
+
+        setInterval(rotatePosters, 30000);
+    </script>
+
+</body>
+                                                    </html>
+        
