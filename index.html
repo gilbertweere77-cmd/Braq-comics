@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRAQ-COMICS | Streaming Hub</title>
+    <title>BRAQ-COMICS | App Hub</title>
     <style>
         * { box-sizing: border-box; }
         body {
-            background-color: #0b0f19;
+            background-color: #0f172a;
             color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 70px; /* Space for bottom nav */
+            padding-bottom: 80px; /* Space for bottom nav */
         }
-        /* Top Navigation Header */
+        /* Top Header */
         .top-nav {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 15px 20px;
-            background-color: #0b0f19;
+            background-color: #0f172a;
+            border-bottom: 1px solid #1e293b;
             position: sticky;
             top: 0;
             z-index: 100;
         }
         .logo-box {
             background-color: #f59e0b;
-            color: #0b0f19;
+            color: #0f172a;
             width: 38px;
             height: 38px;
             border-radius: 10px;
@@ -37,171 +38,72 @@
             font-weight: bold;
             font-size: 20px;
         }
-        .top-menu {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: none;
-        }
-        .top-menu::-webkit-scrollbar { display: none; }
-        .top-menu a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: bold;
-        }
-        .top-menu a.active, .top-menu a:hover {
-            color: #ffffff;
-        }
-        .top-menu a.live {
-            color: #ef4444;
-        }
-        .top-icons {
-            display: flex;
-            gap: 15px;
-            color: #ffffff;
+        .app-title {
             font-size: 18px;
+            font-weight: bold;
+            color: #f59e0b;
+            letter-spacing: 1px;
         }
 
-        /* Hero Featured Card (Spider-Man Vibe) */
-        .hero-section {
-            padding: 10px 20px;
-            text-align: center;
-        }
-        .hero-card {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            border-radius: 20px;
+        /* Content Sections */
+        .section-view {
+            display: none;
             padding: 20px;
             max-width: 400px;
             margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .hero-badge {
-            color: #f59e0b;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-        .hero-poster {
-            width: 100%;
-            height: 240px;
-            background-color: #1a1a2e;
-            border-radius: 14px;
-            object-fit: cover;
-            border: 1px solid #475569;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .play-overlay {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid white;
-        }
-        .play-overlay::after {
-            content: "";
+        .section-view.active {
             display: block;
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-left: 16px solid white;
-            margin-left: 4px;
-        }
-        .hero-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            margin: 15px 0 5px 0;
-        }
-        .hero-genres {
-            color: #94a3b8;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-        .hero-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .action-btn {
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: #cbd5e1;
-        }
-        .action-btn span { font-size: 16px; }
-        .watch-btn {
-            flex-grow: 1;
-            background-color: #f59e0b;
-            color: #0b0f19;
-            padding: 12px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-            text-align: center;
         }
 
-        /* Section Header & Content Grid */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 20px 10px 20px;
-            max-width: 440px;
-            margin: 0 auto;
-        }
-        .section-header h2 { font-size: 18px; margin: 0; color: #f59e0b; }
-        
-        .content-grid {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .media-card {
+        /* Cards */
+        .card {
             background-color: #1e293b;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
             text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .media-card h3 { margin: 0 0 5px 0; color: #f59e0b; font-size: 16px; }
-        .media-card p { color: #94a3b8; font-size: 13px; margin: 0 0 10px 0; }
-        .card-btn {
+        .card h3 {
+            margin-top: 0;
+            color: #f59e0b;
+            font-size: 18px;
+        }
+        .card p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            background: #334155;
+            color: #f59e0b;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .btn {
             display: block;
             background-color: #f59e0b;
-            color: #0b0f19;
-            padding: 8px;
+            color: #0f172a;
+            padding: 12px;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 6px;
-            font-size: 13px;
+            border-radius: 8px;
+            margin-top: 12px;
+            transition: 0.2s;
         }
-        audio { width: 100%; margin-top: 5px; }
+        .btn:hover {
+            background-color: #d9822b;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
 
         /* Bottom App Navigation Bar */
         .bottom-nav {
@@ -216,96 +118,115 @@
             padding: 10px 0;
             z-index: 1000;
         }
-        .nav-item {
+        .nav-btn {
+            background: none;
+            border: none;
             color: #64748b;
             text-decoration: none;
             font-size: 11px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
+            cursor: pointer;
+            font-weight: bold;
         }
-        .nav-item.active { color: #f59e0b; }
+        .nav-btn span { font-size: 18px; }
+        .nav-btn.active { color: #f59e0b; }
     </style>
 </head>
 <body>
 
-    <!-- Top App Navigation Header -->
+    <!-- Top Navigation Header -->
     <div class="top-nav">
         <div class="logo-box">▶</div>
-        <div class="top-menu">
-            <a href="#" class="active">Movies</a>
-            <a href="#">TV Shows</a>
-            <a href="#">News</a>
-            <a href="#" class="live">● Live TV</a>
-        </div>
-        <div class="top-icons">🔍 👤</div>
+        <div class="app-title">BRAQ-COMICS</div>
+        <div style="width: 38px;"></div>
     </div>
 
-    <!-- Featured Hero Section (Spider-Man / Main Banner) -->
-    <div class="hero-section">
-        <div class="hero-card">
-            <div class="hero-badge">Featured Universe</div>
-            <div class="hero-poster">
-                <!-- You can replace with your hero banner image link -->
-                <div style="color: #64748b; font-size: 14px;">Spider-Man / Braq Universe Art</div>
-                <div class="play-overlay"></div>
-            </div>
-            <div class="hero-title">Spider-Man: Brand New Day</div>
-            <div class="hero-genres">Movie • Sci-Fi • Action</div>
-            
-            <div class="hero-actions">
-                <button class="action-btn"><span>ℹ️</span> Detail</button>
-                <a href="#" class="watch-btn">WATCH NOW</a>
-                <button class="action-btn"><span>🔖</span> Add List</button>
-            </div>
+    <!-- 1. HOME VIEW -->
+    <div id="home-view" class="section-view active">
+        <div class="card" style="border-color: #f59e0b;">
+            <span class="badge">WELCOME</span>
+            <h3>BRAQ Entertainment Hub</h3>
+            <p>Your ultimate mobile application for games, movies, comics, music, and live sports. Tap the bottom navigation bar to explore!</p>
         </div>
     </div>
 
-    <!-- Hub Sections -->
-    <div class="section-header">
-        <h2>Entertainment & Live Hub</h2>
+    <!-- 2. MOVIES & COMICS VIEW -->
+    <div id="movies-view" class="section-view">
+        <div class="card">
+            <span class="badge">MOVIE / ANIMATION</span>
+            <h3>Into the Multiverse (Teaser)</h3>
+            <p>Exclusive animated concept teaser trailer and shorts.</p>
+            <a href="#" class="btn">Watch / Download MP4</a>
+        </div>
+        <div class="card">
+            <span class="badge">COMIC CHAPTER</span>
+            <h3>Braq Origins #1</h3>
+            <p>Discover the legend and visual storytelling of our main hero.</p>
+            <a href="#" class="btn">Read / Download PDF</a>
+        </div>
     </div>
 
-    <div class="content-grid">
-        
-        <!-- Games Card -->
-        <div class="media-card">
-            <span style="font-size:11px; background:#334155; color:#f59e0b; padding:2px 6px; border-radius:4px; font-weight:bold;">GAME (APK)</span>
+    <!-- 3. GAMES VIEW -->
+    <div id="games-view" class="section-view">
+        <div class="card">
+            <span class="badge">GAME (APK)</span>
             <h3>Braq Runner 3D</h3>
-            <p>Action-packed mobile runner game with Spider-Verse styling.</p>
-            <a href="#" class="card-btn">Download APK</a>
+            <p>An action-packed mobile runner game built with awesome Spider-Verse inspired graphics.</p>
+            <a href="#" class="btn">Download APK</a>
         </div>
+    </div>
 
-        <!-- Music Card -->
-        <div class="media-card">
-            <span style="font-size:11px; background:#334155; color:#f59e0b; padding:2px 6px; border-radius:4px; font-weight:bold;">MUSIC / SOUNDTRACK</span>
-            <h3>Braq Theme Song</h3>
-            <p>Immersive high-energy background soundtrack.</p>
+    <!-- 4. MUSIC VIEW -->
+    <div id="music-view" class="section-view">
+        <div class="card">
+            <span class="badge">MUSIC / SOUNDTRACK</span>
+            <h3>Braq Theme (Official Soundtrack)</h3>
+            <p>Immersive high-energy background soundtrack for your universe.</p>
             <audio controls>
                 <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                Your browser does not support audio.
             </audio>
         </div>
+    </div>
 
-        <!-- Live Football / Sports Card -->
-        <div class="media-card" style="border-color: #ef4444;">
-            <span style="font-size:11px; background:#ef4444; color:white; padding:2px 6px; border-radius:4px; font-weight:bold;">LIVE SPORTS</span>
+    <!-- 5. LIVE TV & SPORTS VIEW -->
+    <div id="livetv-view" class="section-view">
+        <div class="card" style="border-color: #f59e0b;">
+            <span class="badge">LIVE SPORTS</span>
             <h3>Live Football Match Stream</h3>
-            <p>Stream live fixtures, sports channels, and TV broadcasts.</p>
-            <a href="#" class="card-btn" style="background-color: #ef4444; color: white;">Watch Live Stream</a>
+            <p>Stream live football fixtures, sports channels, and entertainment broadcasts.</p>
+            <a href="#" class="btn">Watch Live Stream</a>
         </div>
-
     </div>
 
     <!-- Bottom App Navigation Bar -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item active">🏠<span>Home</span></a>
-        <a href="#" class="nav-item">🎬<span>Movies</span></a>
-        <a href="#" class="nav-item">🕹️<span>More</span></a>
-        <a href="#" class="nav-item">📺<span>Series</span></a>
-        <a href="#" class="nav-item">🔖<span>Saved</span></a>
+        <button class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
+        <button class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
+        <button class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
+        <button class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
+        <button class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
     </div>
 
+    <script>
+        function switchTab(viewId, element) {
+            let views = document.getElementsByClassName('section-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].classList.remove('active');
+            }
+            document.getElementById(viewId).classList.add('active');
+
+            let buttons = document.getElementsByClassName('nav-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            element.classList.add('active');
+        }
+    </script>
+
 </body>
-    </html>
+        </html>
     
