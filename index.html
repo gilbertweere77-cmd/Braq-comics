@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 80px;
         }
 
         /* Full Screen Secure Authentication Gate */
@@ -48,7 +48,7 @@
         .gate-box p {
             color: #94a3b8;
             font-size: 13px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .auth-input {
             width: 100%;
@@ -60,6 +60,10 @@
             color: white;
             font-size: 14px;
             outline: none;
+        }
+        .divider {
+            margin: 15px 0;
+            border-bottom: 1px solid #334155;
         }
 
         /* Top Header */
@@ -188,7 +192,7 @@
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             cursor: pointer;
             border: none;
             font-size: 14px;
@@ -330,18 +334,29 @@
 </head>
 <body>
 
-    <!-- SECURE AUTHENTICATION GATE -->
+    <!-- AUTH GATE WITH NATIVE HTML FORMS -->
     <div id="auth-gate">
         <div class="gate-box">
-            <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
+            <div class="logo-box" style="margin: 0 auto 10px auto; width: 45px; height: 45px; font-size: 24px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Secure Hub. Enter your username and 4-digit password.</p>
             
-            <input type="text" id="usernameField" placeholder="Username" class="auth-input" />
-            <input type="password" id="passwordField" placeholder="4-Digit Password" maxlength="4" class="auth-input" />
-            
-            <button type="button" class="btn" onclick="registerAccount()">Register New Account</button>
-            <button type="button" class="btn btn-outline" onclick="signInAccount()">Sign In</button>
+            <!-- REGISTER FORM -->
+            <form onsubmit="registerUser(event)" style="text-align: left;">
+                <p style="margin: 0 0 5px 0; color: #f59e0b; font-weight: bold; font-size: 12px;">New User? Register:</p>
+                <input type="text" id="regUser" placeholder="Username" class="auth-input" required />
+                <input type="password" id="regPass" placeholder="4-Digit Password" maxlength="4" class="auth-input" required />
+                <button type="submit" class="btn">Register Account</button>
+            </form>
+
+            <div class="divider"></div>
+
+            <!-- SIGN IN FORM -->
+            <form onsubmit="signInUser(event)" style="text-align: left;">
+                <p style="margin: 0 0 5px 0; color: #f59e0b; font-weight: bold; font-size: 12px;">Registered? Sign In:</p>
+                <input type="text" id="signUser" placeholder="Username" class="auth-input" required />
+                <input type="password" id="signPass" placeholder="4-Digit Password" maxlength="4" class="auth-input" required />
+                <button type="submit" class="btn btn-outline">Sign In to Hub</button>
+            </form>
         </div>
     </div>
 
@@ -475,37 +490,29 @@
                 unlockApp(activeUser);
             }
             loadMessages();
-            setInterval(loadMessages, 2000); // Live chat sync polling
+            setInterval(loadMessages, 2000);
         };
 
-        function registerAccount() {
-            let username = document.getElementById('usernameField').value.trim();
-            let password = document.getElementById('passwordField').value.trim();
+        function registerUser(event) {
+            event.preventDefault();
+            let username = document.getElementById('regUser').value.trim();
+            let password = document.getElementById('regPass').value.trim();
 
-            if (!username) {
-                alert('Please enter a username.');
-                return;
-            }
-            if (password.length !== 4) {
-                alert('Password must be exactly 4 digits.');
-                return;
-            }
-
-            let existingPwd = localStorage.getItem('braq_pass_' + username);
-            if (existingPwd) {
-                alert('Username already exists! Please click "Sign In" instead.');
+            if (!username || password.length !== 4) {
+                alert('Please enter a username and 4-digit password.');
                 return;
             }
 
             localStorage.setItem('braq_pass_' + username, password);
             localStorage.setItem('braq_active_user', username);
-            alert('Registration successful! Entering hub...');
+            alert('Account registered successfully!');
             unlockApp(username);
         }
 
-        function signInAccount() {
-            let username = document.getElementById('usernameField').value.trim();
-            let password = document.getElementById('passwordField').value.trim();
+        function signInUser(event) {
+            event.preventDefault();
+            let username = document.getElementById('signUser').value.trim();
+            let password = document.getElementById('signPass').value.trim();
 
             if (!username || password.length !== 4) {
                 alert('Please enter your username and 4-digit password.');
@@ -522,7 +529,7 @@
                 localStorage.setItem('braq_active_user', username);
                 unlockApp(username);
             } else {
-                alert('Incorrect 4-digit password! Access denied.');
+                alert('Incorrect 4-digit password!');
             }
         }
 
@@ -554,18 +561,4 @@
             if (element) element.classList.add('active');
         }
 
-        // Multi-User Live Chat & Blocking Logic
-        let attachedImageSrc = null;
-
-        function handleChatKey(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        function handleChatImage(event) {
-            let file = event.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    attachedIma
+        // Multi-User Live Chat & Block
