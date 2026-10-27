@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRAQ-COMICS | Official Hub</title>
+    <title>BRAQ-COMICS | Entertainment & Live Hub</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -44,7 +44,7 @@
         .filters {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 25px;
             flex-wrap: wrap;
         }
@@ -52,12 +52,11 @@
             background-color: #1e293b;
             color: #f59e0b;
             border: 1px solid #f59e0b;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
         }
         .filter-btn:active, .filter-btn:hover {
             background-color: #f59e0b;
@@ -74,7 +73,6 @@
             padding: 18px;
             margin-bottom: 20px;
             text-align: left;
-            overflow: hidden;
         }
         .card-img {
             width: 100%;
@@ -84,11 +82,6 @@
             object-fit: cover;
             margin-bottom: 12px;
             border: 1px solid #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-size: 13px;
         }
         .card h3 {
             margin-top: 0;
@@ -120,59 +113,61 @@
             text-decoration: none;
             font-weight: bold;
             border-radius: 6px;
-            transition: 0.2s;
         }
-        .btn:hover {
-            background-color: #e28e07;
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
 
     <h1>BRAQ-COMICS</h1>
-    <p class="subtitle">Comics, Games & Movies Hub</p>
+    <p class="subtitle">Comics, Games, Music & Live Sports Hub</p>
 
     <!-- Search Bar -->
-    <input type="text" id="searchInput" class="search-box" placeholder="Search comics, games, movies..." onkeyup="filterContent()">
+    <input type="text" id="searchInput" class="search-box" placeholder="Search games, music, live sports..." onkeyup="filterContent()">
 
     <!-- Filter Buttons -->
     <div class="filters">
         <button class="filter-btn" onclick="filterCategory('all')">All</button>
         <button class="filter-btn" onclick="filterCategory('game')">Games</button>
         <button class="filter-btn" onclick="filterCategory('comic')">Comics</button>
-        <button class="filter-btn" onclick="filterCategory('movie')">Movies</button>
+        <button class="filter-btn" onclick="filterCategory('music')">Music</button>
+        <button class="filter-btn" onclick="filterCategory('livetv')">Live TV & Sports</button>
     </div>
 
     <div class="card-container" id="contentList">
         
         <!-- Item 1: Game -->
         <div class="card" data-category="game" data-text="braq runner 3d game apk">
-            <div class="card-img">Game Preview Banner</div>
+            <img src="https://i.imgur.com/Uo2wJ3B.png" alt="Game Banner" class="card-img">
             <span class="badge">GAME (APK)</span>
             <h3>Braq Runner 3D</h3>
-            <p>An action-packed mobile runner game built with awesome Spider-Verse inspired graphics.</p>
-            <!-- CHANGE '#' to your actual APK download link -->
+            <p>Action-packed mobile runner game with Spider-Verse inspired graphics.</p>
             <a href="#" class="btn">Download APK</a>
         </div>
 
-        <!-- Item 2: Comic -->
-        <div class="card" data-category="comic" data-text="braq origins comic chapter pdf">
-            <div class="card-img">Comic Cover Art</div>
-            <span class="badge">COMIC CHAPTER</span>
-            <h3>Braq Origins #1</h3>
-            <p>Discover the legend and visual storytelling of our main hero.</p>
-            <!-- CHANGE '#' to your actual PDF/Comic link -->
-            <a href="#" class="btn">Read / Download PDF</a>
+        <!-- Item 2: Music -->
+        <div class="card" data-category="music" data-text="soundtrack music audio braq theme">
+            <span class="badge">MUSIC / SOUNDTRACK</span>
+            <h3>Braq Theme (Official Soundtrack)</h3>
+            <p>Listen to the immersive, high-energy background track for the universe.</p>
+            <!-- Replace src with your audio file link (.mp3) -->
+            <audio controls>
+                <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
         </div>
 
-        <!-- Item 3: Movie -->
-        <div class="card" data-category="movie" data-text="into the multiverse movie animation teaser mp4">
-            <div class="card-img">Movie Teaser Banner</div>
-            <span class="badge">MOVIE / ANIMATION</span>
-            <h3>Into the Multiverse (Teaser)</h3>
-            <p>Exclusive animated concept teaser trailer and shorts.</p>
-            <!-- CHANGE '#' to your actual Video link -->
-            <a href="#" class="btn">Watch / Download MP4</a>
+        <!-- Item 3: Live Sports / Football -->
+        <div class="card" data-category="livetv" data-text="live football sports streaming match tv">
+            <span class="badge">LIVE SPORTS & TV</span>
+            <h3>Live Football Match Stream</h3>
+            <p>Stream live football fixtures, sports channels, and entertainment broadcasts.</p>
+            <!-- Replace '#' with your live streaming link (IPTV, YouTube live stream, or stream provider URL) -->
+            <a href="#" class="btn" style="background-color: #ef4444; color: white;">Watch Live Stream</a>
         </div>
 
     </div>
@@ -181,7 +176,6 @@
         function filterContent() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('card');
-
             for (let i = 0; i < cards.length; i++) {
                 let text = cards[i].getAttribute('data-text');
                 if (text.includes(input)) {
@@ -194,7 +188,6 @@
 
         function filterCategory(category) {
             let cards = document.getElementsByClassName('card');
-
             for (let i = 0; i < cards.length; i++) {
                 let cardCat = cards[i].getAttribute('data-category');
                 if (category === 'all' || cardCat === category) {
@@ -207,5 +200,5 @@
     </script>
 
 </body>
-        </html>
-            
+                                                                  </html>
+    
