@@ -45,6 +45,16 @@
             color: #f59e0b;
             letter-spacing: 1px;
         }
+        .user-badge {
+            background-color: #1e293b;
+            border: 1px solid #f59e0b;
+            color: #f59e0b;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
         /* Hero Slideshow Header */
         .hero-banner {
@@ -169,7 +179,7 @@
             background-color: #1e293b;
             border: 1px solid #334155;
             border-radius: 14px;
-            height: 380px;
+            height: 400px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -181,37 +191,31 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         .chat-msg {
             background-color: #0f172a;
             padding: 10px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 13px;
             max-width: 85%;
             word-break: break-word;
             border: 1px solid #334155;
-            position: relative;
         }
-        .chat-msg .sender-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3px;
+        .chat-msg.my-msg {
+            background-color: #1e3a8a;
+            align-self: flex-end;
+            border-color: #3b82f6;
         }
         .chat-msg .sender {
             color: #f59e0b;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 12px;
+            margin-bottom: 3px;
+            display: block;
         }
-        .block-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            font-size: 10px;
-            cursor: pointer;
-            padding: 0;
-            font-weight: bold;
+        .chat-msg.my-msg .sender {
+            color: #93c5fd;
         }
         .chat-msg img {
             max-width: 100%;
@@ -242,7 +246,7 @@
             padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
         }
 
@@ -282,7 +286,7 @@
     <div class="top-nav">
         <div class="logo-box">▶</div>
         <div class="app-title">BRAQ-COMICS</div>
-        <span style="color: #94a3b8; font-size: 12px;">Online Hub</span>
+        <div class="user-badge" id="userDisplayName" onclick="changeName()" title="Tap to change your chat name">👤 Set Name</div>
     </div>
 
     <!-- 1. HOME VIEW -->
@@ -302,7 +306,7 @@
             <div class="card" style="border-color: #f59e0b;">
                 <span class="badge">SYSTEM READY</span>
                 <h3>Welcome to BRAQ!</h3>
-                <p>You have instant access to all movies, games, community chat, soundtracks, and live sports streaming.</p>
+                <p>Chat with fellow fans in the community lounge, stream matches, and explore media.</p>
             </div>
 
             <!-- WhatsApp Support Card -->
@@ -371,9 +375,9 @@
     <!-- 6. COMMUNITY CHAT VIEW -->
     <div id="chat-view" class="section-view">
         <div class="card" style="margin-bottom: 10px; padding: 12px;">
-            <span class="badge">COMMUNITY CHAT</span>
+            <span class="badge">WHATSAPP STYLE GROUP CHAT</span>
             <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
-            <p style="margin: 0; font-size: 12px;">Chat with fellow fans across devices and share media!</p>
+            <p style="margin: 0; font-size: 12px;">Messages sync instantly across all devices. Everyone uses their own name!</p>
         </div>
         
         <div class="chat-container">
@@ -401,10 +405,31 @@
     </div>
 
     <script>
+        // Check / Prompt for Username on Load
         window.onload = function() {
+            let myName = localStorage.getItem('braq_username');
+            if (!myName) {
+                myName = prompt("Enter your name to join the BRAQ Community Chat:", "Gilbert");
+                if (!myName || myName.trim() === "") {
+                    myName = "User_" + Math.floor(Math.random() * 900 + 100);
+                }
+                localStorage.setItem('braq_username', myName.trim());
+            }
+            document.getElementById('userDisplayName').innerText = "👤 " + localStorage.getItem('braq_username');
+
             loadMessages();
-            setInterval(loadMessages, 2000);
+            setInterval(loadMessages, 1500); // Super fast live sync polling like WhatsApp
         };
+
+        function changeName() {
+            let currentName = localStorage.getItem('braq_username') || "";
+            let newName = prompt("Change your chat display name:", currentName);
+            if (newName && newName.trim() !== "") {
+                localStorage.setItem('braq_username', newName.trim());
+                document.getElementById('userDisplayName').innerText = "👤 " + newName.trim();
+                alert("Name updated successfully!");
+            }
+        }
 
         function switchTab(viewId, element) {
             let views = document.getElementsByClassName('section-view');
@@ -421,7 +446,7 @@
             if (element) element.classList.add('active');
         }
 
-        // Multi-User Live Chat & Blocking Logic
+        // Multi-User Live Chat & Media Sharing Logic
         let attachedImageSrc = null;
 
         function handleChatKey(event) {
@@ -436,7 +461,7 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     attachedImageSrc = e.target.result;
-                    alert('Image attached! Click Send.');
+                    alert('Image attached successfully! Click Send.');
                 };
                 reader.readAsDataURL(file);
             }
@@ -447,10 +472,11 @@
             let text = input.value.trim();
             if (!text && !attachedImageSrc) return;
 
-            let username = "Member_" + Math.floor(Math.random() * 900 + 100);
+            let myName = localStorage.getItem('braq_username') || "Member";
             
             let messageObj = {
-                sender: username,
+                id: Date.now() + Math.random(),
+                sender: myName,
                 text: text,
                 image: attachedImageSrc,
                 time: Date.now()
@@ -470,27 +496,30 @@
             if (!chatBox) return;
 
             let messages = JSON.parse(localStorage.getItem('braq_chat_messages') || '[]');
+            let myName = localStorage.getItem('braq_username') || "";
 
             let html = '';
             if (messages.length === 0) {
-                html = `<div class="chat-msg"><div class="sender">System</div>No messages yet. Start the conversation!</div>`;
+                html = `<div class="chat-msg" style="text-align: center;"><span class="sender">System</span>No messages yet. Say hello to everyone!</div>`;
             } else {
                 messages.forEach((msg) => {
-                    html += `<div class="chat-msg">
-                        <div class="sender-row">
-                            <span class="sender">${escapeHtml(msg.sender)}</span>
-                        </div>`;
+                    let isMine = (msg.sender === myName);
+                    let msgClass = isMine ? "chat-msg my-msg" : "chat-msg";
+
+                    html += `<div class="${msgClass}">
+                        <span class="sender">${escapeHtml(msg.sender)}</span>`;
 
                     if (msg.text) {
                         html += `<div>${escapeHtml(msg.text)}</div>`;
                     }
                     if (msg.image) {
-                        html += `<img src="${msg.image}" alt="media">`;
+                        html += `<img src="${msg.image}" alt="shared media">`;
                     }
                     html += `</div>`;
                 });
             }
 
+            // Only update DOM if messages changed to keep scrolling smooth
             if (chatBox.innerHTML !== html) {
                 chatBox.innerHTML = html;
                 chatBox.scrollTop = chatBox.scrollHeight;
@@ -523,5 +552,5 @@
     </script>
 
 </body>
-                                                    </html>
-        
+        </html>
+    
