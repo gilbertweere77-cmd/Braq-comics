@@ -12,10 +12,10 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 80px;
+            padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        /* Full Screen Authentication Gate */
+        /* Full Screen Secure Authentication Gate */
         #auth-gate {
             position: fixed;
             top: 0;
@@ -30,42 +30,36 @@
             align-items: center;
             padding: 20px;
             text-align: center;
-            overflow-y: auto;
         }
         .gate-box {
             background-color: #1e293b;
             border: 1px solid #334155;
-            padding: 25px 20px;
+            padding: 30px 20px;
             border-radius: 16px;
             width: 100%;
             max-width: 360px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            margin: auto;
         }
         .gate-box h2 {
             color: #f59e0b;
             margin-top: 0;
-            font-size: 22px;
+            font-size: 24px;
         }
         .gate-box p {
             color: #94a3b8;
             font-size: 13px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .form-input {
+        .auth-input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             background-color: #0f172a;
             border: 1px solid #334155;
             border-radius: 8px;
             color: white;
             font-size: 14px;
             outline: none;
-        }
-        .divider {
-            margin: 20px 0;
-            border-bottom: 1px solid #334155;
         }
 
         /* Top Header */
@@ -194,7 +188,7 @@
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            margin-top: 8px;
+            margin-top: 10px;
             cursor: pointer;
             border: none;
             font-size: 14px;
@@ -336,29 +330,18 @@
 </head>
 <body>
 
-    <!-- AUTH GATE WITH SEPARATE REGISTER AND SIGN IN FORMS -->
+    <!-- SECURE AUTHENTICATION GATE -->
     <div id="auth-gate">
         <div class="gate-box">
-            <div class="logo-box" style="margin: 0 auto 10px auto; width: 45px; height: 45px; font-size: 24px;">▶</div>
+            <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
             <h2>BRAQ-COMICS</h2>
+            <p>Secure Hub. Enter your username and 4-digit password.</p>
             
-            <!-- REGISTER FORM -->
-            <div style="text-align: left;">
-                <p style="margin-bottom: 5px; color: #f59e0b; font-weight: bold;">New Here? Register Account:</p>
-                <input type="text" id="regUser" placeholder="Choose Username..." class="form-input" />
-                <input type="text" id="regPass" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
-                <button type="button" class="btn" onclick="executeRegister()">Complete Registration</button>
-            </div>
-
-            <div class="divider"></div>
-
-            <!-- SIGN IN FORM -->
-            <div style="text-align: left;">
-                <p style="margin-bottom: 5px; color: #f59e0b; font-weight: bold;">Already Registered? Sign In:</p>
-                <input type="text" id="signUser" placeholder="Enter Username..." class="form-input" />
-                <input type="text" id="signPass" placeholder="4-Digit Password..." maxlength="4" class="form-input" />
-                <button type="button" class="btn btn-outline" onclick="executeSignIn()">Sign In to Hub</button>
-            </div>
+            <input type="text" id="usernameField" placeholder="Username" class="auth-input" />
+            <input type="password" id="passwordField" placeholder="4-Digit Password" maxlength="4" class="auth-input" />
+            
+            <button type="button" class="btn" onclick="registerAccount()">Register New Account</button>
+            <button type="button" class="btn btn-outline" onclick="signInAccount()">Sign In</button>
         </div>
     </div>
 
@@ -386,7 +369,7 @@
             <div class="card" style="border-color: #f59e0b;">
                 <span class="badge">SESSION ACTIVE</span>
                 <h3 id="sessionUserGreeting">Welcome, Member!</h3>
-                <p>You have full access to all movies, games, community chat, soundtracks, and live sports streaming.</p>
+                <p>You have secure access to all movies, games, community chat, soundtracks, and live sports streaming.</p>
             </div>
 
             <!-- WhatsApp Support Card -->
@@ -487,20 +470,20 @@
     <script>
         // Check session on load
         window.onload = function() {
-            let currentUser = localStorage.getItem('braq_logged_user');
-            if (currentUser) {
-                unlockApp(currentUser);
+            let activeUser = localStorage.getItem('braq_active_user');
+            if (activeUser) {
+                unlockApp(activeUser);
             }
             loadMessages();
-            setInterval(loadMessages, 2000); // Live sync polling across devices
+            setInterval(loadMessages, 2000); // Live chat sync polling
         };
 
-        function executeRegister() {
-            let username = document.getElementById('regUser').value.trim();
-            let password = document.getElementById('regPass').value.trim();
+        function registerAccount() {
+            let username = document.getElementById('usernameField').value.trim();
+            let password = document.getElementById('passwordField').value.trim();
 
             if (!username) {
-                alert('Please choose a username.');
+                alert('Please enter a username.');
                 return;
             }
             if (password.length !== 4) {
@@ -508,57 +491,81 @@
                 return;
             }
 
-            let existing = localStorage.getItem('braq_pwd_' + username);
-            if (existing) {
-                alert('Username already exists! Please use the Sign In section below.');
+            let existingPwd = localStorage.getItem('braq_pass_' + username);
+            if (existingPwd) {
+                alert('Username already exists! Please click "Sign In" instead.');
                 return;
             }
 
-            // Save credentials permanently
-            localStorage.setItem('braq_pwd_' + username, password);
-            localStorage.setItem('braq_logged_user', username);
-            alert('Registration successful! Entering website...');
+            localStorage.setItem('braq_pass_' + username, password);
+            localStorage.setItem('braq_active_user', username);
+            alert('Registration successful! Entering hub...');
             unlockApp(username);
         }
 
-        function executeSignIn() {
-            let username = document.getElementById('signUser').value.trim();
-            let password = document.getElementById('signPass').value.trim();
+        function signInAccount() {
+            let username = document.getElementById('usernameField').value.trim();
+            let password = document.getElementById('passwordField').value.trim();
 
             if (!username || password.length !== 4) {
-                alert('Please enter your registered username and 4-digit password.');
+                alert('Please enter your username and 4-digit password.');
                 return;
             }
 
-            let storedPwd = localStorage.getItem('braq_pwd_' + username);
-            if (storedPwd) {
-                if (storedPwd === password) {
-                    localStorage.setItem('braq_logged_user', username);
-                    unlockApp(username);
-                } else {
-                    alert('Incorrect 4-digit password! Access denied.');
-                }
+            let storedPwd = localStorage.getItem('braq_pass_' + username);
+            if (!storedPwd) {
+                alert('Account not found! Please register first.');
+                return;
+            }
+
+            if (storedPwd === password) {
+                localStorage.setItem('braq_active_user', username);
+                unlockApp(username);
             } else {
-                alert('Account not found! Please register first using the top section.');
+                alert('Incorrect 4-digit password! Access denied.');
             }
         }
 
         function unlockApp(username) {
-            let gate = document.getElementById('auth-gate');
-            if (gate) gate.style.display = 'none';
-            
-            let topNav = document.getElementById('topNav');
-            if (topNav) topNav.style.display = 'flex';
-            
-            let bottomNav = document.getElementById('bottomNav');
-            if (bottomNav) bottomNav.style.display = 'flex';
-            
-            let greeting = document.getElementById('sessionUserGreeting');
-            if (greeting) greeting.innerText = "Welcome, " + username + "!";
-            
+            document.getElementById('auth-gate').style.display = 'none';
+            document.getElementById('topNav').style.display = 'flex';
+            document.getElementById('bottomNav').style.display = 'flex';
+            document.getElementById('sessionUserGreeting').innerText = "Welcome, " + username + "!";
             switchTab('home-view', document.querySelector('.nav-btn'));
         }
 
         function logoutApp() {
-            localStorage.removeItem('braq_logged_user');
-            loc
+            localStorage.removeItem('braq_active_user');
+            location.reload();
+        }
+
+        function switchTab(viewId, element) {
+            let views = document.getElementsByClassName('section-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].classList.remove('active');
+            }
+            let target = document.getElementById(viewId);
+            if (target) target.classList.add('active');
+
+            let buttons = document.getElementsByClassName('nav-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (element) element.classList.add('active');
+        }
+
+        // Multi-User Live Chat & Blocking Logic
+        let attachedImageSrc = null;
+
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function handleChatImage(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    attachedIma
