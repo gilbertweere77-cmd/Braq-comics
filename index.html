@@ -255,7 +255,7 @@
             font-weight: bold;
         }
 
-        /* Bottom App Navigation Bar */
+        /* Bottom App Navigation Bar - Exactly Like Original Working Layout */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -265,8 +265,8 @@
             border-top: 1px solid #1e293b;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
-            z-index: 9999;
+            padding: 10px 0;
+            z-index: 99999;
         }
         .nav-btn {
             background: none;
@@ -277,10 +277,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             cursor: pointer;
             font-weight: bold;
-            padding: 6px;
         }
         .nav-btn span { font-size: 16px; }
         .nav-btn.active { color: #f59e0b; }
@@ -312,7 +311,7 @@
             <div class="card" style="border-color: #f59e0b;">
                 <span class="badge">SYSTEM READY</span>
                 <h3>Welcome to BRAQ!</h3>
-                <p>Explore our massive library with live search filters for movies and music, downloadable APK games, local & international live TV, and our WhatsApp community chat.</p>
+                <p>Tap the bottom navigation tabs below to switch instantly between Home, Movies, Games, Music, Live TV, and Chat.</p>
             </div>
 
             <div class="card">
@@ -363,22 +362,6 @@
                 <p>High-octane futuristic African cyberpunk thriller.</p>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Movie</a>
             </div>
-
-            <div class="card movie-item" data-title="spider verse clash animation">
-                <img src="https://images.unsplash.com/photo-1563089145-599997674d42?w=800" alt="Movie" class="card-img">
-                <span class="badge">ANIMATION</span>
-                <h3>Spider-Verse Clash</h3>
-                <p>Multiverse action showdown concept.</p>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Movie</a>
-            </div>
-
-            <div class="card movie-item" data-title="african superhero legends comic animation">
-                <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800" alt="Movie" class="card-img">
-                <span class="badge">ANIMATED SERIES</span>
-                <h3>African Superhero Legends</h3>
-                <p>Epic tales of ancient warriors and guardians.</p>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn">Watch Series</a>
-            </div>
         </div>
     </div>
 
@@ -406,22 +389,6 @@
             <h3>Buganda Kingdom Trivia</h3>
             <p>Test your knowledge of traditional folklore, proverbs, and history.</p>
             <a href="#" class="btn">Download APK (15MB)</a>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800" alt="Game" class="card-img">
-            <span class="badge">FIGHTING APK</span>
-            <h3>African Street Warriors</h3>
-            <p>Arcade fighting game featuring legendary martial artists.</p>
-            <a href="#" class="btn">Download APK (52MB)</a>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800" alt="Game" class="card-img">
-            <span class="badge">RACING APK</span>
-            <h3>Pearl of Africa Speedway</h3>
-            <p>High-speed street racing across East African tracks.</p>
-            <a href="#" class="btn">Download APK (60MB)</a>
         </div>
     </div>
 
@@ -458,39 +425,11 @@
                     <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
                 </audio>
             </div>
-
-            <div class="card music-item" data-title="multiverse journey ambient chill">
-                <span class="badge">AMBIENT / CHILL</span>
-                <h3>Multiverse Journey</h3>
-                <p>Deep atmospheric sound design.</p>
-                <audio controls>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="audio/mpeg">
-                </audio>
-            </div>
-
-            <div class="card music-item" data-title="uganda dancehall party riddim">
-                <span class="badge">UGANDA DANCEHALL</span>
-                <h3>Kampala Party Riddim</h3>
-                <p>High energy dancehall club banger beat.</p>
-                <audio controls>
-                    <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
-                </audio>
-            </div>
-
-            <div class="card music-item" data-title="east african acoustic guitar chill">
-                <span class="badge">ACOUSTIC VIBES</span>
-                <h3>Nile River Sunset (Acoustic)</h3>
-                <p>Relaxing acoustic guitar melodies.</p>
-                <audio controls>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="audio/mpeg">
-                </audio>
-            </div>
         </div>
     </div>
 
     <!-- 5. LIVE TV & SPORTS VIEW -->
     <div id="livetv-view" class="section-view">
-        <!-- Your YouTube Live Stream Slot -->
         <div class="card" style="border-color: #f59e0b;">
             <span class="badge">YOUR LIVE CHANNEL</span>
             <h3>BRAQ-COMICS Live Stream</h3>
@@ -499,7 +438,6 @@
             </div>
         </div>
 
-        <!-- Ugandan Local Channel 1: NTV Uganda / Live Feed -->
         <div class="card">
             <span class="badge">UGANDA LOCAL TV</span>
             <h3>NTV Uganda Live Stream</h3>
@@ -509,10 +447,71 @@
             </div>
         </div>
 
-        <!-- Ugandan Local Channel 2: Bukedde & UBC Bulletin Feed -->
         <div class="card">
             <span class="badge">UGANDA LOCAL TV</span>
             <h3>Bukedde & UBC Live Bulletin</h3>
             <p>Local news, talk shows, and cultural programs.</p>
             <div style="position: relative; width: 100%; height: 180px; background: #000; border-radius: 6px; overflow: hidden; margin-top: 8px;">
-               
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/21X5lGlDOfg" title="Bukedde Live" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. COMMUNITY CHAT VIEW -->
+    <div id="chat-view" class="section-view">
+        <div class="card" style="margin-bottom: 10px; padding: 12px;">
+            <span class="badge">WHATSAPP STYLE GROUP CHAT</span>
+            <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
+            <p style="margin: 0; font-size: 12px;">Messages sync instantly across all devices using your registered name!</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-area">
+                <label class="file-upload-label" title="Attach Image">📎
+                    <input type="file" id="chatFile" accept="image/*" style="display: none;" onchange="handleChatImage(event)">
+                </label>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)" />
+                <button type="button" class="btn" style="width: auto; margin-top: 0; padding: 10px 14px;" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom App Navigation Bar -->
+    <div class="bottom-nav">
+        <button type="button" class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
+        <button type="button" class="nav-btn" onclick="switchTab('movies-view', this)"><span>🎬</span>Movies</button>
+        <button type="button" class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
+        <button type="button" class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
+        <button type="button" class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
+        <button type="button" class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            let myName = localStorage.getItem('braq_username');
+            if (!myName) {
+                myName = prompt("Enter your name to join the BRAQ Community Chat:", "Gilbert");
+                if (!myName || myName.trim() === "") {
+                    myName = "User_" + Math.floor(Math.random() * 900 + 100);
+                }
+                localStorage.setItem('braq_username', myName.trim());
+            }
+            document.getElementById('setNameBtn').innerText = "👤 " + localStorage.getItem('braq_username');
+
+            loadMessages();
+            setInterval(loadMessages, 1500);
+        };
+
+        function changeName() {
+            let currentName = localStorage.getItem('braq_username') || "";
+            let newName = prompt("Enter your chat display name:", currentName);
+            if (newName && newName.trim() !== "") {
+                localStorage.setItem('braq_username', newName.trim());
+                document.getElementById('setNameBtn').innerText = "👤 " + newName.trim();
+                alert("Name updated successfully!");
+                loadMessages();
+            }
+        }
+
+        function switc
