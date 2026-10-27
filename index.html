@@ -272,56 +272,6 @@
             font-weight: bold;
         }
 
-        /* Modal Popups */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            padding: 25px;
-            border-radius: 14px;
-            width: 100%;
-            max-width: 350px;
-            text-align: left;
-            position: relative;
-        }
-        .modal-content h3 {
-            color: #f59e0b;
-            margin-top: 0;
-        }
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
         /* Bottom App Navigation Bar */
         .bottom-nav {
             position: fixed;
@@ -354,14 +304,14 @@
 </head>
 <body>
 
-    <!-- MANDATORY LOGIN GATE -->
+    <!-- MANDATORY LOGIN GATE (Direct One-Tap Access) -->
     <div id="auth-gate">
         <div class="gate-box">
             <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Please sign in or register to access the entertainment hub.</p>
-            <button class="btn" onclick="openModal('signin-modal')">Sign In</button>
-            <button class="btn btn-outline" style="margin-top: 10px;" onclick="openModal('register-modal')">Register New Account</button>
+            <p>Please enter to access the entertainment hub.</p>
+            <input type="text" id="usernameInput" placeholder="Enter your username..." style="width: 100%; padding: 12px; margin-bottom: 15px; background-color: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 14px; outline: none;" />
+            <button class="btn" onclick="loginApp()">Sign In / Register & Enter</button>
         </div>
     </div>
 
@@ -480,33 +430,6 @@
         </div>
     </div>
 
-    <!-- Sign In Modal Popup -->
-    <div id="signin-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('signin-modal')">&times;</button>
-            <h3>Sign In to BRAQ</h3>
-            <form onsubmit="handleSignIn(event)">
-                <input type="email" id="signinEmail" placeholder="Email Address" class="form-input" required>
-                <input type="password" id="signinPass" placeholder="Password" class="form-input" required>
-                <button type="submit" class="btn">Login</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Register Modal Popup -->
-    <div id="register-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('register-modal')">&times;</button>
-            <h3>Create New Account</h3>
-            <form onsubmit="handleRegister(event)">
-                <input type="text" id="regName" placeholder="Username" class="form-input" required>
-                <input type="email" id="regEmail" placeholder="Email Address" class="form-input" required>
-                <input type="password" id="regPass" placeholder="Create Password" class="form-input" required>
-                <button type="submit" class="btn">Register & Enter</button>
-            </form>
-        </div>
-    </div>
-
     <!-- Bottom App Navigation Bar -->
     <div class="bottom-nav" id="bottomNav">
         <button class="nav-btn active" onclick="switchTab('home-view', this)"><span>🏠</span>Home</button>
@@ -526,47 +449,113 @@
             }
         };
 
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
+        function loginApp() {
+            let username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                username = "Viewer";
+            }
+            localStorage.setItem('braq_logged_user', username);
+            unlockApp(username);
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+        function unlockApp(username) {
+            document.getElementById('auth-gate').style.display = 'none';
+            document.getElementById('topNav').style.display = 'flex';
+            document.getElementById('bottomNav').style.display = 'flex';
+            
+            document.getElementById('sessionUserGreeting').innerText = "Welcome, " + username + "!";
+            switchTab('home-view', document.querySelector('.nav-btn'));
         }
 
-        function handleRegister(event) {
-            event.preventDefault();
-            let name = document.getElementById('regName').value.trim();
-            let email = document.getElementById('regEmail').value.trim().toLowerCase();
-            let pass = document.getElementById('regPass').value;
+        function logoutApp() {
+            localStorage.removeItem('braq_logged_user');
+            location.reload();
+        }
 
-            if (!name || !email || !pass) {
-                alert('Please fill in all fields.');
-                return;
+        function switchTab(viewId, element) {
+            let views = document.getElementsByClassName('section-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].classList.remove('active');
+            }
+            document.getElementById(viewId).classList.add('active');
+
+            let buttons = document.getElementsByClassName('nav-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (element) element.classList.add('active');
+        }
+
+        // Chat Room Logic
+        let attachedImageSrc = null;
+
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function handleChatImage(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    attachedImageSrc = e.target.result;
+                    alert('Image attached successfully! Now click Send.');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function sendChatMessage() {
+            let input = document.getElementById('chatInput');
+            let text = input.value.trim();
+            if (!text && !attachedImageSrc) return;
+
+            let username = localStorage.getItem('braq_logged_user') || 'Member';
+            let chatBox = document.getElementById('chatMessages');
+
+            let msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-msg';
+            
+            let html = `<div class="sender">${username}</div>`;
+            if (text) {
+                html += `<div>${escapeHtml(text)}</div>`;
+            }
+            if (attachedImageSrc) {
+                html += `<img src="${attachedImageSrc}" alt="media">`;
+                attachedImageSrc = null;
             }
 
-            // Save user data to localStorage
-            let userData = { name: name, pass: pass };
-            localStorage.setItem('braq_user_' + email, JSON.stringify(userData));
-            
-            alert('Account registered successfully! Now please sign in.');
-            closeModal('register-modal');
-            openModal('signin-modal');
+            msgDiv.innerHTML = html;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            input.value = '';
         }
 
-        function handleSignIn(event) {
-            event.preventDefault();
-            let email = document.getElementById('signinEmail').value.trim().toLowerCase();
-            let pass = document.getElementById('signinPass').value;
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
 
-            let storedData = localStorage.getItem('braq_user_' + email);
-            if (storedData) {
-                let user = JSON.parse(storedData);
-                if (user.pass === pass) {
-                    localStorage.setItem('braq_logged_user', user.name);
-                    unlockApp(user.name);
-                } else {
-                    alert('Incorrect password. Please try again.');
-                }
-            } else {
-      h 
+        // Cinematic Movie Poster Slideshow URLs
+        const moviePosters = [
+            "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800",
+            "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
+            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800",
+            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800"
+        ];
+        let posterIndex = 0;
+
+        function rotatePosters() {
+            posterIndex = (posterIndex + 1) % moviePosters.length;
+            let banner = document.getElementById('heroBanner');
+            if (banner) {
+                banner.style.backgroundImage = `url('${moviePosters[posterIndex]}')`;
+            }
+        }
+
+        setInterval(rotatePosters, 30000);
+    </script>
+
+</body>
+</html>
