@@ -1,397 +1,459 @@
+
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width,initial-scale=1'>
-<title>BRAQ COMICS | Ultimate Hub</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d18">
+<meta name="description" content="BRAQ COMICS — movies, music, games, trailers and live entertainment.">
+<title>BRAQ COMICS | Ultimate Entertainment Hub</title>
+
 <style>
-* { box-sizing: border-box; }
-body{margin:0;background:#0f172a;color:#fff;font-family:Arial,sans-serif;padding-bottom:85px;}
-
-/* Extended Cinematic Splash Screen Animation */
-#splash{
-    position:fixed;inset:0;background:radial-gradient(circle at center, #1e293b 0%, #0b0f19 100%);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;
-    animation:splashFade 5s forwards ease-in-out;
+:root {
+  --bg:#090d18;
+  --panel:#121a2b;
+  --panel2:#1b263b;
+  --gold:#ffb21c;
+  --text:#f8fafc;
+  --muted:#a7b4c9;
+  --border:#29364d;
+  --green:#20c879;
 }
-.splash-content {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-    animation: centerZoom 4.5s ease-in-out infinite alternate;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  padding-bottom:82px;overflow-x:hidden;
 }
-.splash-logo{
-    font-size:46px;color:#f59e0b;font-weight:bold;letter-spacing:3px;
-    text-shadow:0 0 25px rgba(245,158,11,0.7), 0 0 50px rgba(245,158,11,0.4);
-    animation:neonPulse 2s infinite alternate;
+button,input{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+button{cursor:pointer}
+header{
+  position:sticky;top:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:13px 16px;
+  background:rgba(9,13,24,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
 }
-.splash-sub{
-    color:#94a3b8;font-size:14px;margin-top:12px;letter-spacing:2px;text-transform:uppercase;
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.brand-icon{font-size:27px}
+.brand h1{font-size:17px;color:var(--gold);margin:0;letter-spacing:1px}
+.brand small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.pill{
+  background:var(--gold);color:#111827;border:0;border-radius:25px;
+  padding:9px 12px;font-weight:800;font-size:12px;white-space:nowrap;
 }
-@keyframes neonPulse {
-    0% { transform: scale(1); text-shadow:0 0 15px rgba(245,158,11,0.4); }
-    100% { transform: scale(1.08); text-shadow:0 0 35px rgba(245,158,11,0.9), 0 0 60px rgba(245,158,11,0.6); }
+.search-wrap{
+  padding:12px 15px;background:var(--bg);
+  position:relative;z-index:10;
 }
-@keyframes centerZoom {
-    0% { transform: scale(0.95); opacity: 0.85; }
-    100% { transform: scale(1.05); opacity: 1; }
+.search{
+  width:100%;padding:13px 15px;background:var(--panel);
+  border:1px solid var(--border);border-radius:12px;
+  color:white;outline:none;
 }
-@keyframes splashFade {
-    0%, 80% { opacity: 1; visibility: visible; }
-    100% { opacity: 0; visibility: hidden; }
+.search:focus{border-color:var(--gold)}
+main{max-width:1100px;margin:auto}
+.tab-section{display:none;padding:12px 15px 25px}
+.tab-section.active{display:block;animation:enter .3s ease}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{0%,100%{text-shadow:0 0 10px #ffb21c33}50%{text-shadow:0 0 25px #ffb21c99}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes shine{from{background-position:0%}to{background-position:200%}}
+h2.section-title{font-size:22px;margin:15px 0 7px}
+h2.section-title span{color:var(--gold)}
+.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.hero{
+  position:relative;overflow:hidden;min-height:280px;
+  display:flex;align-items:flex-end;padding:24px;
+  border:1px solid #57421d;border-radius:20px;
+  background:
+    radial-gradient(ellipse at 80% 20%,#a855f755,transparent 35%),
+    radial-gradient(ellipse at 20% 10%,#ffb21c44,transparent 40%),
+    linear-gradient(135deg,#202b47,#101522 60%,#351d40);
 }
-
-/* Sticky Header */
-header{position:sticky;top:0;background:#0b0f19;padding:12px 15px;border-bottom:1px solid #334155;z-index:1000;display:flex;align-items:center;justify-content:space-between;}
-.set-name-btn{background:#f59e0b;color:#0b0f19;border:none;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.3);}
-
-/* Search Bar */
-.search-bar-container { padding: 12px 15px; background: #0b0f19; border-bottom: 1px solid #334155; }
-.search-input { width: 100%; padding: 10px 14px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 13px; outline: none; }
-
-/* Sections Display Flow */
-.tab-section { display: none; padding: 15px; max-width: 480px; margin: 0 auto; }
-.tab-section.active { display: block; animation: fadeInSec 0.3s ease-in-out; }
-@keyframes fadeInSec { from { opacity: 0; } to { opacity: 1; } }
-
-/* Cards & Media Styling */
-.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:12px;margin:15px 0;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
-.card img{width:100%;height:170px;object-fit:cover;border-radius:8px;margin-bottom:8px;}
-.card h3{margin:8px 0 4px 0;color:#f59e0b;font-size:16px;}
-.card p{margin:0 0 10px 0;color:#cbd5e1;font-size:13px;}
-.badge{display:inline-block;background:#334155;color:#f59e0b;font-size:10px;padding:3px 6px;border-radius:4px;margin-bottom:6px;font-weight:bold;}
-
-.btn{display:block;background:#f59e0b;color:#0b0f19;text-align:center;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:10px;border:none;cursor:pointer;font-size:14px;width:100%;box-shadow:0 4px 10px rgba(245,158,11,0.3);}
-.whatsapp-btn{background:#25d366;color:#fff;}
-iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;margin-top:8px;background:#000;}
-
-/* Embedded Video Containers */
-.preview-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; margin-top: 8px; }
-.preview-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-/* Chat Styling */
-.chat-container{background:#1e293b;border:1px solid #334155;border-radius:12px;height:320px;display:flex;flex-direction:column;overflow:hidden;margin-top:10px;}
-.chat-messages{flex:1;padding:10px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
-.chat-msg{background:#0f172a;padding:8px 10px;border-radius:8px;font-size:13px;max-width:85%;word-break:break-word;border:1px solid #334155;}
-.chat-msg.my-msg{background:#1e3a8a;align-self:flex-end;border-color:#3b82f6;}
-.chat-msg .sender{color:#f59e0b;font-weight:bold;font-size:11px;margin-bottom:2px;display:block;}
-.chat-msg.my-msg .sender{color:#93c5fd;}
-.chat-msg img{max-width:100%;border-radius:6px;margin-top:5px;height:auto;}
-.chat-input-area{display:flex;padding:8px;background:#0b0f19;border-top:1px solid #334155;gap:6px;align-items:center;}
-.chat-input{flex:1;padding:10px;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#fff;font-size:13px;outline:none;}
-.file-upload-label{background:#334155;color:#f59e0b;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:bold;}
-
-/* Bottom Navigation Bar */
-.bottom-nav{
-    position: fixed; bottom: 0; left: 0; width: 100%;
-    background-color: #0b0f19; border-top: 2px solid #f59e0b;
-    display: flex; justify-content: space-around; padding: 10px 0;
-    z-index: 9999; box-shadow: 0 -4px 20px rgba(0,0,0,0.8);
+.hero:after{
+  content:"";position:absolute;width:200px;height:200px;
+  right:-40px;top:15px;border-radius:50%;
+  border:1px solid #ffb21c55;
+  box-shadow:0 0 0 20px #ffb21c0a,0 0 0 40px #ffb21c08;
+  pointer-events:none;
 }
-.nav-btn{
-    background: none; border: none; color: #94a3b8; text-decoration: none;
-    font-size: 11px; display: flex; flex-direction: column; align-items: center;
-    gap: 3px; cursor: pointer; font-weight: bold; padding: 4px 8px;
-    -webkit-tap-highlight-color: transparent;
+.hero-content{position:relative;z-index:1;max-width:600px}
+.hero-label{color:var(--gold);font-weight:800;font-size:11px;letter-spacing:3px}
+.hero h2{font-size:clamp(30px,7vw,53px);line-height:1.02;margin:13px 0;animation:glow 3s infinite}
+.hero p{font-size:13px;color:#d5dceb;line-height:1.7}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 15px;border:0;border-radius:10px;
+  background:var(--gold);color:#171717;font-weight:800;
+  text-decoration:none;font-size:12px;transition:.2s;
 }
-.nav-btn span { font-size: 18px; }
-.nav-btn.active { color: #f59e0b; }
+.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.btn.secondary{background:var(--panel2);color:white;border:1px solid var(--border)}
+.btn.green{background:var(--green);color:#06180e}
+.btn.small{padding:9px 11px}
+.btn.full{width:100%;margin-top:10px}
+.grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;margin-top:14px;
+}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{
+  min-width:0;background:var(--panel);border:1px solid var(--border);
+  border-radius:15px;padding:12px;overflow:hidden;
+  transition:transform .22s,border-color .22s;
+}
+.card:hover{transform:translateY(-3px);border-color:#9b762e}
+.poster{
+  aspect-ratio:16/10;border-radius:10px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:12px;
+  background:linear-gradient(135deg,#243754,#4a2452,#151c2c);
+  font-size:35px;position:relative;
+}
+.poster:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 20%,#ffffff0b 50%,transparent 80%);
+  background-size:200% 100%;animation:shine 7s linear infinite;
+}
+.poster span{position:relative;z-index:1}
+.card h3{font-size:14px;margin:11px 0 5px;line-height:1.4}
+.card p{font-size:12px;color:var(--muted);line-height:1.6;margin:5px 0 10px}
+.tag{
+  display:inline-block;background:#3b2d13;color:var(--gold);
+  border-radius:5px;padding:4px 7px;font-size:9px;font-weight:800;
+}
+.card .btn{width:100%;margin-top:6px}
+.card .btn+.btn{margin-top:7px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.section-head h2{font-size:21px}
+.chip-row{display:flex;gap:8px;overflow-x:auto;padding:12px 0}
+.chip{
+  white-space:nowrap;background:var(--panel);color:var(--muted);
+  border:1px solid var(--border);border-radius:22px;padding:9px 13px;font-size:11px;
+}
+.chip.active{color:#151515;background:var(--gold);border-color:var(--gold)}
+.plan-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:13px}
+@media(min-width:500px){.plan-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.plan{border-color:#4b3c21}
+.plan.featured{border-color:var(--gold);box-shadow:0 0 20px #ffb21c13}
+.price{font-size:27px;color:var(--gold);font-weight:900;margin:10px 0}
+.price small{font-size:11px;color:var(--muted)}
+.feature-list{font-size:12px;color:#cbd5e1;line-height:2.1;padding-left:18px}
+.preview{position:relative;aspect-ratio:16/9;background:#000;border-radius:11px;overflow:hidden;margin-top:10px}
+.preview iframe{width:100%;height:100%;border:0}
+.nav{
+  position:fixed;bottom:0;left:0;width:100%;z-index:2000;
+  display:flex;justify-content:space-around;align-items:center;
+  padding:9px 2px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(9,13,24,.97);border-top:1px solid #6b4c18;
+  box-shadow:0 -5px 25px #0008;
+}
+.nav button{
+  background:none;border:0;color:var(--muted);
+  min-width:0;flex:1;display:flex;align-items:center;
+  flex-direction:column;gap:4px;font-size:10px;font-weight:700;
+  padding:4px 0;
+}
+.nav button span{font-size:20px}
+.nav button.active{color:var(--gold)}
+.nav button.active span{animation:float 2s infinite}
+.empty{padding:25px;text-align:center;color:var(--muted);grid-column:1/-1}
+.chat-box{
+  height:350px;display:flex;flex-direction:column;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;margin-top:14px;
+}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
+.message{background:#253249;border-radius:10px;padding:10px;max-width:85%;font-size:13px;align-self:flex-start;overflow-wrap:anywhere}
+.message.mine{align-self:flex-end;background:#533e19}
+.message b{display:block;color:var(--gold);font-size:10px;margin-bottom:4px}
+.chat-form{display:flex;gap:6px;padding:9px;border-top:1px solid var(--border)}
+.chat-form input{min-width:0;flex:1;background:#0b1220;border:1px solid var(--border);color:white;border-radius:8px;padding:11px}
+footer{padding:25px 15px;text-align:center;color:var(--muted);font-size:11px;border-top:1px solid var(--border);line-height:1.8}
+.notice{padding:12px;border:1px solid var(--border);background:var(--panel);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.7;margin-top:12px}
+#toast{
+  position:fixed;left:50%;bottom:95px;transform:translateX(-50%);
+  background:#26354a;color:white;padding:12px 18px;border-radius:10px;
+  z-index:5000;display:none;font-size:12px;max-width:90%;text-align:center;
+}
 </style>
 </head>
 <body>
 
-<!-- Extended Cinematic Splash Screen with Deep Sound & Voice Reading -->
-<div id='splash'>
-    <div class='splash-content'>
-        <div class='splash-logo'>BRAQCOMICS</div>
-        <div class='splash-sub'>Into the Den</div>
-    </div>
-</div>
-
-<!-- Header -->
 <header>
-    <div style="display:flex; align-items:center; gap:8px;">
-        <span style="font-size:20px;">🎬</span>
-        <h2 style='color:#f59e0b;margin:0;font-size:17px;'>BRAQ COMICS</h2>
+  <div class="brand">
+    <span class="brand-icon">🎬</span>
+    <div>
+      <h1>BRAQ COMICS</h1>
+      <small>INTO THE DEN • ENTERTAINMENT HUB</small>
     </div>
-    <button type='button' class='set-name-btn' id='setNameBtn'>👤 Set Name</button>
+  </div>
+  <button class="pill" id="nameBtn">👤 Set name</button>
 </header>
 
-<!-- Global Search Bar -->
-<div class='search-bar-container'>
-    <input type='text' id='globalSearch' class='search-input' placeholder='🔍 Search across all movies, music, games & TV channels...' />
+<div class="search-wrap">
+  <input id="search" class="search" type="search"
+    placeholder="🔍 Search movies, music, games & channels...">
 </div>
 
-<!-- 1. HOME TAB -->
-<div id='tab-home' class='tab-section active'>
-    <div class='card' style='border-color:#f59e0b;background:linear-gradient(135deg,#1e293b,#0f172a);'>
-        <span class='badge'>FEATURED UNIVERSE</span>
-        <h3 style='font-size:18px;'>Welcome to BRAQ Hub</h3>
-        <p>Explore 50+ movies & trailers, 1000+ songs & audio tracks, 100+ games, live sports, and news channels!</p>
+<main>
+<!-- HOME -->
+<section class="tab-section active" id="home">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-label">WELCOME TO YOUR UNIVERSE</div>
+      <h2>YOUR WORLD.<br>YOUR ENTERTAINMENT.</h2>
+      <p>Discover movie trailers, music, browser games and live news from one place. Built for the BRAQ community.</p>
+      <div class="actions">
+        <button class="btn" data-go="movies">🎬 Explore movies</button>
+        <button class="btn secondary" data-go="games">🎮 Play games</button>
+      </div>
     </div>
+  </div>
 
-    <div class='card searchable-item' data-keywords='spider verse animation movie trailer'>
-        <span class='badge'>FEATURED TRAILER PREVIEW</span>
-        <h3>Spider-Verse Style Animation</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/3Z0fNnJfXmw?autoplay=1&mute=1&loop=1&playlist=3Z0fNnJfXmw' allow='autoplay' allowfullscreen></iframe>
-        </div>
-        <button class='btn' onclick="switchTab('movies', document.getElementById('nav-movies'))">Explore All 50+ Movies 🎬</button>
+  <h2 class="section-title"><span>💎</span> Membership plans</h2>
+  <p class="muted">Choose a plan to contact BRAQ support. Confirm the price and benefits before paying.</p>
+  <div id="homePlans" class="plan-grid"></div>
+
+  <h2 class="section-title"><span>🔥</span> Featured entertainment</h2>
+  <div class="grid" id="featuredGrid"></div>
+
+  <h2 class="section-title"><span>▶</span> Trailer spotlight</h2>
+  <div class="card">
+    <span class="tag">OFFICIAL TRAILER SEARCH</span>
+    <h3>Explore superhero and animation trailers</h3>
+    <div class="preview">
+      <iframe loading="lazy"
+        src="https://www.youtube-nocookie.com/embed/bo6tW0h6T6I"
+        title="Movie trailer preview"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
     </div>
+    <a class="btn full" target="_blank" rel="noopener"
+       href="https://www.youtube.com/results?search_query=official+superhero+animation+movie+trailers">
+       Find official trailers ↗
+    </a>
+  </div>
+  <p class="muted">Some video embeds may be unavailable because of the original uploader's settings. Use the official trailer search if a preview does not play.</p>
+</section>
 
-    <div class='card searchable-item' data-keywords='kampala vibe afrobeat uganda music'>
-        <span class='badge'>MUSIC PREVIEW</span>
-        <h3>Kampala Vibe & Afrobeat Mix</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0' allowfullscreen></iframe>
-        </div>
-        <button class='btn' onclick="switchTab('music', document.getElementById('nav-music'))">Explore 1000+ Songs & Music 🎵</button>
-    </div>
+<!-- MOVIES -->
+<section class="tab-section" id="movies">
+  <div class="section-head">
+    <h2 class="section-title"><span>🎬</span> Movie Universe</h2>
+  </div>
+  <p class="muted">Popular films, official trailers and legal viewing options.</p>
+  <div class="chip-row" id="movieFilters"></div>
+  <div class="grid" id="movieGrid"></div>
+</section>
 
-    <div class='card searchable-item' data-keywords='braq runner 3d games apk'>
-        <span class='badge'>TOP GAME SAMPLE</span>
-        <h3>Braq Runner 3D & 100+ Games</h3>
-        <img src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900' alt='Game'>
-        <p>Action-packed mobile runner game built with Spider-Verse inspired graphics.</p>
-        <button class='btn' onclick="switchTab('games', document.getElementById('nav-games'))">Play 100+ Games & APKs 🕹️</button>
-    </div>
-</div>
+<!-- MUSIC -->
+<section class="tab-section" id="music">
+  <h2 class="section-title"><span>🎵</span> Music Lounge</h2>
+  <p class="muted">Discover Afrobeats, Ugandan music, soundtracks and more.</p>
+  <div class="chip-row" id="musicFilters"></div>
+  <div class="grid" id="musicGrid"></div>
+  <div class="card" style="margin-top:15px">
+    <span class="tag">MUSIC STREAMING</span>
+    <h3>Listen to your favourite artists</h3>
+    <p>Open a music platform to listen to its available catalogue.</p>
+    <a class="btn" target="_blank" rel="noopener" href="https://music.youtube.com">YouTube Music ↗</a>
+    <a class="btn secondary" target="_blank" rel="noopener" href="https://open.spotify.com">Spotify ↗</a>
+    <a class="btn secondary" target="_blank" rel="noopener" href="https://audiomack.com">Audiomack ↗</a>
+  </div>
+</section>
 
-<!-- 2. MOVIES TAB (50+ Movies & Trailers) -->
-<div id='tab-movies' class='tab-section'>
-    <h2 style='color:#f59e0b;margin-top:0;'>Full Movie & Non-Copyright Library (50+ Titles)</h2>
-    <div id='movieListContainer'></div>
-</div>
+<!-- GAMES -->
+<section class="tab-section" id="games">
+  <h2 class="section-title"><span>🎮</span> Gaming Arena</h2>
+  <p class="muted">Browse 100 game discovery entries. Game availability, browser play and download options depend on the original publisher.</p>
+  <div class="chip-row" id="gameFilters"></div>
+  <div class="grid" id="gameGrid"></div>
+  <div class="notice">Safety tip: use official stores and publishers for APKs. Do not install unknown files or grant unnecessary permissions.</div>
+</section>
 
-<!-- 3. MUSIC TAB (1000+ Songs & Soundtracks) -->
-<div id='tab-music' class='tab-section'>
-    <h2 style='color:#f59e0b;margin-top:0;'>Music & Soundtracks (1000+ Songs Hub)</h2>
-    
-    <div class='card searchable-item' data-keywords='kampala vibe afrobeat uganda music'>
-        <span class='badge'>UGANDA HITS</span>
-        <h3>Kampala Vibe & Afrobeat Mix</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/jfKfPfyJRdk' allowfullscreen></iframe>
-        </div>
-    </div>
+<!-- LIVE TV -->
+<section class="tab-section" id="tv">
+  <h2 class="section-title"><span>📡</span> Live TV & Channels</h2>
+  <p class="muted">Official broadcasters, news streams, radio and sports coverage.</p>
+  <div class="grid" id="tvGrid"></div>
+  <div class="notice">These are official websites or channel discovery links, not a guarantee that every channel broadcasts free live video in every country.</div>
+</section>
 
-    <div class='card searchable-item' data-keywords='braq theme official anthem soundtrack'>
-        <span class='badge'>AUDIO TRACK 1</span>
-        <h3>Braq Theme (Official Anthem)</h3>
-        <p>Cinematic background soundtrack.</p>
-        <audio controls style='width:100%;margin-top:8px;'>
-            <source src='https://www.w3schools.com/html/horse.mp3' type='audio/mpeg'>
-        </audio>
-    </div>
+<!-- CHAT -->
+<section class="tab-section" id="chat">
+  <h2 class="section-title"><span>💬</span> Community Lounge</h2>
+  <p class="muted">Choose a display name and leave a message in this browser demo.</p>
+  <div class="notice">
+    Demo mode: messages are stored on this device only. They are NOT shared with other visitors. Real accounts and synchronized chat require a configured backend.
+  </div>
+  <div class="chat-box">
+    <div id="chatMessages" class="chat-messages"></div>
+    <form id="chatForm" class="chat-form">
+      <input id="chatInput" maxlength="500" autocomplete="off" placeholder="Write a message..." required>
+      <button class="pill" type="submit">Send</button>
+    </form>
+  </div>
+  <button class="btn secondary full" id="clearChat">Clear local messages</button>
+</section>
+</main>
 
-    <div class='card searchable-item' data-keywords='pearl of africa traditional fusion beat'>
-        <span class='badge'>AUDIO TRACK 2</span>
-        <h3>Pearl of Africa Traditional Fusion Beat</h3>
-        <p>Traditional drums merged with modern electronic bass.</p>
-        <audio controls style='width:100%;margin-top:8px;'>
-            <source src='https://www.w3schools.com/html/mov_bbb.mp4' type='audio/mpeg'>
-        </audio>
-    </div>
+<footer>
+  <strong style="color:var(--gold)">BRAQ COMICS</strong><br>
+  Into the Den • Movies • Music • Gaming • Community<br>
+  All trademarks and media belong to their respective owners.<br>
+  Use official services and respect creators' rights.
+</footer>
 
-    <div id='musicListContainer'></div>
-
-    <div class='card'>
-        <span class='badge'>STREAMING PORTAL</span>
-        <h3>Global Afrobeats, YouTube Music & Spotify</h3>
-        <img src='https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=900' alt='Music'>
-        <a class='btn' href='https://music.youtube.com' target='_blank'>Open 1000+ Song Catalog on YouTube Music</a>
-    </div>
-</div>
-
-<!-- 4. GAMES TAB (100+ Games & APKs) -->
-<div id='tab-games' class='tab-section'>
-    <h2 style='color:#f59e0b;margin-top:0;'>Games & APKs Catalog (100+ Games)</h2>
-    
-    <div class='card searchable-item' data-keywords='braq runner 3d action arcade apk'>
-        <span class='badge'>ACTION ARCADE</span>
-        <h3>Braq Runner 3D</h3>
-        <img src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900' alt='Game'>
-        <a class='btn' href='https://poki.com' target='_blank'>Play on Poki Games Hub</a>
-    </div>
-
-    <div class='card searchable-item' data-keywords='kampala traffic dash strategy arcade'>
-        <span class='badge'>TRAFFIC DASH</span>
-        <h3>Kampala Traffic & Strategy</h3>
-        <img src='https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900' alt='Game'>
-        <a class='btn' href='https://crazygames.com' target='_blank'>Play on CrazyGames Hub</a>
-    </div>
-
-    <div id='gamesListContainer'></div>
-</div>
-
-<!-- 5. LIVE TV & SPORTS STREAM CHANNELS -->
-<div id='tab-tv' class='tab-section'>
-    <h2 style='color:#f59e0b;margin-top:0;'>Live TV, Sports & News Channels</h2>
-    
-    <div class='card searchable-item' data-keywords='ntv uganda live stream news'>
-        <span class='badge'>UGANDA LOCAL TV</span>
-        <h3>NTV Uganda Live Stream</h3>
-        <img src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=900' alt='NTV'>
-        <a class='btn' href='https://ntv.co.ug/live-tv' target='_blank'>Watch NTV Live</a>
-    </div>
-
-    <div class='card searchable-item' data-keywords='sports football live stream match hub'>
-        <span class='badge'>LIVE SPORTS STREAM</span>
-        <h3>Global Football & Sports Live Channel</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/jfKfPfyJRdk' allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <div class='card searchable-item' data-keywords='al jazeera english live news'>
-        <span class='badge'>INTERNATIONAL NEWS</span>
-        <h3>Al Jazeera English Live Stream</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/gCNeDWCI0vo' allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <div class='card searchable-item' data-keywords='euronews live broadcasting'>
-        <span class='badge'>GLOBAL NEWS</span>
-        <h3>Euronews Live Broadcasting</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/pyjx6FdObpU' allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <div class='card searchable-item' data-keywords='nasa live space broadcasting'>
-        <span class='badge'>INTERNATIONAL SPACE FEED</span>
-        <h3>NASA Live & Space Broadcasting</h3>
-        <div class='preview-container'>
-            <iframe src='https://www.youtube.com/embed/21X5lGlDOfg' allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <div class='card' style='border-color:#25d366;'>
-        <span class='badge' style='background:#25d366;color:#fff;'>MOBILE MONEY VIP</span>
-        <h3>Unlock Exclusive VIP Perks</h3>
-        <button class='btn' onclick="let a=prompt('Enter amount in UGX (e.g. 5000):'); if(a){window.location='tel:*165*3*0705190026*'+a+'#';}">Buy Premium (USSD)</button>
-        <div style='margin-top:10px;'>
-            <a href="https://wa.me/256705190026?text=Hello%20BRAQ%20Support,%20I%20have%20paid%20via%20Mobile%20Money.%20My%20Transaction%20ID%20is:" target="_blank" class="btn whatsapp-btn">
-                💬 Confirm Payment on WhatsApp
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- 6. CHAT TAB -->
-<div id='tab-chat' class='tab-section'>
-    <h2 style='color:#f59e0b;margin-top:0;'>Community Chat Lounge</h2>
-    <div class='card' style='margin-bottom:8px;padding:10px;'>
-        <p style='margin:0;font-size:12px;'>Messages sync instantly across devices using your registered name!</p>
-    </div>
-    
-    <div class='chat-container'>
-        <div class='chat-messages' id='chatMessages'></div>
-        <div class='chat-input-area'>
-            <label class='file-upload-label' title='Attach Image'>📎
-                <input type='file' id='chatFile' accept='image/*' style='display:none;'>
-            </label>
-            <input type='text' id='chatInput' class='chat-input' placeholder='Type a message...' />
-            <button type='button' class='btn' id='sendChatBtn' style='width:auto;margin-top:0;padding:10px 14px;'>Send</button>
-        </div>
-    </div>
-</div>
-
-<!-- Fixed Bottom Navigation Bar -->
-<div class='bottom-nav'>
-    <button type='button' class='nav-btn active' id='nav-home' onclick="switchTab('home', this)"><span>🏠</span>Home</button>
-    <button type='button' class='nav-btn' id='nav-movies' onclick="switchTab('movies', this)"><span>🎬</span>Movies</button>
-    <button type='button' class='nav-btn' id='nav-music' onclick="switchTab('music', this)"><span>🎵</span>Music</button>
-    <button type='button' class='nav-btn' id='nav-games' onclick="switchTab('games', this)"><span>🕹️</span>Games</button>
-    <button type='button' class='nav-btn' id='nav-tv' onclick="switchTab('tv', this)"><span>⚽</span>Live TV</button>
-    <button type='button' class='nav-btn' id='nav-chat' onclick="switchTab('chat', this)"><span>💬</span>Chat</button>
-</div>
+<nav class="nav" aria-label="Main navigation">
+  <button class="active" data-go="home"><span>🏠</span>Home</button>
+  <button data-go="movies"><span>🎬</span>Movies</button>
+  <button data-go="music"><span>🎵</span>Music</button>
+  <button data-go="games"><span>🎮</span>Games</button>
+  <button data-go="tv"><span>📡</span>Live TV</button>
+  <button data-go="chat"><span>💬</span>Chat</button>
+</nav>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
-window.addEventListener('load', function() {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx) {
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 3.5);
-            
-            gainNode.gain.setValueAtTime(0.8, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 4.5);
-            
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 4.5);
-        }
+"use strict";
 
-        if ('speechSynthesis' in window) {
-            setTimeout(() => {
-                const utterance = new SpeechSynthesisUtterance("Braq Comics into the den");
-                utterance.rate = 0.85;
-                utterance.pitch = 0.6;
-                window.speechSynthesis.speak(utterance);
-            }, 500);
-        }
-    } catch(e) {
-        console.log("Audio autoplay restricted:", e);
-    }
+/* BRAQ COMICS — all catalogue and navigation code is in this file. */
 
-    generateMassiveLibraries();
-});
+const SUPPORT_NUMBER = "256705190026";
 
-function generateMassiveLibraries() {
-    const movieContainer = document.getElementById('movieListContainer');
-    let movieHtml = `
-        <div class='card searchable-item' data-keywords='spider verse animation movie trailer'>
-            <span class='badge'>ANIMATION SHOWCASE</span>
-            <h3>Spider-Verse Style Trailer</h3>
-            <div class='preview-container'><iframe src='https://www.youtube.com/embed/3Z0fNnJfXmw?autoplay=1&mute=1' allow='autoplay' allowfullscreen></iframe></div>
-        </div>
-        <div class='card searchable-item' data-keywords='legend of kintu buganda mythology'>
-            <span class='badge'>BUGANDA MYTHOLOGY</span>
-            <h3>Legend of Kintu & Walumbe</h3>
-            <div class='preview-container'><iframe src='https://www.youtube.com/embed/dQw4w9WgXcQ' allowfullscreen></iframe></div>
-        </div>
-        <div class='card searchable-item' data-keywords='big buck bunny non copyright animation'>
-            <span class='badge'>CLASSIC OPEN MOVIE</span>
-            <h3>Big Buck Bunny (Non-Copyright Animation)</h3>
-            <div class='preview-container'><iframe src='https://www.youtube.com/embed/YE7VzlLtp-4' allowfullscreen></iframe></div>
-        </div>
-        <div class='card searchable-item' data-keywords='sintel open source blender movie'>
-            <span class='badge'>SCI-FI OPEN MOVIE</span>
-            <h3>Sintel - Open Source Blender Movie</h3>
-            <div class='preview-container'><iframe src='https://www.youtube.com/embed/zeWDTCk0v3g' allowfullscreen></iframe></div>
-        </div>
-        <div class='card searchable-item' data-keywords='tears of steel sci fi short'>
-            <span class='badge'>ACTION SHORT</span>
-            <h3>Tears of Steel - Sci-Fi Short</h3>
-            <div class='preview-container'><iframe src='https://www.youtube.com/embed/R6MlUBNBZ44' allowfullscreen></iframe></div>
-        </div>
-    `;
+const plans = [
+  {name:"FREE",price:"UGX 0",description:"Explore the hub",features:["Browse entertainment","Discover games","Official media links"],featured:false},
+  {name:"VIP MONTHLY",price:"UGX 5,000",description:"Proposed monthly membership",features:["VIP member badge","Community perks","Future premium features"],featured:true},
+  {name:"VIP PREMIUM",price:"UGX 10,000",description:"Proposed premium membership",features:["Premium member badge","Priority support","Future premium features"],featured:false}
+];
 
-    for (let i = 6; i <= 50; i++) {
-        movieHtml += `
-            <div class='card searchable-item' data-keywords='braq multiverse cinematic movie episode ${i}'>
-                <span class='badge'>BRAQ UNIVERSE EPISODE ${i}</span>
-                <h3>Braq Multiverse Special Chapter #${i}</h3>
-                <p>Exclusive multi-dimensional cinematic feature and animated short episode.</p>
-                <div class='preview-container'><iframe src='https://www.youtube.com/embed/dQw4w9WgXcQ' allowfullscreen></iframe></div>
-            </div>
-        `;
-    }
-    movieContainer.innerHTML = movieHtml;
+/* Titles link to official trailer searches, not unauthorized film copies. */
+const movies = [
+ ["Spider-Man: Into the Spider-Verse","Animation","🕷️"],
+ ["Spider-Man: Across the Spider-Verse","Animation","🕸️"],
+ ["The Super Mario Bros. Movie","Animation","🍄"],
+ ["The Wild Robot","Animation","🤖"],
+ ["Puss in Boots: The Last Wish","Animation","🐈"],
+ ["Kung Fu Panda 4","Animation","🐼"],
+ ["How to Train Your Dragon","Fantasy","🐉"],
+ ["Transformers One","Animation","🚀"],
+ ["Sonic the Hedgehog 3","Action","💨"],
+ ["Black Panther: Wakanda Forever","Superhero","🐾"],
+ ["Avengers: Endgame","Superhero","🛡️"],
+ ["Guardians of the Galaxy","Superhero","🌌"],
+ ["Doctor Strange","Superhero","✨"],
+ ["The Batman","Action","🦇"],
+ ["Aquaman","Superhero","🌊"],
+ ["Wonder Woman","Superhero","⚔️"],
+ ["Iron Man","Superhero","🤖"],
+ ["Thor: Ragnarok","Superhero","⚡"],
+ ["Captain America: The Winter Soldier","Superhero","🛡️"],
+ ["Deadpool & Wolverine","Superhero","💥"],
+ ["Avatar: The Way of Water","Fantasy","🌊"],
+ ["Dune: Part Two","Sci-Fi","🏜️"],
+ ["Interstellar","Sci-Fi","🌠"],
+ ["Inception","Sci-Fi","🌀"],
+ ["The Matrix","Sci-Fi","💊"],
+ ["Jurassic World","Adventure","🦖"],
+ ["Mission: Impossible","Action","🎯"],
+ ["Fast X","Action","🏎️"],
+ ["Top Gun: Maverick","Action","✈️"],
+ ["John Wick","Action","🥋"],
+ ["The Equalizer","Action","🎯"],
+ ["Jumanji: Welcome to the Jungle","Adventure","🌴"],
+ ["Godzilla x Kong: The New Empire","Action","🦍"],
+ ["Kingdom of the Planet of the Apes","Sci-Fi","🐒"],
+ ["The Lord of the Rings","Fantasy","💍"],
+ ["Harry Potter and the Philosopher's Stone","Fantasy","🪄"],
+ ["Fantastic Beasts","Fantasy","🦉"],
+ ["The Hunger Games","Adventure","🏹"],
+ ["The Maze Runner","Sci-Fi","🏃"],
+ ["The Chronicles of Narnia","Fantasy","🦁"],
+ ["Coco","Animation","🎸"],
+ ["Encanto","Animation","🏠"],
+ ["Moana","Animation","🌺"],
+ ["Frozen","Animation","❄️"],
+ ["Inside Out 2","Animation","🧠"],
+ ["Despicable Me 4","Animation","🍌"],
+ ["The Incredibles","Superhero","🦸"],
+ ["Ratatouille","Animation","🐀"],
+ ["Finding Nemo","Animation","🐠"],
+ ["Toy Story","Animation","🤠"],
+ ["The Lion King","Animation","🦁"],
+ ["Mufasa: The Lion King","Animation","👑"],
+ ["Shrek","Animation","🟢"],
+ ["Megamind","Animation","🧠"],
+ ["Madagascar","Animation","🦓"],
+ ["The Bad Guys","Animation","🦊"],
+ ["Teenage Mutant Ninja Turtles","Animation","🐢"],
+ ["The Lego Movie","Animation","🧱"],
+ ["The Mitchells vs. the Machines","Animation","🤖"],
+ ["A Quiet Place","Horror","🤫"],
+ ["Five Nights at Freddy's","Horror","🐻"]
+].map(x=>({title:x[0],category:x[1],icon:x[2]}));
 
-    const musicContainer = document.getElementById('musicListContainer');
-    let musicHtml = '';
-    for (let j = 1; j <= 50; j++) {
-        musicHtml += `
-            <div class='card searchable-item' data-keywords='afrobeat hit track song rhythm ${j}'>
-                <span class='badge'>AFROBEAT HIT #${j}</span>
-                <h3>Kampala Club Anthem & Afrobeat Track #${j}</h3>
-                <p>East African club rhythm and high-tempo instrumental track.</p>
-                <audio controls style='width:100%;margin-top:8px;'>
-                    <source src='https://www.w3schools.com/html/horse.mp3' type='audio/mpeg'>
-                </audio>
-  
+const music = [
+ ["Ugandan Afrobeats","Ugandan","🇺🇬"],
+ ["East African Hits","East Africa","🌍"],
+ ["African Gospel","Gospel","🙏"],
+ ["Ugandan Gospel","Gospel","🎤"],
+ ["Dancehall Mix","Dancehall","🔥"],
+ ["Afrobeats Party","Afrobeats","💃"],
+ ["Amapiano Mix","Amapiano","🎹"],
+ ["African Hip-Hop","Hip-Hop","🎧"],
+ ["Ugandan Hip-Hop","Ugandan","🎙️"],
+ ["Bongo Flava","East Africa","🌴"],
+ ["Reggae Classics","Reggae","🌿"],
+ ["R&B Love Songs","R&B","❤️"],
+ ["Romantic Acoustic","Acoustic","🎸"],
+ ["African Jazz","Jazz","🎷"],
+ ["Piano Instrumentals","Instrumental","🎹"],
+ ["Epic Movie Soundtracks","Soundtracks","🎬"],
+ ["Superhero Music","Soundtracks","🦸"],
+ ["Anime Soundtracks","Soundtracks","⚡"],
+ ["Gaming Music","Gaming","🎮"],
+ ["Relaxing Music","Chill","🌙"],
+ ["Workout Music","Fitness","💪"],
+ ["Old School Hip-Hop","Hip-Hop","📻"],
+ ["Classic African Music","African Classics","🥁"],
+ ["Luganda Music","Ugandan","🇺🇬"],
+ ["Kadongo Kamu","Ugandan","🎸"],
+ ["Afro-gospel Praise","Gospel","🙌"],
+ ["African Dance Hits","Afrobeats","💃"],
+ ["Electronic Dance Music","EDM","🔊"],
+ ["Chill Lo-fi Beats","Chill","🌧️"],
+ ["Piano and Strings","Instrumental","🎻"]
+].map(x=>({title:x[0],category:x[1],icon:x[2]}));
+
+const games = [
+ "Subway Surfers","Temple Run 2","Hill Climb Racing","Angry Birds",
+ "Cut the Rope","Fruit Ninja","Candy Crush Saga","Plants vs. Zombies",
+ "Crossy Road","Jetpack Joyride","Geometry Dash","Stickman Hook",
+ "Drive Mad","Level Devil","Retro Bowl","Smash Karts",
+ "Moto X3M","Drift Boss","Vex 7","Fireboy and Watergirl",
+ "8 Ball Pool","Chess","Checkers","Sudoku",
+ "Solitaire","Mahjong","Minesweeper","Word Search",
+ "2048","Tetris","Pac-Man","Snake",
+ "Space Invaders","Breakout","Flappy Bird style games","Tower Defense",
+ "Bloons Tower Defense","Car Racing","Formula Racing","Bike Racing",
+ "Motorcycle Stunts","Monster Truck","Parking Master","Drifting Challenge",
+ "Football Penalty","Soccer Skills","Basketball Stars","Basketball Legends",
+ "Volleyball Challenge","Table Tennis","Bowling","Golf",
+ "Pool Club","Cricket Games","Baseball Games","American Football",
+ "Wrestling Games","Boxing Games","Karate Fighting","Ninja Adventure",
+ "Stickman Fighter","Shadow Fight","Beat Em Up","Zombie Survival",
+ "Zombie Shooter","Tower Defense Strategy","Kingdom Building","City Builder",
+ "Farm Simulator","Cooking Fever","Papa's Pizzeria","Restaurant Simulator",
+ "Dress Up Games","Fashion Designer","Makeup Artist","Pet Care",
+ "Horse Riding","Dinosaur Run","Wildlife Simulator","Ocean Adventure",
+ "Fishing Games","Treasure Hunt","Escape Room","Mystery Detective",
+ "Hidden Objects","Point and Click Adventure","Platformer Adventure","Dungeon Crawler",
+ "Roguelike Adventure","RPG Quest","Turn Based Strategy","Card Batt
