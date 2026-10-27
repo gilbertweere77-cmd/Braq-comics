@@ -330,20 +330,19 @@
 </head>
 <body>
 
-    <!-- DIRECT LOGIN / REGISTER GATE WRAPPED IN A FORM -->
+    <!-- BULLETPROOF AUTH GATE USING CLICKABLE LINKS -->
     <div id="auth-gate">
         <div class="gate-box">
             <div class="logo-box" style="margin: 0 auto 15px auto; width: 50px; height: 50px; font-size: 26px;">▶</div>
             <h2>BRAQ-COMICS</h2>
-            <p>Enter your username and 4-digit password to enter the hub.</p>
+            <p>Enter your username and 4-digit password, then tap below to enter.</p>
             
-            <form id="authForm" onsubmit="return false;" style="margin: 0;">
-                <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" autocomplete="username" />
-                <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" autocomplete="current-password" />
-                
-                <button type="button" id="regBtn" class="btn">Register New Account</button>
-                <button type="button" id="signinBtn" class="btn btn-outline">Sign In</button>
-            </form>
+            <input type="text" id="usernameInput" placeholder="Enter Username..." class="form-input" />
+            <input type="text" id="passwordInput" placeholder="4-Digit Password (e.g. 1234)" maxlength="4" class="form-input" />
+            
+            <!-- Using <a> tags styled as buttons so mobile browsers never block them -->
+            <a href="javascript:void(0);" class="btn" onclick="handleAuthAction('register')">Register New Account</a>
+            <a href="javascript:void(0);" class="btn btn-outline" onclick="handleAuthAction('signin')">Sign In</a>
         </div>
     </div>
 
@@ -478,13 +477,9 @@
             }
             loadMessages();
             setInterval(loadMessages, 2000); // Live sync polling across devices
-
-            // Attach bulletproof event listeners directly via JS
-            document.getElementById('regBtn').addEventListener('click', handleRegister);
-            document.getElementById('signinBtn').addEventListener('click', handleSignIn);
         };
 
-        function handleRegister() {
+        function handleAuthAction(actionType) {
             let username = document.getElementById('usernameInput').value.trim();
             let password = document.getElementById('passwordInput').value.trim();
 
@@ -497,35 +492,32 @@
                 return;
             }
 
-            localStorage.setItem('braq_pwd_' + username, password);
-            localStorage.setItem('braq_logged_user', username);
-            alert('Account registered successfully!');
-            unlockApp(username);
-        }
-
-        function handleSignIn() {
-            let username = document.getElementById('usernameInput').value.trim();
-            let password = document.getElementById('passwordInput').value.trim();
-
-            if (!username || password.length !== 4) {
-                alert('Please enter your username and 4-digit password.');
-                return;
-            }
-
-            let storedPwd = localStorage.getItem('braq_pwd_' + username);
-            if (storedPwd) {
-                if (storedPwd === password) {
-                    localStorage.setItem('braq_logged_user', username);
-                    unlockApp(username);
-                } else {
-                    alert('Incorrect 4-digit password!');
+            if (actionType === 'register') {
+                let existing = localStorage.getItem('braq_pwd_' + username);
+                if (existing) {
+                    alert('Username already exists! Please click Sign In instead.');
+                    return;
                 }
-            } else {
-                // Auto-register fallback so user never gets stuck
                 localStorage.setItem('braq_pwd_' + username, password);
                 localStorage.setItem('braq_logged_user', username);
-                alert('Account created and signed in successfully!');
+                alert('Account registered successfully!');
                 unlockApp(username);
+            } else {
+                let storedPwd = localStorage.getItem('braq_pwd_' + username);
+                if (storedPwd) {
+                    if (storedPwd === password) {
+                        localStorage.setItem('braq_logged_user', username);
+                        unlockApp(username);
+                    } else {
+                        alert('Incorrect 4-digit password!');
+                    }
+                } else {
+                    // Auto-register convenience fallback so you never get stuck
+                    localStorage.setItem('braq_pwd_' + username, password);
+                    localStorage.setItem('braq_logged_user', username);
+                    alert('Account created & signed in successfully!');
+                    unlockApp(username);
+                }
             }
         }
 
@@ -558,4 +550,11 @@
             let target = document.getElementById(viewId);
             if (target) target.classList.add('active');
 
-            let buttons = document.getElementsByClassName('n
+            let buttons = document.getElementsByClassName('nav-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (element) element.classList.add('active');
+        }
+
+        // Multi-User Live C
