@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRAQ-COMICS | App Hub</title>
+    <title>BRAQ-COMICS | Ultimate Hub</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -15,7 +15,7 @@
             padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        /* Full Screen Authentication Gate (Forces login first) */
+        /* Full Screen Authentication Gate */
         #auth-gate {
             position: fixed;
             top: 0;
@@ -130,7 +130,7 @@
             display: block;
         }
 
-        /* Cards */
+        /* Cards & Posters */
         .card {
             background-color: #1e293b;
             border: 1px solid #334155;
@@ -139,6 +139,14 @@
             margin-bottom: 20px;
             text-align: left;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .card-img {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 1px solid #334155;
         }
         .card h3 {
             margin-top: 0;
@@ -163,7 +171,7 @@
         .btn {
             display: block;
             background-color: #f59e0b;
-            color: #0b0f19;
+            color: #0f172a;
             padding: 12px;
             text-align: center;
             text-decoration: none;
@@ -197,7 +205,74 @@
             margin-top: 10px;
         }
 
-        /* Modal Popups for Sign In / Register */
+        /* Chat Room Styling */
+        .chat-container {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-msg {
+            background-color: #0f172a;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            max-width: 85%;
+            word-break: break-word;
+            border: 1px solid #334155;
+        }
+        .chat-msg .sender {
+            color: #f59e0b;
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 11px;
+        }
+        .chat-msg img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-top: 6px;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            background-color: #0b0f19;
+            border-top: 1px solid #334155;
+            gap: 8px;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            outline: none;
+        }
+        .file-upload-label {
+            background-color: #334155;
+            color: #f59e0b;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* Modal Popups */
         .modal {
             display: none;
             position: fixed;
@@ -247,7 +322,7 @@
             cursor: pointer;
         }
 
-        /* Bottom App Navigation Bar (Hidden until logged in) */
+        /* Bottom App Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -273,7 +348,7 @@
             cursor: pointer;
             font-weight: bold;
         }
-        .nav-btn span { font-size: 18px; }
+        .nav-btn span { font-size: 16px; }
         .nav-btn.active { color: #f59e0b; }
     </style>
 </head>
@@ -293,7 +368,7 @@
     <!-- Top Navigation Header -->
     <div class="top-nav" id="topNav" style="display: none;">
         <div class="logo-box">▶</div>
-        <div class="app-title">BRAQ-COMICS</div>
+        <div class="app-title" id="welcomeUserTitle">BRAQ-COMICS</div>
         <button onclick="logoutApp()" style="background:none; border:none; color:#94a3b8; font-size:12px; cursor:pointer; font-weight:bold;">Logout</button>
     </div>
 
@@ -301,7 +376,7 @@
     <div id="home-view" class="section-view" style="padding: 0; max-width: 100%;">
         
         <!-- Rotating Cinematic Poster Background -->
-        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800');">
+        <div id="heroBanner" class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800');">
             <div class="hero-overlay"></div>
             <div class="hero-content" style="max-width: 400px; margin: 0 auto; width: 100%; padding: 0 20px;">
                 <span class="badge">FEATURED UNIVERSE</span>
@@ -313,11 +388,11 @@
         <div style="padding: 20px; max-width: 400px; margin: 0 auto;">
             <div class="card" style="border-color: #f59e0b;">
                 <span class="badge">SESSION ACTIVE</span>
-                <h3>Welcome, Member!</h3>
-                <p>You have full access to all movies, games, soundtracks, and live sports streaming.</p>
+                <h3 id="sessionUserGreeting">Welcome, Member!</h3>
+                <p>You have full access to all movies, games, community chat, soundtracks, and live sports streaming.</p>
             </div>
 
-            <!-- WhatsApp Support Card (Phone number hidden from display text) -->
+            <!-- WhatsApp Support Card -->
             <div class="card">
                 <span class="badge">SUPPORT & HELP</span>
                 <h3>Need Assistance?</h3>
@@ -327,15 +402,17 @@
         </div>
     </div>
 
-    <!-- 2. MOVIES & COMICS VIEW -->
+    <!-- 2. MOVIES & COMICS VIEW (With Posters) -->
     <div id="movies-view" class="section-view">
         <div class="card">
+            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800" alt="Movie Poster" class="card-img">
             <span class="badge">MOVIE / ANIMATION</span>
             <h3>Into the Multiverse (Teaser)</h3>
             <p>Exclusive animated concept teaser trailer and shorts.</p>
             <a href="#" class="btn">Watch / Download MP4</a>
         </div>
         <div class="card">
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800" alt="Comic Art" class="card-img">
             <span class="badge">COMIC CHAPTER</span>
             <h3>Braq Origins #1</h3>
             <p>Discover the legend and visual storytelling of our main hero.</p>
@@ -346,6 +423,7 @@
     <!-- 3. GAMES VIEW -->
     <div id="games-view" class="section-view">
         <div class="card">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800" alt="Game Banner" class="card-img">
             <span class="badge">GAME (APK)</span>
             <h3>Braq Runner 3D</h3>
             <p>An action-packed mobile runner game built with awesome Spider-Verse inspired graphics.</p>
@@ -369,10 +447,36 @@
     <!-- 5. LIVE TV & SPORTS VIEW -->
     <div id="livetv-view" class="section-view">
         <div class="card" style="border-color: #f59e0b;">
+            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800" alt="Live Sports" class="card-img">
             <span class="badge">LIVE SPORTS</span>
             <h3>Live Football Match Stream</h3>
             <p>Stream live football fixtures, sports channels, and entertainment broadcasts.</p>
             <a href="#" class="btn">Watch Live Stream</a>
+        </div>
+    </div>
+
+    <!-- 6. COMMUNITY CHAT VIEW -->
+    <div id="chat-view" class="section-view">
+        <div class="card" style="margin-bottom: 10px; padding: 12px;">
+            <span class="badge">COMMUNITY CHAT</span>
+            <h3 style="margin-bottom: 2px;">BRAQ Hub Lounge</h3>
+            <p style="margin: 0; font-size: 12px;">Chat with fellow fans, share media, and discuss movies & games!</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg">
+                    <div class="sender">System Admin</div>
+                    Welcome to the BRAQ Hub Chat! Drop your thoughts or images here.
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <label class="file-upload-label" title="Attach Image">📎
+                    <input type="file" id="chatFile" accept="image/*" style="display: none;" onchange="handleChatImage(event)">
+                </label>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)">
+                <button class="btn" style="width: auto; margin-top: 0; padding: 10px 14px;" onclick="sendChatMessage()">Send</button>
+            </div>
         </div>
     </div>
 
@@ -381,9 +485,9 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('signin-modal')">&times;</button>
             <h3>Sign In to BRAQ</h3>
-            <form onsubmit="loginSuccess(event)">
-                <input type="email" placeholder="Email Address" class="form-input" required>
-                <input type="password" placeholder="Password" class="form-input" required>
+            <form onsubmit="handleSignIn(event)">
+                <input type="email" id="signinEmail" placeholder="Email Address" class="form-input" required>
+                <input type="password" id="signinPass" placeholder="Password" class="form-input" required>
                 <button type="submit" class="btn">Login</button>
             </form>
         </div>
@@ -393,11 +497,11 @@
     <div id="register-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('register-modal')">&times;</button>
-            <h3>Create Account</h3>
-            <form onsubmit="loginSuccess(event)">
-                <input type="text" placeholder="Username" class="form-input" required>
-                <input type="email" placeholder="Email Address" class="form-input" required>
-                <input type="password" placeholder="Create Password" class="form-input" required>
+            <h3>Create New Account</h3>
+            <form onsubmit="handleRegister(event)">
+                <input type="text" id="regName" placeholder="Username" class="form-input" required>
+                <input type="email" id="regEmail" placeholder="Email Address" class="form-input" required>
+                <input type="password" id="regPass" placeholder="Create Password" class="form-input" required>
                 <button type="submit" class="btn">Register & Enter</button>
             </form>
         </div>
@@ -410,71 +514,55 @@
         <button class="nav-btn" onclick="switchTab('games-view', this)"><span>🕹️</span>Games</button>
         <button class="nav-btn" onclick="switchTab('music-view', this)"><span>🎵</span>Music</button>
         <button class="nav-btn" onclick="switchTab('livetv-view', this)"><span>⚽</span>Live TV</button>
+        <button class="nav-btn" onclick="switchTab('chat-view', this)"><span>💬</span>Chat</button>
     </div>
 
     <script>
-        function loginSuccess(event) {
+        let currentUser = localStorage.getItem('braq_logged_user');
+
+        // Check if already logged in previously
+        window.onload = function() {
+            if (currentUser) {
+                unlockApp(currentUser);
+            }
+        };
+
+        function handleRegister(event) {
             event.preventDefault();
+            let name = document.getElementById('regName').value;
+            let email = document.getElementById('regEmail').value;
+            let pass = document.getElementById('regPass').value;
+
+            // Save user data to localStorage
+            let userData = { name: name, pass: pass };
+            localStorage.setItem('braq_user_' + email, JSON.stringify(userData));
+            
+            alert('Account registered successfully! Please sign in.');
+            closeModal('register-modal');
+            openModal('signin-modal');
+        }
+
+        function handleSignIn(event) {
+            event.preventDefault();
+            let email = document.getElementById('signinEmail').value;
+            let pass = document.getElementById('signinPass').value;
+
+            let storedData = localStorage.getItem('braq_user_' + email);
+            if (storedData) {
+                let user = JSON.parse(storedData);
+                if (user.pass === pass) {
+                    localStorage.setItem('braq_logged_user', user.name);
+                    unlockApp(user.name);
+                } else {
+                    alert('Incorrect password. Please try again.');
+                }
+            } else {
+                alert('Account not found. Please register first.');
+            }
+        }
+
+        function unlockApp(username) {
             document.getElementById('auth-gate').style.display = 'none';
             document.getElementById('topNav').style.display = 'flex';
             document.getElementById('bottomNav').style.display = 'flex';
-            document.getElementById('signin-modal').style.display = 'none';
-            document.getElementById('register-modal').style.display = 'none';
-            switchTab('home-view', document.querySelector('.nav-btn'));
-        }
-
-        function logoutApp() {
-            document.getElementById('auth-gate').style.display = 'flex';
-            document.getElementById('topNav').style.display = 'none';
-            document.getElementById('bottomNav').style.display = 'none';
-            let views = document.getElementsByClassName('section-view');
-            for (let i = 0; i < views.length; i++) {
-                views[i].classList.remove('active');
-            }
-        }
-
-        function switchTab(viewId, element) {
-            let views = document.getElementsByClassName('section-view');
-            for (let i = 0; i < views.length; i++) {
-                views[i].classList.remove('active');
-            }
-            document.getElementById(viewId).classList.add('active');
-
-            let buttons = document.getElementsByClassName('nav-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            if (element) element.classList.add('active');
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // Cinematic Movie Poster Slideshow URLs (Changes every 30 seconds automatically)
-        const moviePosters = [
-            "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
-            "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800",
-            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800",
-            "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800"
-        ];
-        let posterIndex = 0;
-
-        function rotatePosters() {
-            posterIndex = (posterIndex + 1) % moviePosters.length;
-            let banner = document.getElementById('heroBanner');
-            if (banner) {
-                banner.style.backgroundImage = `url('${moviePosters[posterIndex]}')`;
-            }
-        }
-
-        setInterval(rotatePosters, 30000);
-    </script>
-
-</body>
-    </html>
-    
+            document.getElementById('signin-modal').style.display = 'none
