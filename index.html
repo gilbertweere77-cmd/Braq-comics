@@ -171,7 +171,7 @@
         .btn {
             display: block;
             background-color: #f59e0b;
-            color: #0f172a;
+            color: #0b0f19;
             padding: 12px;
             text-align: center;
             text-decoration: none;
@@ -280,8 +280,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 20000;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -402,7 +402,7 @@
         </div>
     </div>
 
-    <!-- 2. MOVIES & COMICS VIEW (With Posters) -->
+    <!-- 2. MOVIES & COMICS VIEW -->
     <div id="movies-view" class="section-view">
         <div class="card">
             <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800" alt="Movie Poster" class="card-img">
@@ -518,33 +518,45 @@
     </div>
 
     <script>
-        let currentUser = localStorage.getItem('braq_logged_user');
-
         // Check if already logged in previously
         window.onload = function() {
+            let currentUser = localStorage.getItem('braq_logged_user');
             if (currentUser) {
                 unlockApp(currentUser);
             }
         };
 
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
         function handleRegister(event) {
             event.preventDefault();
-            let name = document.getElementById('regName').value;
-            let email = document.getElementById('regEmail').value;
+            let name = document.getElementById('regName').value.trim();
+            let email = document.getElementById('regEmail').value.trim().toLowerCase();
             let pass = document.getElementById('regPass').value;
+
+            if (!name || !email || !pass) {
+                alert('Please fill in all fields.');
+                return;
+            }
 
             // Save user data to localStorage
             let userData = { name: name, pass: pass };
             localStorage.setItem('braq_user_' + email, JSON.stringify(userData));
             
-            alert('Account registered successfully! Please sign in.');
+            alert('Account registered successfully! Now please sign in.');
             closeModal('register-modal');
             openModal('signin-modal');
         }
 
         function handleSignIn(event) {
             event.preventDefault();
-            let email = document.getElementById('signinEmail').value;
+            let email = document.getElementById('signinEmail').value.trim().toLowerCase();
             let pass = document.getElementById('signinPass').value;
 
             let storedData = localStorage.getItem('braq_user_' + email);
@@ -557,12 +569,4 @@
                     alert('Incorrect password. Please try again.');
                 }
             } else {
-                alert('Account not found. Please register first.');
-            }
-        }
-
-        function unlockApp(username) {
-            document.getElementById('auth-gate').style.display = 'none';
-            document.getElementById('topNav').style.display = 'flex';
-            document.getElementById('bottomNav').style.display = 'flex';
-            document.getElementById('signin-modal').style.display = 'none
+      h 
