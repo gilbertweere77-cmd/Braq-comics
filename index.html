@@ -520,5 +520,33 @@ document.addEventListener("click", e => {
  updateApplaudUI();
 });
 
+
 window.addEventListener("load", () => {
- setTimeout((
+  const intro = document.getElementById("intro");
+
+  // Let the opening animation finish.
+  setTimeout(() => {
+    if (intro) {
+      intro.style.opacity = "0";
+      intro.style.visibility = "hidden";
+      intro.style.pointerEvents = "none";
+    }
+  }, 3200);
+
+  // Keep the navigation working even if optional
+  // content-rendering functions are not yet defined.
+  if (typeof renderPlans === "function") renderPlans();
+  if (typeof renderMedia === "function") renderMedia();
+  if (typeof renderChat === "function") renderChat();
+
+  if (typeof updateApplaudUI === "function") {
+    updateApplaudUI();
+  }
+
+  if (typeof applyOwnerMode === "function") {
+    applyOwnerMode();
+  }
+});
+ </script>
+</body>
+</html>
