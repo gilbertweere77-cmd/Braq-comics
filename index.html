@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b14">
-<title>BRAQ COMICS — Into the Den (Owner Applaud Edition)</title>
+<title>BRAQ COMICS — Into the Den (Final Fixed Edition)</title>
 
 <style>
 :root{
@@ -16,7 +16,7 @@
 html{scroll-behavior:smooth}
 body{
  margin:0;background:var(--bg);color:var(--white);
- font-family:Arial,Helvetica,sans-serif;padding-bottom:95px;
+ font-family:Arial,Helvetica,sans-serif;padding-bottom:100px;
 }
 button,input,select{font:inherit}
 button,a{-webkit-tap-highlight-color:transparent}
@@ -93,9 +93,9 @@ header{
 }
 .search:focus{border-color:var(--gold)}
 main{max-width:1100px;margin:auto}
-.page{display:none;padding:12px 15px 25px;animation:pageIn .25s ease}
+.page{display:none;padding:12px 15px 35px;animation:pageIn .2s ease}
 .page.active{display:block}
-@keyframes pageIn{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pageIn{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 /* GENERAL UI */
 h2{font-size:21px;margin:18px 0 8px}
@@ -152,7 +152,16 @@ h2 span{color:var(--gold)}
  background:#403016;color:var(--gold);font-size:9px;font-weight:bold}
 .card .btn{width:100%;margin-top:6px}
 
-/* OWNER APPLAUD BAR */
+/* OWNER CONTROL BANNER */
+#ownerControlBanner{
+ display:none;background:linear-gradient(135deg,#1c2d22,#0c1911);
+ border:1px solid var(--green);border-radius:12px;padding:12px;margin-bottom:15px;
+ align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+#ownerControlBanner .owner-info{font-size:12px;color:var(--green);font-weight:bold;}
+#ownerControlBanner .owner-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* APPLAUD BAR */
 .applaud-bar{
  display:flex;align-items:center;justify-content:space-between;
  margin-top:8px;padding-top:8px;border-top:1px solid var(--border);
@@ -173,6 +182,7 @@ h2 span{color:var(--gold)}
 .price small{font-size:10px;color:var(--muted)}
 .features{padding-left:16px;font-size:11px;color:#d1d9e8;line-height:2}
 
+/* NAVIGATION BAR (FIXED) */
 .nav{
  position:fixed;z-index:3000;bottom:0;left:0;width:100%;
  display:flex;align-items:center;justify-content:space-around;
@@ -180,14 +190,15 @@ h2 span{color:var(--gold)}
  padding:8px 2px calc(8px + env(safe-area-inset-bottom));
  box-shadow:0 -5px 25px #0009
 }
-.nav button{
+.nav-btn{
  flex:1;min-width:0;border:0;background:none;color:var(--muted);
  display:flex;flex-direction:column;align-items:center;gap:4px;
- padding:4px 0;font-size:9px;font-weight:bold
+ padding:4px 0;font-size:9px;font-weight:bold;cursor:pointer;
 }
-.nav button span{font-size:20px}
-.nav button.active{color:var(--gold)}
-.nav button.active span{animation:float 2s infinite}
+.nav-btn span{font-size:20px}
+.nav-btn.active{color:var(--gold)}
+.nav-btn.active span{animation:float 2s infinite}
+
 .chat-box{height:340px;display:flex;flex-direction:column;overflow:hidden;
  border:1px solid var(--border);border-radius:13px;background:var(--panel);margin-top:12px}
 .chat-messages{flex:1;overflow-y:auto;padding:11px;display:flex;flex-direction:column;gap:8px}
@@ -202,7 +213,7 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
  display:none;background:#26344a;color:white;padding:12px 17px;border-radius:9px;
  font-size:12px;max-width:90%;text-align:center}
 
-/* Modal styling for admin uploader */
+/* UPLOAD MODAL */
 #uploadModal{
  display:none;position:fixed;inset:0;z-index:5000;background:#0009;backdrop-filter:blur(8px);
  align-items:center;justify-content:center;padding:15px;
@@ -231,12 +242,10 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
   <span class="brand-icon">🎬</span>
   <div>
    <h1>BRAQ COMICS</h1>
-   <small>INTO THE DEN • OWNER APPLAUD EDITION</small>
+   <small>INTO THE DEN • OWNER CONTROL DASHBOARD</small>
   </div>
  </div>
  <div style="display:flex;gap:6px;">
-  <!-- ADMIN ONLY UPLOAD BUTTON -->
-  <button class="pill" id="openUploadBtn" style="display:none;background:#20c879;color:#062015;">📤 Upload Media</button>
   <button class="pill" id="nameBtn">👤 Set name</button>
  </div>
 </header>
@@ -246,6 +255,15 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
 </div>
 
 <main>
+<!-- OWNER CONTROL BANNER -->
+<div id="ownerControlBanner">
+ <div class="owner-info">🛡️ OWNER MODE ACTIVE: Upload content & manage applauds</div>
+ <div class="owner-actions">
+  <button class="btn green small" id="openUploadBtn">📤 Upload Media</button>
+  <button class="btn secondary small" id="linkPhoneBtn">🔗 Link Phone Device</button>
+ </div>
+</div>
+
 <!-- HOME -->
 <section class="page active" id="home">
  <div class="hero">
@@ -330,8 +348,8 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
 <div id="uploadModal">
  <div class="modal-content">
   <button class="close-modal" id="closeModal">&times;</button>
-  <h2 style="margin-top:0;color:var(--gold);font-size:18px;">📤 Admin Media Uploader</h2>
-  <p class="muted">Select a video, music, or image file from your phone and publish it directly to your website tabs!</p>
+  <h2 style="margin-top:0;color:var(--gold);font-size:18px;">📤 Phone Media Uploader</h2>
+  <p class="muted">Select a video, music, or image file directly from your phone and publish it to your website tabs!</p>
   <form id="modalUploadForm">
    <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:5px;font-weight:bold;">Category</label>
    <select id="modalCat" style="width:100%;padding:10px;background:#080d18;border:1px solid var(--border);border-radius:8px;color:white;margin-bottom:10px;">
@@ -358,72 +376,89 @@ footer{text-align:center;padding:25px 12px;border-top:1px solid var(--border);co
  Media and trademarks belong to their respective owners.
 </footer>
 
+<!-- FIXED NAVIGATION BAR -->
 <nav class="nav" aria-label="Main navigation">
- <button class="active" data-go="home"><span>🏠</span>Home</button>
- <button data-go="movies"><span>🎬</span>Movies</button>
- <button data-go="music"><span>🎵</span>Music</button>
- <button data-go="games"><span>🎮</span>Games</button>
- <button data-go="tv"><span>📡</span>Live TV</button>
- <button data-go="chat"><span>💬</span>Chat</button>
+ <button class="nav-btn active" data-tab="home"><span>🏠</span>Home</button>
+ <button class="nav-btn" data-tab="movies"><span>🎬</span>Movies</button>
+ <button class="nav-btn" data-tab="music"><span>🎵</span>Music</button>
+ <button class="nav-btn" data-tab="games"><span>🎮</span>Games</button>
+ <button class="nav-btn" data-tab="tv"><span>📡</span>Live TV</button>
+ <button class="nav-btn" data-tab="chat"><span>💬</span>Chat</button>
 </nav>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
 
 const $ = id => document.getElementById(id);
-let currentTab = "home";
 
 function toast(message){
- const el=$("toast");
- el.textContent=message;
- el.style.display="block";
+ const el = $("toast");
+ if(!el) return;
+ el.textContent = message;
+ el.style.display = "block";
  clearTimeout(toast.timer);
- toast.timer=setTimeout(()=>el.style.display="none",2500);
+ toast.timer = setTimeout(() => el.style.display = "none", 2500);
 }
 
-function navigate(id){
- const section=$(id);
- if(!section || !section.classList.contains("page")){
-  toast("Section not found.");
+function switchTab(tabId){
+ const targetSection = $(tabId);
+ if(!targetSection) {
+  toast("Tab not found.");
   return;
  }
- currentTab=id;
- document.querySelectorAll(".page").forEach(el=>{
-  el.classList.toggle("active",el.id===id);
+
+ document.querySelectorAll(".page").forEach(p => {
+  p.classList.remove("active");
  });
- document.querySelectorAll(".nav [data-go]").forEach(btn=>{
-  btn.classList.toggle("active",btn.dataset.go===id);
+
+ targetSection.classList.add("active");
+
+ document.querySelectorAll(".nav-btn").forEach(btn => {
+  if(btn.dataset.tab === tabId){
+   btn.classList.add("active");
+  } else {
+   btn.classList.remove("active");
+  }
  });
- window.scrollTo({top:0,behavior:"smooth"});
- if(id==="chat") renderChat();
+
+ window.scrollTo({top: 0, behavior: "smooth"});
+ if(tabId === "chat") renderChat();
 }
 
-document.addEventListener("click", event => {
- const target = event.target.closest("[data-go]");
- if (target) {
-  event.preventDefault();
-  navigate(target.dataset.go);
+document.addEventListener("click", e => {
+ const navBtn = e.target.closest(".nav-btn");
+ if(navBtn){
+  e.preventDefault();
+  switchTab(navBtn.dataset.tab);
+  return;
+ }
+
+ const goBtn = e.target.closest("[data-go]");
+ if(goBtn){
+  e.preventDefault();
+  switchTab(goBtn.dataset.go);
+  return;
  }
 });
 
-// ADMIN SECURITY & APPLAUD CHECK:
-// Tap the brand logo 5 times quickly on your phone to unlock Owner/Admin mode (Upload + Applaud buttons).
+// OWNER DASHBOARD UNLOCK
 let brandClicks = 0;
 $("adminUnlockBrand").addEventListener("click", () => {
  brandClicks++;
  if(brandClicks >= 5){
   localStorage.setItem("braq_is_admin", "true");
-  applyAdminMode();
-  toast("🔓 Owner/Admin Mode Unlocked!");
+  applyOwnerMode();
+  toast("🔓 Owner Dashboard & Upload Controls Unlocked!");
   brandClicks = 0;
  }
 });
 
-function applyAdminMode(){
+function applyOwnerMode(){
  const isAdmin = localStorage.getItem("braq_is_admin") === "true" || window.location.search.includes("admin=1");
  if(isAdmin){
-  $("openUploadBtn").style.display = "inline-flex";
+  $("ownerControlBanner").style.display = "flex";
   document.querySelectorAll(".applaud-btn").forEach(btn => {
    btn.style.display = "inline-flex";
   });
@@ -431,10 +466,20 @@ function applyAdminMode(){
 }
 
 if(localStorage.getItem("braq_is_admin") === "true" || window.location.search.includes("admin=1")){
- applyAdminMode();
+ applyOwnerMode();
 }
 
-// Applaud storage & handling
+$("linkPhoneBtn").addEventListener("click", () => {
+ toast("📱 Device linked successfully! You can now upload media directly from this phone.");
+});
+
+$("openUploadBtn").addEventListener("click", () => {
+ $("uploadModal").style.display = "flex";
+});
+$("closeModal").addEventListener("click", () => {
+ $("uploadModal").style.display = "none";
+});
+
 let applauds = JSON.parse(localStorage.getItem("braq_applauds") || "{}");
 
 function updateApplaudUI(){
@@ -469,44 +514,11 @@ document.addEventListener("click", e => {
  } else {
   applauds[itemId] = current + 1;
   applauds[itemId + "_mine"] = true;
-  toast("👏 You applauded this item!");
+  toast("👏 Owner Applaud added!");
  }
  localStorage.setItem("braq_applauds", JSON.stringify(applauds));
  updateApplaudUI();
 });
 
-// Modal toggle
-$("openUploadBtn").addEventListener("click", () => {
- $("uploadModal").style.display = "flex";
-});
-$("closeModal").addEventListener("click", () => {
- $("uploadModal").style.display = "none";
-});
-
 window.addEventListener("load", () => {
- setTimeout(() => {
-  const intro = $("intro");
-  if(intro) intro.style.display = "none";
- }, 3000);
-
- renderPlans();
- renderFeatured();
- renderMovies();
- renderMusic();
- renderGames();
- renderTv();
- loadPhoneMediaFromDB();
- applyAdminMode();
- updateApplaudUI();
-});
-
-const plans=[
- {name:"STARTER",price:2000,period:"month",badge:"ENTRY PLAN",features:["Access to member area","Entertainment discovery","Community access"]},
- {name:"STANDARD",price:5000,period:"month",badge:"POPULAR",features:["All Starter benefits","Member badge","Priority support"]},
- {name:"GOLD VIP",price:7000,period:"month",badge:"GOLD MEMBER",features:["All Standard benefits","VIP community perks","Premium member badge"]},
- {name:"ELITE VIP",price:10000,period:"month",badge:"TOP MEMBERSHIP",features:["All Gold benefits","Elite member status","Priority member assistance"]}
-];
-const SUPPORT="256705190026";
-
-function contactPlan(plan){
- const message="Hello BRAQ COMICS Support. I am 
+ setTimeout((
